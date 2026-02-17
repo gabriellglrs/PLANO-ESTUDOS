@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Estudos — TEC Concursos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080a10;--surface:#0f1219;--surface2:#161b26;--surface3:#1c2233;
+  --border:#1e2638;--border2:#252e42;
+  --accent:#4f7ef5;--accent2:#f0654a;--accent3:#42e8a0;--accent4:#f5c842;--accent5:#b44ff5;
+  --text:#dde2f0;--muted:#5a6480;--muted2:#3a4260;
+  --red:#f04a4a;--green:#42e8a0;--yellow:#f5c842;--purple:#b44ff5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:radial-gradient(ellipse 70% 50% at 15% 5%,rgba(79,126,245,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 85%,rgba(66,232,160,.05) 0%,transparent 60%),
+    linear-gradient(rgba(79,126,245,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,126,245,.02) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,36px 36px,36px 36px;pointer-events:none;z-index:0}
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:48px 24px 100px}
+
+/* TABS */
+.tabs-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px}
+.tab{padding:9px 20px;border-radius:9px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all .25s;white-space:nowrap}
+.tab.active{background:var(--surface3);color:var(--text);box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;border-radius:8px;background:var(--accent2);color:#fff;font-size:9px;font-weight:800;padding:0 4px;margin-left:6px;vertical-align:middle}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* HEADER */
+.header-tag{font-size:10px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.header-tag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent)}
+h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,4vw,2.9rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;background:linear-gradient(135deg,#dde2f0 0%,#4f7ef5 55%,#42e8a0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.header-meta{color:var(--muted);font-size:11px;line-height:1.9}
+.header-meta .hl{color:var(--accent3)}
+
+/* PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;margin-bottom:22px;animation:fadeUp .5s ease both}
+.panel-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;color:var(--muted)}
+.panel-title .icon{font-size:14px}
+
+/* INPUTS */
+.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:20px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input[type=date],.field select,.field input[type=number]{
+  background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);
+  font-family:'DM Mono',monospace;font-size:12px;padding:9px 13px;outline:none;cursor:pointer;transition:border-color .2s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+input[type=range]{-webkit-appearance:none;height:3px;border-radius:2px;background:var(--border2);outline:none;width:100%}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px rgba(79,126,245,.2)}
+.range-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.range-big{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text)}
+.range-unit{font-size:10px;color:var(--muted)}
+
+/* DAY HOURS */
+.day-hours-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
+.dh{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;transition:border-color .2s}
+.dh.active-day{border-color:rgba(79,126,245,.3)}
+.dh-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.04em}
+.dh-val{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--accent3);margin:6px 0 2px}
+.dh-sub{font-size:9px;color:var(--muted)}
+.dh-toggle{font-size:9px;color:var(--muted2);cursor:pointer;margin-top:8px;display:block;border:1px solid var(--border2);border-radius:4px;padding:2px 6px;background:transparent;font-family:'DM Mono',monospace;width:100%;transition:all .2s}
+.dh-toggle:hover{color:var(--accent2);border-color:rgba(240,101,74,.3)}
+.dh.folga{opacity:.5}
+.dh.folga .dh-val{color:var(--muted2)}
+
+/* BTN */
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:.05em;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#2f5cc8);color:#fff}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--accent2);border:1px solid rgba(240,101,74,.3)}
+.btn-ghost:hover{background:rgba(240,101,74,.07)}
+.btn-green{background:linear-gradient(135deg,var(--accent3),#28b870);color:#080a10}
+.btn-green:hover{opacity:.88;transform:translateY(-1px)}
+.btn-sm{padding:7px 14px;font-size:11px}
+.save-ok{font-size:11px;color:var(--accent3);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:5px}
+.save-ok.show{opacity:1}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--muted);background:var(--surface2)}
+.pill b{color:var(--text)}
+
+/* PROGRESS OVERVIEW */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:11px;margin-bottom:28px}
+.mat-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px}
+.mat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.mat-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700}
+.volta-chip{font-size:9px;padding:1px 7px;border-radius:10px;background:rgba(180,79,245,.1);border:1px solid rgba(180,79,245,.25);color:var(--purple)}
+.mini-bar{width:100%;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.mini-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.mat-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
+.leg{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px}
+.leg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* CYCLE / DAY CARDS */
+.cycle-section{margin-bottom:44px}
+.cycle-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cycle-badge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent3);background:rgba(66,232,160,.07);border:1px solid rgba(66,232,160,.18);border-radius:4px;padding:4px 10px}
+.cycle-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.cycle-dates{font-size:11px;color:var(--muted)}
+
+.days-grid{display:grid;gap:11px}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:fadeUp .4s ease both;transition:border-color .2s}
+.day-card:hover{border-color:rgba(79,126,245,.2)}
+.day-card.folga-card{opacity:.55}
+
+.day-hdr{display:grid;grid-template-columns:160px 1fr;border-bottom:1px solid var(--border)}
+.day-info{padding:13px 16px;border-right:1px solid var(--border)}
+.day-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-transform:capitalize}
+.today-name{color:var(--accent3)}
+.today-chip-hdr{display:inline-block;font-size:9px;padding:1px 7px;border-radius:8px;background:rgba(66,232,160,.15);border:1px solid rgba(66,232,160,.35);color:var(--green);font-family:'DM Mono',monospace;margin-left:6px;vertical-align:middle;text-transform:none}
+.day-date-str{font-size:10px;color:var(--muted);margin-top:2px}
+.day-load{font-size:11px;color:var(--muted);margin-top:4px}
+.day-load b{color:var(--accent4)}
+.day-reviews-col{padding:11px 14px;background:rgba(245,200,66,.025);display:flex;flex-direction:column;justify-content:center;gap:5px;min-width:0}
+.rev-label{font-size:10px;color:var(--accent4);letter-spacing:.06em;flex-shrink:0}
+.rev-chips{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.rev-chip{font-size:10px;padding:2px 8px;border-radius:12px;white-space:nowrap;cursor:default}
+.rev-chip.normal{border:1px solid rgba(245,200,66,.2);color:var(--accent4);background:rgba(245,200,66,.05)}
+.rev-chip.today-chip{border:1px solid rgba(66,232,160,.35);color:var(--green);background:rgba(66,232,160,.07)}
+.rev-chip.overdue-chip{border:1px solid rgba(240,74,74,.35);color:var(--red);background:rgba(240,74,74,.06)}
+.rev-empty{font-size:10px;color:var(--muted2)}
+
+.day-body{display:grid;grid-template-columns:1fr 1fr}
+.session{padding:15px 16px}
+.session+.session{border-left:1px solid var(--border)}
+.sess-label{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.sess-label::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;flex-shrink:0}
+.session.manha .sess-label{color:var(--accent)}
+.session.noite .sess-label{color:var(--purple)}
+.sess-mat{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.mbadge{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid}
+.badge-ti{background:rgba(79,126,245,.1);border-color:rgba(79,126,245,.3);color:var(--accent)}
+.badge-pt{background:rgba(240,101,74,.1);border-color:rgba(240,101,74,.3);color:var(--accent2)}
+.badge-mt{background:rgba(66,232,160,.1);border-color:rgba(66,232,160,.3);color:var(--accent3)}
+.badge-prob{background:rgba(180,79,245,.1);border-color:rgba(180,79,245,.3);color:var(--purple)}
+.badge-en{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.3);color:var(--accent4)}
+.badge-bc{background:rgba(240,101,74,.1);border-color:rgba(240,101,74,.3);color:var(--accent2)}
+.badge-at{background:rgba(66,232,160,.1);border-color:rgba(66,232,160,.3);color:var(--accent3)}
+.badge-red{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.3);color:var(--accent4)}
+.restart-banner{display:flex;align-items:center;gap:7px;font-size:11px;padding:7px 10px;background:rgba(180,79,245,.07);border:1px solid rgba(180,79,245,.2);border-radius:7px;color:var(--purple);margin-bottom:9px}
+
+/* TÓPICOS */
+.topics{list-style:none;display:flex;flex-direction:column;gap:6px}
+.topics li{font-size:11px;color:#8a94b0;line-height:1.5;padding:7px 10px 7px 12px;position:relative;border-left:2px solid var(--border2);background:rgba(255,255,255,.015);border-radius:0 6px 6px 0}
+.topics li.is-completo{border-left-color:rgba(66,232,160,.4)}
+.topics li.is-parcial{border-left-color:rgba(245,200,66,.4)}
+.t-meta{font-size:10px;color:var(--muted);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.t-qs{color:var(--accent3);font-weight:600}
+.t-h{color:var(--accent4);font-weight:600}
+.t-bar{width:100%;height:2px;background:var(--border2);border-radius:2px;margin-top:5px;overflow:hidden}
+.t-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent3))}
+.stag{display:inline-block;font-size:8px;padding:1px 5px;border-radius:3px;vertical-align:middle;margin-left:4px;letter-spacing:.04em}
+.stag-g{background:rgba(240,101,74,.1);border:1px solid rgba(240,101,74,.2);color:var(--accent2)}
+.stag-m{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.18);color:var(--accent4)}
+.stag-p{background:rgba(66,232,160,.07);border:1px solid rgba(66,232,160,.18);color:var(--accent3)}
+
+/* ACCORDION */
+.hier-wrap{margin-top:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface2)}
+.hier-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s;gap:8px}
+.hier-toggle:hover{background:rgba(79,126,245,.06);color:var(--accent)}
+.hier-toggle .ht-left{display:flex;align-items:center;gap:7px}
+.hier-toggle .ht-arrow{font-size:10px;transition:transform .25s;color:var(--muted2)}
+.hier-toggle.open .ht-arrow{transform:rotate(90deg)}
+.hier-body{display:none;border-top:1px solid var(--border)}
+.hier-body.open{display:block}
+.hier-cat{border-bottom:1px solid var(--border)}
+.hier-cat:last-child{border-bottom:none}
+.hier-cat-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;cursor:pointer;transition:background .2s;gap:8px}
+.hier-cat-hdr:hover{background:rgba(255,255,255,.03)}
+.hier-cat-hdr .hc-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--text);flex:1}
+.hier-cat-hdr .hc-qty{font-size:10px;color:var(--accent3);white-space:nowrap}
+.hier-cat-hdr .hc-arr{font-size:9px;color:var(--muted2);transition:transform .2s}
+.hier-cat-hdr.open .hc-arr{transform:rotate(90deg)}
+.hier-cat-body{display:none;padding:4px 0 8px}
+.hier-cat-body.open{display:block}
+.hier-item{display:flex;align-items:flex-start;gap:0;padding:3px 13px 3px 0;line-height:1.5}
+.hier-item .hi-code{font-size:9px;color:var(--muted2);min-width:52px;padding-left:13px;flex-shrink:0;padding-top:1px;font-family:'DM Mono',monospace}
+.hier-item .hi-name{font-size:11px;color:#8a94b0;flex:1}
+.hier-item .hi-qty{font-size:9px;color:var(--muted);white-space:nowrap;padding-left:6px;padding-top:1px}
+.hier-item .hi-sess-qs{font-size:9px;font-weight:700;white-space:nowrap;padding-left:6px;padding-top:1px;color:var(--accent3)}
+.hier-item .hi-acum-qs{font-size:9px;white-space:nowrap;padding-left:4px;padding-top:1px;color:var(--accent4)}
+.hier-item[data-depth="0"]{background:rgba(255,255,255,.02)}
+.hier-item[data-depth="0"] .hi-name{color:var(--text);font-weight:500}
+.hier-item[data-depth="0"] .hi-code{color:var(--accent);opacity:.7}
+.hier-item[data-depth="1"] .hi-code{color:var(--muted)}
+.hier-item[data-depth="2"] .hi-name{color:#6a74a0;font-size:10.5px}
+.hier-item[data-depth="3"] .hi-name{color:#5a647a;font-size:10px;font-style:italic}
+.divider{margin:10px 0;border:none;border-top:1px solid var(--border)}
+.folga-msg{padding:14px 16px;font-size:12px;color:var(--muted);font-style:italic}
+
+
+/* DAY FOOTER */
+.day-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--border);background:rgba(255,255,255,.012);gap:10px;flex-wrap:wrap}
+.btn-concluir{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.05em;padding:8px 18px;border-radius:7px;border:1px solid rgba(66,232,160,.35);background:rgba(66,232,160,.07);color:var(--green);cursor:pointer;transition:all .22s}
+.btn-concluir:hover{background:rgba(66,232,160,.18);transform:translateY(-1px)}
+.btn-desfazer{font-size:10px;color:var(--muted2);background:transparent;border:1px solid var(--border2);border-radius:6px;padding:5px 10px;cursor:pointer;font-family:'DM Mono',monospace;transition:all .2s}
+.btn-desfazer:hover{color:var(--accent2);border-color:rgba(240,101,74,.3)}
+.day-qs-info{font-size:10px;color:var(--muted)}
+.day-qs-info b{color:var(--accent3);font-family:'Syne',sans-serif}
+.done-banner{font-size:11px;color:var(--green);font-family:'Syne',sans-serif;font-weight:700;display:flex;align-items:center;gap:7px}
+.day-card.done-card{border-color:rgba(66,232,160,.3)!important}
+.day-card.done-card .day-body{opacity:.6}
+/* CYCLE FOOTER */
+.cycle-footer{margin-top:20px;padding:18px 22px;background:var(--surface);border:1px solid rgba(66,232,160,.1);border-radius:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px}
+.stat-item{text-align:center}
+.stat-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent3)}
+.stat-lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.07em}
+
+/* NOTE */
+.note{margin-top:28px;padding:15px 18px;background:rgba(79,126,245,.05);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;font-size:12px;color:var(--muted);line-height:1.9}
+.note b{color:var(--text)}
+
+/* ─────────── CADERNO DE ERROS ─────────── */
+.ce-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px}
+.ce-stats{display:flex;gap:14px;flex-wrap:wrap}
+.ce-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center}
+.ce-stat-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800}
+.ce-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+
+.add-error-panel{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:22px}
+.add-err-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:14px;letter-spacing:.06em}
+.add-err-grid{display:grid;grid-template-columns:1fr 1fr auto auto;gap:12px;align-items:end}
+.add-err-grid .field input[type=text]{
+  background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);
+  font-family:'DM Mono',monospace;font-size:12px;padding:9px 13px;outline:none;width:100%;transition:border-color .2s}
+.add-err-grid .field input[type=text]:focus{border-color:var(--accent3)}
+.add-err-grid .field select,.add-err-grid .field input[type=date]{
+  background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);
+  font-family:'DM Mono',monospace;font-size:12px;padding:9px 13px;outline:none;width:100%}
+
+/* AGENDA */
+.agenda-section{margin-bottom:24px}
+.agenda-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.agenda-timeline{display:flex;flex-direction:column;gap:8px}
+.agenda-day-row{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center}
+.agenda-date{font-size:11px;color:var(--muted);text-align:right;font-weight:600}
+.agenda-date.is-today{color:var(--green)}
+.agenda-date.is-past{color:var(--red)}
+.agenda-chips{display:flex;flex-wrap:wrap;gap:6px}
+.agenda-chip{font-size:10px;padding:4px 10px;border-radius:8px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.agenda-chip.pending{border:1px solid rgba(245,200,66,.25);color:var(--accent4);background:rgba(245,200,66,.06)}
+.agenda-chip.pending:hover{background:rgba(245,200,66,.12)}
+.agenda-chip.done{border:1px solid rgba(66,232,160,.2);color:var(--green);background:rgba(66,232,160,.05);text-decoration:line-through;opacity:.6}
+.agenda-chip.overdue{border:1px solid rgba(240,74,74,.3);color:var(--red);background:rgba(240,74,74,.06)}
+.agenda-chip.overdue:hover{background:rgba(240,74,74,.12)}
+.agenda-chip.today-chip{border:1px solid rgba(66,232,160,.35);color:var(--green);background:rgba(66,232,160,.07)}
+.chip-mat{font-weight:600}
+.chip-done-btn{font-size:9px;padding:1px 5px;border-radius:4px;background:rgba(66,232,160,.12);border:1px solid rgba(66,232,160,.2);color:var(--green);cursor:pointer;font-family:'DM Mono',monospace}
+
+/* ERRORS TABLE */
+.err-table-wrap{overflow-x:auto}
+.err-table{width:100%;border-collapse:collapse;font-size:11px}
+.err-table th{text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.err-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--muted)}
+.err-table td:first-child{color:var(--text)}
+.err-table tr:last-child td{border-bottom:none}
+.err-table tr:hover td{background:rgba(255,255,255,.01)}
+.step-dots{display:flex;gap:5px;align-items:center}
+.step-dot{width:18px;height:18px;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:700;border:1px solid;cursor:pointer;transition:all .2s}
+.step-dot.done-dot{background:var(--accent3);border-color:var(--accent3);color:#080a10}
+.step-dot.pending-dot{background:transparent;border-color:var(--border2);color:var(--muted)}
+.step-dot.due-dot{background:rgba(245,200,66,.12);border-color:var(--accent4);color:var(--accent4)}
+.step-dot.overdue-dot{background:rgba(240,74,74,.12);border-color:var(--red);color:var(--red)}
+.err-del{background:transparent;border:none;color:var(--muted2);cursor:pointer;font-size:13px;padding:2px 4px;transition:color .2s}
+.err-del:hover{color:var(--accent2)}
+.mat-tag{font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid;font-family:'DM Mono',monospace}
+.empty-ce{text-align:center;padding:40px;color:var(--muted2);font-size:13px}
+.empty-ce .icon{font-size:32px;margin-bottom:10px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
+.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:28px;max-width:380px;width:90%;text-align:center}
+.modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px}
+.modal-text{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:22px}
+.modal-actions{display:flex;gap:10px;justify-content:center}
+.modal-cancel{padding:9px 22px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer}
+.modal-confirm{padding:9px 22px;border-radius:8px;border:none;background:var(--accent2);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+
+/* UTILS */
+.section-divider{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin:28px 0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ─────────── MODAL AJUDA ─────────── */
+.ajuda-box{background:var(--surface);border:1px solid var(--border2);border-radius:18px;width:min(900px,96vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ajuda-header{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 28px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.ajuda-super{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent4);margin-bottom:4px}
+.ajuda-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text)}
+.ajuda-close{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--muted);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.ajuda-close:hover{background:rgba(240,101,74,.1);color:var(--accent2);border-color:rgba(240,101,74,.3)}
+.ajuda-body{display:grid;grid-template-columns:200px 1fr;overflow:hidden;flex:1;min-height:0}
+.ajuda-nav{border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;flex-shrink:0;background:var(--surface2)}
+.ajuda-nav-item{background:transparent;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;text-align:left;padding:8px 12px;border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.ajuda-nav-item:hover{background:var(--surface3);color:var(--text)}
+.ajuda-nav-item.active{background:rgba(79,126,245,.12);color:var(--accent);border-left:2px solid var(--accent)}
+.ajuda-content{overflow-y:auto;padding:28px 32px}
+.ajuda-section{display:none}
+.ajuda-section.active{display:block}
+.ajuda-sec-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.ajuda-p{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:18px}
+.ajuda-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.ai-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px}
+.ai-text{font-size:12px;color:var(--muted);line-height:1.9}
+.ai-tip{margin-top:10px;font-size:11px;color:var(--accent4);padding:8px 12px;background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.15);border-radius:6px;line-height:1.7}
+
+/* ÍNDICE COMPLETO */
+#tab-indice .panel{animation:fadeUp .5s ease both}
+
+/* ACÚMULO badge */
+.acum-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:2px 7px;border-radius:8px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);color:var(--accent4);margin-left:6px}
+
+@media(max-width:640px){
+  .ajuda-body{grid-template-columns:1fr}
+  .ajuda-nav{flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);padding:8px}
+  .ajuda-nav-item{white-space:nowrap;border-left:none!important;border-bottom:2px solid transparent}
+  .ajuda-nav-item.active{border-bottom-color:var(--accent);background:rgba(79,126,245,.08)}
+  .ajuda-content{padding:18px}
+  .day-hdr{grid-template-columns:1fr}
+  .day-body{grid-template-columns:1fr}
+  .add-err-grid{grid-template-columns:1fr}
+  .day-hours-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header style="margin-bottom:28px;animation:fadeUp .6s ease both">
+    <div class="header-tag">Estudo Reverso por Questão — TEC Concursos</div>
+    <h1>Plano de Estudos</h1>
+    <p class="header-meta">Configure data, carga por dia e duração — plano gerado automaticamente com <span class="hl">revisão espaçada integrada</span></p>
+  </header>
+
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" id="tab-btn-plano" onclick="switchTab('plano')">📅 Plano</button>
+      <button class="tab" onclick="switchTab('caderno')" id="tab-btn-caderno">📓 Caderno de Erros <span class="tab-badge" id="ce-badge" style="display:none">0</span></button>
+      <button class="tab" id="tab-btn-indice" onclick="switchTab('indice')">📋 Índice TEC</button>
+      <button class="tab" id="tab-btn-ajuda" onclick="abrirAjuda()">❓ Como Usar</button>
+    </div>
+    <span class="save-ok" id="save-ok">✓ Progresso salvo</span>
+  </div>
+
+  <!-- ═══════ TAB: PLANO ═══════ -->
+  <div class="tab-content active" id="tab-plano">
+    <div class="panel">
+      <div class="panel-title"><span class="icon">⚙</span> Configurações do Plano</div>
+      <div class="config-grid">
+        <div class="field">
+          <label>Data de início</label>
+          <input type="date" id="data-inicio">
+        </div>
+        <div class="field">
+          <label>Duração do estudo</label>
+          <select id="duracao-meses">
+            <option value="1">1 mês</option>
+            <option value="2">2 meses</option>
+            <option value="3" selected>3 meses</option>
+            <option value="4">4 meses</option>
+            <option value="6">6 meses</option>
+            <option value="9">9 meses</option>
+            <option value="12">12 meses</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Questões / hora</label>
+          <div class="range-label">
+            <span class="range-big" id="qph-val">15</span>
+            <span class="range-unit">questões/h</span>
+          </div>
+          <input type="range" id="qph" min="5" max="40" value="15" step="1" oninput="syncRange('qph','qph-val')">
+        </div>
+        <div class="field">
+          <label>Familiaridade</label>
+          <select id="nivel">
+            <option value="0.7" selected>Iniciante — tudo novo</option>
+            <option value="0.85">Básico — vi alguns tópicos</option>
+            <option value="1.0">Intermediário — já estudei</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-title" style="margin-bottom:14px"><span class="icon">⏰</span> Carga horária por dia (arraste para ajustar · clique "Folga" para pular)</div>
+      <div class="day-hours-grid" id="day-hours-grid"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="gerarPlano()">▶ Gerar Plano</button>
+        <button class="btn btn-ghost" onclick="confirmarReset()">↺ Reiniciar tudo</button>
+      </div>
+      <div class="pills" id="pills" style="display:none">
+        <div class="pill">Ritmo: <b id="p-ritmo">—</b></div>
+        <div class="pill">Qs/semana: <b id="p-qsem">—</b></div>
+        <div class="pill">Semanas: <b id="p-sem">—</b></div>
+        <div class="pill">Total banco: <b id="p-total">—</b></div>
+        <div class="pill">Período: <b id="p-periodo">—</b></div>
+      </div>
+    </div>
+
+    <div class="panel" id="progress-panel" style="display:none">
+      <div class="panel-title"><span class="icon">📊</span> Progresso por matéria</div>
+      <div class="mat-grid" id="mat-grid"></div>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--accent)"></div>TI</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent2)"></div>Português</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent3)"></div>Matemática</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Prob./Estat.</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent4)"></div>Inglês · Redação</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent2)"></div>Conhec. Bancários</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent3)"></div>Atualidades</div>
+    </div>
+
+    <div id="plano-output">
+      <div style="text-align:center;padding:60px;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:12px">📚</div>
+        <p>Configure acima e clique em <b style="color:var(--text)">Gerar Plano</b></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: CADERNO DE ERROS ═══════ -->
+  <div class="tab-content" id="tab-caderno">
+    <div class="panel">
+      <div class="ce-top">
+        <div>
+          <div class="panel-title" style="margin-bottom:6px"><span class="icon">📓</span> Caderno de Erros — Revisão Espaçada</div>
+          <p style="font-size:11px;color:var(--muted);line-height:1.8">Registre erros por matéria. O sistema agenda revisões automáticas em <b style="color:var(--accent4)">+1 · +3 · +7 · +10 · +15 dias</b>.<br>As revisões aparecem no plano semanal automaticamente.</p>
+        </div>
+        <div class="ce-stats" id="ce-stats">
+          <div class="ce-stat"><div class="ce-stat-val" id="ce-total-reg" style="color:var(--accent)">0</div><div class="ce-stat-lbl">Registros</div></div>
+          <div class="ce-stat"><div class="ce-stat-val" id="ce-pendentes" style="color:var(--accent4)">0</div><div class="ce-stat-lbl">Revisões pendentes</div></div>
+          <div class="ce-stat"><div class="ce-stat-val" id="ce-atrasadas" style="color:var(--red)">0</div><div class="ce-stat-lbl">Atrasadas</div></div>
+          <div class="ce-stat"><div class="ce-stat-val" id="ce-concluidas" style="color:var(--green)">0</div><div class="ce-stat-lbl">Concluídas</div></div>
+        </div>
+      </div>
+
+      <div class="add-error-panel">
+        <div class="add-err-title">+ Adicionar registro de erros</div>
+        <div class="add-err-grid">
+          <div class="field">
+            <label>Matéria</label>
+            <select id="ce-mat">
+              <option value="TI">TI</option>
+              <option value="PT">Português</option>
+              <option value="MT">Matemática</option>
+              <option value="PROB">Prob./Estat.</option>
+              <option value="EN">Inglês</option>
+              <option value="BC">Conhec. Bancários</option>
+              <option value="AT">Atualidades</option>
+              <option value="RED">Redação</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tópico / Anotação (opcional)</label>
+            <input type="text" id="ce-topico" placeholder="ex: Concordância verbal, SQL JOIN...">
+          </div>
+          <div class="field">
+            <label>Data do erro</label>
+            <input type="date" id="ce-data">
+          </div>
+          <div class="field" style="justify-content:flex-end">
+            <button class="btn btn-green btn-sm" onclick="adicionarErro()">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="agenda-section" id="agenda-section">
+        <div class="agenda-title"><span>📆</span> Agenda de revisões (próximos 30 dias)</div>
+        <div class="agenda-timeline" id="agenda-timeline"></div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div class="panel-title" style="margin-bottom:0"><span class="icon">📋</span> Todos os registros</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <select id="filter-mat" onchange="renderCaderno()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:6px 10px;outline:none">
+            <option value="">Todas as matérias</option>
+            <option value="TI">TI</option><option value="PT">Português</option>
+            <option value="MT">Matemática</option><option value="PROB">Prob./Estat.</option>
+            <option value="EN">Inglês</option><option value="BC">Conhec. Bancários</option>
+            <option value="AT">Atualidades</option><option value="RED">Redação</option>
+          </select>
+          <select id="filter-status" onchange="renderCaderno()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:6px 10px;outline:none">
+            <option value="">Todos os status</option>
+            <option value="pending">Com revisões pendentes</option>
+            <option value="overdue">Atrasados</option>
+            <option value="done">Concluídos</option>
+          </select>
+        </div>
+      </div>
+      <div class="err-table-wrap" id="err-table-wrap">
+        <div class="empty-ce"><div class="icon">📭</div><p>Nenhum erro registrado ainda.<br>Adicione acima!</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: ÍNDICE TEC ═══════ -->
+  <div class="tab-content" id="tab-indice">
+    <div class="panel">
+      <div class="panel-title"><span class="icon">📋</span> Índice Completo — TEC Concursos</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:18px;line-height:1.8">Todos os tópicos do edital, exatamente como aparecem no TEC Concursos, com hierarquia completa e quantidade de questões. Clique nas matérias para expandir.</p>
+      <div id="indice-full"></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- MODAL RESET -->
+<div class="modal-overlay" id="modal-reset" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">Reiniciar tudo?</div>
+    <div class="modal-text">Todo o progresso do plano será apagado. O caderno de erros <b>não</b> será afetado.<br><br>Essa ação não pode ser desfeita.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="modal-confirm" onclick="executarReset()">Sim, reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AJUDA -->
+<div class="modal-overlay" id="modal-ajuda" style="display:none" onclick="fecharAjudaFora(event)">
+  <div class="ajuda-box">
+    <div class="ajuda-header">
+      <div>
+        <div class="ajuda-super">Guia Completo</div>
+        <div class="ajuda-title">Como usar o Plano de Estudos</div>
+      </div>
+      <button class="ajuda-close" onclick="fecharAjuda()">✕</button>
+    </div>
+    <div class="ajuda-body">
+      <nav class="ajuda-nav">
+        <button class="ajuda-nav-item active" onclick="showSection('s-visao')">🗺 Visão geral</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-config')">⚙ Configurações</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-plano')">📅 O Plano</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-caderno')">📓 Caderno de erros</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-revisao')">🧠 Revisão espaçada</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-dicas')">💡 Dicas e FAQ</button>
+      </nav>
+      <div class="ajuda-content">
+        <div class="ajuda-section active" id="s-visao">
+          <div class="ajuda-sec-title">🗺 Visão geral</div>
+          <p class="ajuda-p">Plano de estudos reverso por questão com revisão espaçada integrada e registro de progresso por matéria.</p>
+          <div class="ajuda-item">
+            <div class="ai-label">📊 Progresso por matéria</div>
+            <div class="ai-text">Após gerar o plano, um painel mostra o avanço em cada disciplina: tópicos cobertos, porcentagem do banco e volta atual (quando todos os tópicos forem estudados, começa uma nova volta).</div>
+            <div class="ai-tip">💡 O progresso é salvo automaticamente. Gere o plano novamente para ver atualizado.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">📓 Caderno de Erros integrado</div>
+            <div class="ai-text">Registre questões erradas com matéria, tópico e data. O sistema agenda revisões automáticas e elas aparecem no topo de cada dia do plano.</div>
+          </div>
+        </div>
+        <div class="ajuda-section" id="s-config">
+          <div class="ajuda-sec-title">⚙ Configurações</div>
+          <div class="ajuda-item"><div class="ai-label">📅 Data de início</div><div class="ai-text">Define o começo do ciclo. O dia de hoje fica destacado em verde no plano.</div></div>
+          <div class="ajuda-item"><div class="ai-label">⚡ Questões / hora</div><div class="ai-text">Iniciante: 10–15 qs/h. Aumente conforme evoluir. Afeta diretamente quantos tópicos são cobertos por sessão.</div></div>
+          <div class="ajuda-item"><div class="ai-label">🌙 Folga</div><div class="ai-text">Clique "Folga" em qualquer dia para zerá-lo — aparece como dia de descanso no plano. Clique "Ativar" para restaurar.</div></div>
+          <div class="ajuda-item"><div class="ai-label">⏱ Carga por dia</div><div class="ai-text">Arraste os sliders para ajustar horas de estudo por dia da semana. O plano recalcula automaticamente.</div></div>
+        </div>
+        <div class="ajuda-section" id="s-plano">
+          <div class="ajuda-sec-title">📅 Entendendo o Plano</div>
+          <div class="ajuda-item">
+            <div class="ai-label">Legenda de tamanho de tópico</div>
+            <div class="ai-text"><b>GRANDE</b> = 20+ questões no banco · <b>MÉDIO</b> = 6–19 questões · <b>PEQUENO</b> = até 5 questões<br><br>Tópicos marcados como <em style="color:var(--accent3)">"✓ completo"</em> foram totalmente cobertos na sessão. <em style="color:var(--accent4)">"(continua...)"</em> significa que segue na próxima sessão.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">📋 Índice de Hoje no card</div>
+            <div class="ai-text">Dentro de cada sessão existe um accordion "Índice de hoje" que mostra os sub-tópicos do banco com a quantidade de questões da <b style="color:var(--accent3)">sessão atual</b>. Se houver questões acumuladas de ciclos anteriores, aparece o badge <b style="color:var(--accent4)">+N acum.</b>.</div>
+            <div class="ai-tip">💡 As questões acumuladas são as que não foram concluídas em ciclos passados e voltam automaticamente no próximo ciclo do mesmo tópico.</div>
+          </div>
+          <div class="ajuda-item"><div class="ai-label">🔄 Nova volta</div><div class="ai-text">Quando todos os tópicos de uma matéria são cobertos, inicia-se uma nova volta automaticamente. O banner roxo aparece no card do dia.</div></div>
+          <div class="ajuda-item"><div class="ai-label">📓 Revisões nos dias</div><div class="ai-text">No topo de cada dia aparecem as revisões do Caderno de Erros agendadas para aquela data (amarelas = pendentes, verdes = hoje, vermelhas = atrasadas).</div></div>
+          <div class="ajuda-item"><div class="ai-label">Redação</div><div class="ai-text">Matéria prática — sem contagem de questões, apenas tempo estimado em minutos para prática.</div></div>
+        </div>
+        <div class="ajuda-section" id="s-caderno">
+          <div class="ajuda-sec-title">📓 Caderno de Erros</div>
+          <div class="ajuda-item"><div class="ai-label">Como adicionar</div><div class="ai-text">Selecione matéria, escreva o tópico específico, escolha a data do erro e clique Adicionar.</div></div>
+          <div class="ajuda-item"><div class="ai-label">Marcar revisão como feita</div><div class="ai-text">Clique nas bolinhas coloridas na tabela de registros, ou clique no botão <b style="color:var(--green)">✓</b> nos chips da agenda de revisões.</div></div>
+          <div class="ajuda-item"><div class="ai-label">Filtros</div><div class="ai-text">Use os seletores acima da tabela para filtrar por matéria ou status (pendentes, atrasados, concluídos).</div></div>
+        </div>
+        <div class="ajuda-section" id="s-revisao">
+          <div class="ajuda-sec-title">🧠 Revisão Espaçada</div>
+          <div class="ajuda-item">
+            <div class="ai-label">Intervalos automáticos</div>
+            <div class="ai-text">Cada erro é revisado em 5 momentos após a data do erro:<br><br>+1 dia · +3 dias · +7 dias · +10 dias · +15 dias<br><br>Esse padrão é baseado na curva do esquecimento de Ebbinghaus e maximiza a retenção de longo prazo.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">Status das revisões</div>
+            <div class="ai-text">
+              🟡 Amarelo = revisão pendente (data futura)<br>
+              🟢 Verde = revisão de hoje<br>
+              🔴 Vermelho = revisão atrasada<br>
+              ✓ Verde escuro = revisão concluída
+            </div>
+          </div>
+        </div>
+        <div class="ajuda-section" id="s-dicas">
+          <div class="ajuda-sec-title">💡 Dicas e FAQ</div>
+          <div class="ajuda-item">
+            <div class="ai-label">Rotina recomendada</div>
+            <div class="ai-text">
+              <b style="color:var(--accent4)">① 5min</b> — abra o plano, veja o dia de hoje<br>
+              <b style="color:var(--accent4)">② 35min</b> — revisões do Caderno, se houver<br>
+              <b style="color:var(--accent4)">③ Estudo</b> — siga os tópicos indicados<br>
+              <b style="color:var(--accent4)">④ 5min</b> — adicione erros no Caderno antes de fechar
+            </div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">Persistência dos dados</div>
+            <div class="ai-text">Tudo fica salvo no localStorage do navegador com backup automático. Não use modo anônimo. Para maior durabilidade, use sempre o mesmo navegador e perfil.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">Reiniciar o plano</div>
+            <div class="ai-text">O botão "↺ Reiniciar tudo" zera apenas o progresso do plano (ponteiros de tópicos). O Caderno de Erros é preservado.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">Índice TEC</div>
+            <div class="ai-text">A aba "📋 Índice TEC" mostra todos os tópicos do edital em hierarquia completa, com quantidade de questões por item. Clique nas matérias e categorias para expandir.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DADOS — índice real do TEC Concursos (hierárquico)
+// ══════════════════════════════════════════════════════
+function calcSize(qty){
+  if(qty>=20) return 'g';
+  if(qty>=6)  return 'm';
+  return 'p';
+}
+
+const TOPICOS_HIER={
+  PT:{label:'Português',categories:[{nome:'Língua Portuguesa (Português)',qty:394,items:[
+    {hier:'01',nome:'Ortografia',qty:15,depth:0},
+    {hier:'01.01',nome:'Ortografia - Casos Gerais e Emprego das Letras',qty:3,depth:1},
+    {hier:'01.02',nome:'Fatos da Língua Portuguesa (Porque, Por Que, Porquê e Por Quê; Onde, Aonde e Donde; Há e A, etc)',qty:2,depth:1},
+    {hier:'01.03',nome:'Inicial Maiúscula',qty:1,depth:1},
+    {hier:'01.04',nome:'Acentuação',qty:6,depth:1},
+    {hier:'01.05',nome:'Uso do Hífen',qty:2,depth:1},
+    {hier:'01.06',nome:'Questões Mescladas de Ortografia',qty:1,depth:1},
+    {hier:'02',nome:'Morfologia',qty:37,depth:0},
+    {hier:'02.01',nome:'Classes de Palavras',qty:37,depth:1},
+    {hier:'02.01.01',nome:'Substantivo',qty:3,depth:2},
+    {hier:'02.01.02',nome:'Adjetivo',qty:3,depth:2},
+    {hier:'02.01.03',nome:'Verbo',qty:15,depth:2},
+    {hier:'02.01.03.01',nome:'Conjugação. Reconhecimento e Emprego dos Modos e Tempos Verbais',qty:12,depth:3},
+    {hier:'02.01.03.02',nome:'Locução Verbal',qty:2,depth:3},
+    {hier:'02.01.03.03',nome:'Questões Variadas de Verbo',qty:1,depth:3},
+    {hier:'02.01.04',nome:'Pronomes',qty:2,depth:2},
+    {hier:'02.01.04.01',nome:'Pronomes Pessoais',qty:1,depth:3},
+    {hier:'02.01.04.02',nome:'Pronomes Relativos',qty:1,depth:3},
+    {hier:'02.01.05',nome:'Advérbio',qty:2,depth:2},
+    {hier:'02.01.06',nome:'Preposição',qty:1,depth:2},
+    {hier:'02.01.07',nome:'Conjunção',qty:9,depth:2},
+    {hier:'02.01.08',nome:'Interjeição',qty:1,depth:2},
+    {hier:'02.01.09',nome:'Questões Variadas de Classe de Palavras',qty:1,depth:2},
+    {hier:'03',nome:'Colocação Pronominal',qty:18,depth:0},
+    {hier:'04',nome:'Sintaxe',qty:8,depth:0},
+    {hier:'04.01',nome:'Funções Sintáticas',qty:1,depth:1},
+    {hier:'04.01.01',nome:'Termos Essenciais da Oração',qty:1,depth:2},
+    {hier:'04.01.01.01',nome:'Predicado',qty:1,depth:3},
+    {hier:'04.02',nome:'Orações Subordinadas Adjetivas',qty:1,depth:1},
+    {hier:'04.03',nome:'Orações Subordinadas Adverbiais',qty:3,depth:1},
+    {hier:'04.04',nome:'Orações Reduzidas',qty:2,depth:1},
+    {hier:'04.05',nome:'Função Sintática dos Pronomes Pessoais Átonos',qty:1,depth:1},
+    {hier:'05',nome:'Pontuação',qty:31,depth:0},
+    {hier:'06',nome:'Regência',qty:30,depth:0},
+    {hier:'06.01',nome:'Regência Nominal e Verbal (Casos Gerais)',qty:6,depth:1},
+    {hier:'06.02',nome:'Crase',qty:24,depth:1},
+    {hier:'07',nome:'Concordância (Verbal e Nominal)',qty:37,depth:0},
+    {hier:'08',nome:'Vozes (Voz Passiva e Voz Ativa)',qty:1,depth:0},
+    {hier:'09',nome:'Coerência. Coesão',qty:38,depth:0},
+    {hier:'10',nome:'Partícula "Se"',qty:1,depth:0},
+    {hier:'11',nome:'Vocábulo "Que"',qty:5,depth:0},
+    {hier:'12',nome:'Interpretação de Textos (Compreensão)',qty:148,depth:0},
+    {hier:'13',nome:'Tipologia e Gênero Textual',qty:6,depth:0},
+    {hier:'14',nome:'Paralelismo',qty:1,depth:0},
+    {hier:'15',nome:'Reescrita de Frases. Substituição de Palavras ou Trechos de Texto.',qty:16,depth:0},
+    {hier:'16',nome:'Outras Questões de Português e Questões Mescladas',qty:2,depth:0}
+  ]}]},
+  MT:{label:'Matemática',categories:[
+    {nome:'Matemática',qty:160,items:[
+      {hier:'01',nome:'Conjuntos',qty:41,depth:0},
+      {hier:'01.01',nome:'Definição, Subconjuntos, Inclusão e Pertinência, Operações, Conjunto das Partes',qty:1,depth:1},
+      {hier:'01.02',nome:'Número de Elementos da União, da Intersecção, do Complemento e da Diferença',qty:4,depth:1},
+      {hier:'01.03',nome:'Números Naturais',qty:19,depth:1},
+      {hier:'01.03.01',nome:'Adição, Subtração, Multiplicação e Divisão de Números Naturais',qty:13,depth:2},
+      {hier:'01.03.02',nome:'Divisibilidade, Números Primos, Fatores Primos, Divisor e Múltiplo Comum (MMC)',qty:6,depth:2},
+      {hier:'01.04',nome:'Números Inteiros (Propriedades, Operações, Módulo, etc)',qty:4,depth:1},
+      {hier:'01.05',nome:'Números Racionais',qty:10,depth:1},
+      {hier:'01.05.01',nome:'Frações e Dízimas Periódicas',qty:4,depth:2},
+      {hier:'01.05.02',nome:'Operações com Números Decimais',qty:6,depth:2},
+      {hier:'01.06',nome:'Radiciação e Potenciação',qty:3,depth:1},
+      {hier:'02',nome:'Proporcionalidade',qty:46,depth:0},
+      {hier:'02.01',nome:'Proporções. Grandezas Proporcionais. Divisão em Partes Proporcionais',qty:5,depth:1},
+      {hier:'02.02',nome:'Regra de Três',qty:8,depth:1},
+      {hier:'02.02.01',nome:'Regra de Três Simples',qty:5,depth:2},
+      {hier:'02.02.02',nome:'Regra de Três Composta',qty:3,depth:2},
+      {hier:'02.03',nome:'Exercícios envolvendo Velocidade, Espaço, Tempo',qty:1,depth:1},
+      {hier:'02.04',nome:'Porcentagem',qty:32,depth:1},
+      {hier:'03',nome:'Unidades de Medida',qty:12,depth:0},
+      {hier:'04',nome:'Equações',qty:17,depth:0},
+      {hier:'04.01',nome:'Equações de Primeiro Grau',qty:16,depth:1},
+      {hier:'04.02',nome:'Equações de Segundo Grau e Equações Biquadradas',qty:1,depth:1},
+      {hier:'05',nome:'Logaritmo',qty:5,depth:0},
+      {hier:'06',nome:'Progressão Aritmética',qty:10,depth:0},
+      {hier:'07',nome:'Progressão Geométrica',qty:6,depth:0},
+      {hier:'08',nome:'Funções e Inequações',qty:11,depth:0},
+      {hier:'08.01',nome:'Função de Primeiro Grau',qty:2,depth:1},
+      {hier:'08.02',nome:'Inequações de Primeiro Grau',qty:1,depth:1},
+      {hier:'08.03',nome:'Função de Segundo Grau',qty:3,depth:1},
+      {hier:'08.04',nome:'Inequações de Segundo Grau',qty:3,depth:1},
+      {hier:'08.05',nome:'Função Exponencial e Inequações Exponenciais',qty:2,depth:1},
+      {hier:'09',nome:'Álgebra Linear Elementar',qty:12,depth:0},
+      {hier:'09.01',nome:'Matrizes',qty:3,depth:1},
+      {hier:'09.02',nome:'Sistemas Lineares',qty:9,depth:1}
+    ]},
+    {nome:'Raciocínio Lógico',qty:19,items:[
+      {hier:'01',nome:'Lógica de Proposições',qty:14,depth:0},
+      {hier:'01.01',nome:'Operadores Lógicos',qty:1,depth:1},
+      {hier:'01.02',nome:'Tabela Verdade das Proposições Compostas',qty:1,depth:1},
+      {hier:'01.03',nome:'Equivalências Lógicas (Inclui Negação de Proposições Compostas)',qty:2,depth:1},
+      {hier:'01.04',nome:'Álgebra de Proposições',qty:1,depth:1},
+      {hier:'01.05',nome:'Lógica de Argumentação',qty:3,depth:1},
+      {hier:'01.05.01',nome:'Argumentos - Métodos Decorrentes da Tabela Verdade',qty:1,depth:2},
+      {hier:'01.05.02',nome:'Diagramas Lógicos, Proposições Categóricas, Negação de Quantificadores',qty:2,depth:2},
+      {hier:'01.06',nome:'Associação de Informações',qty:3,depth:1},
+      {hier:'01.07',nome:'Exercícios de "Verdade/Mentira"',qty:3,depth:1},
+      {hier:'02',nome:'Sequências de Números, Figuras, Letras e Palavras',qty:5,depth:0}
+    ]}
+  ]},
+  TI:{label:'TI',categories:[
+    {nome:'TI — Banco de Dados',qty:70,items:[
+      {hier:'01',nome:'Projeto e Modelagem de Dados',qty:34,depth:0},
+      {hier:'01.01',nome:'Conceitos e Fases de Projeto e Modelagem de Dados',qty:3,depth:1},
+      {hier:'01.02',nome:'Modelo Entidade-Relacionamento (MER)',qty:11,depth:1},
+      {hier:'01.03',nome:'Modelo Relacional',qty:20,depth:1},
+      {hier:'01.03.01',nome:'Conceitos e Fundamentos de Modelo Relacional',qty:8,depth:2},
+      {hier:'01.03.02',nome:'Normalização',qty:7,depth:2},
+      {hier:'01.03.03',nome:'Modelagem e Mapeamento ER-relacional',qty:5,depth:2},
+      {hier:'02',nome:'Linguagem SQL',qty:17,depth:0},
+      {hier:'02.01',nome:'Consultas e Comandos em SQL',qty:17,depth:1},
+      {hier:'03',nome:'Sistema de Gerenciamento de Banco de Dados (SGBD)',qty:11,depth:0},
+      {hier:'03.01',nome:'Definições e Propriedades do SGBD',qty:3,depth:1},
+      {hier:'03.02',nome:'Catálogo e Dicionário de Dados',qty:1,depth:1},
+      {hier:'03.03',nome:'Visão (View)',qty:1,depth:1},
+      {hier:'03.04',nome:'Transações (Locks, ACID, etc.)',qty:1,depth:1},
+      {hier:'03.05',nome:'Triggers',qty:3,depth:1},
+      {hier:'03.06',nome:'Versões de SGBDs',qty:2,depth:1},
+      {hier:'03.06.01',nome:'PostgreSQL',qty:1,depth:2},
+      {hier:'03.06.02',nome:'MongoDB',qty:1,depth:2},
+      {hier:'04',nome:'Outros Tipos e Modelos de Bancos de Dados',qty:8,depth:0},
+      {hier:'04.01',nome:'NoSQL',qty:8,depth:1}
+    ]},
+    {nome:'TI — Ciência de Dados e Inteligência Artificial',qty:67,items:[
+      {hier:'01',nome:'Bancos de Dados Dimensionais',qty:22,depth:0},
+      {hier:'01.01',nome:'Business Intelligence e Analytics',qty:3,depth:1},
+      {hier:'01.02',nome:'Data Warehouse e Data Mart',qty:12,depth:1},
+      {hier:'01.02.01',nome:'Definições e Funções de Data Warehouse e Data Mart',qty:2,depth:2},
+      {hier:'01.02.02',nome:'Modelagem Dimensional',qty:6,depth:2},
+      {hier:'01.02.03',nome:'ETL (Extração, Transformação e Carga)',qty:2,depth:2},
+      {hier:'01.02.04',nome:'OLAP e suas diferenças com OLTP',qty:2,depth:2},
+      {hier:'01.03',nome:'Big Data',qty:7,depth:1},
+      {hier:'01.03.01',nome:'Conceitos de Big Data',qty:1,depth:2},
+      {hier:'01.03.02',nome:'Data Lake',qty:3,depth:2},
+      {hier:'01.03.03',nome:'Ecossistema Hadoop',qty:2,depth:2},
+      {hier:'01.03.04',nome:'Streaming de Dados (Kafka, Flink etc.)',qty:1,depth:2},
+      {hier:'02',nome:'Linguagens de Programação para Ciência de Dados',qty:25,depth:0},
+      {hier:'02.01',nome:'Python (Conceitos Gerais e Códigos)',qty:8,depth:1},
+      {hier:'02.02',nome:'Bibliotecas Python para Ciência de Dados',qty:13,depth:1},
+      {hier:'02.02.01',nome:'NumPy',qty:6,depth:2},
+      {hier:'02.02.02',nome:'Pandas',qty:3,depth:2},
+      {hier:'02.02.03',nome:'Tensores (Tensorflow e PyTorch)',qty:1,depth:2},
+      {hier:'02.02.04',nome:'Matplotlib',qty:1,depth:2},
+      {hier:'02.02.05',nome:'Scikit-Learn',qty:1,depth:2},
+      {hier:'02.02.06',nome:'Outras Bibliotecas Python',qty:1,depth:2},
+      {hier:'02.03',nome:'Linguagem R',qty:3,depth:1},
+      {hier:'02.04',nome:'Scala',qty:1,depth:1},
+      {hier:'03',nome:'Inteligência Artificial (IA)',qty:20,depth:0},
+      {hier:'03.01',nome:'Conceitos Iniciais e Gerais de Inteligência Artificial',qty:1,depth:1},
+      {hier:'03.02',nome:'Machine Learning (Aprendizado de Máquina)',qty:12,depth:1},
+      {hier:'03.02.01',nome:'Conceitos Gerais de Machine Learning',qty:6,depth:2},
+      {hier:'03.02.02',nome:'Algoritmos de Machine Learning (Classificação, Regressão e Clusterização)',qty:6,depth:2},
+      {hier:'03.03',nome:'Redes Neurais',qty:2,depth:1},
+      {hier:'03.04',nome:'Processamento de Linguagem Natural (IA)',qty:2,depth:1},
+      {hier:'03.05',nome:'Treinamento e Avaliação de Modelos',qty:2,depth:1},
+      {hier:'03.06',nome:'Outros Assuntos sobre Inteligência Artificial',qty:1,depth:1}
+    ]},
+    {nome:'TI — Desenvolvimento de Sistemas',qty:58,items:[
+      {hier:'01',nome:'Algoritmos e Lógica de Programação',qty:17,depth:0},
+      {hier:'01.01',nome:'Definição de Algoritmos e Estruturas de Controle',qty:5,depth:1},
+      {hier:'01.02',nome:'Variáveis, Subprogramas e Passagem de Parâmetro',qty:1,depth:1},
+      {hier:'01.03',nome:'Estrutura de Dados',qty:11,depth:1},
+      {hier:'01.03.01',nome:'Lista, Fila e Pilha',qty:4,depth:2},
+      {hier:'01.03.02',nome:'Árvores',qty:7,depth:2},
+      {hier:'02',nome:'Linguagens de Programação',qty:27,depth:0},
+      {hier:'02.01',nome:'Java',qty:27,depth:1},
+      {hier:'02.01.01',nome:'Conceitos e Propriedades do Java',qty:12,depth:2},
+      {hier:'02.01.02',nome:'Códigos em Java',qty:15,depth:2},
+      {hier:'03',nome:'Desenvolvimento Web',qty:5,depth:0},
+      {hier:'03.01',nome:'Tecnologias JavaScript',qty:5,depth:1},
+      {hier:'03.01.01',nome:'TypeScript',qty:5,depth:2},
+      {hier:'04',nome:'Desenvolvimento para Dispositivos Móveis (Android, iOS, etc.)',qty:9,depth:0}
+    ]}
+  ]},
+  PROB:{label:'Estatística',categories:[{nome:'Estatística / Probabilidade',qty:98,items:[
+    {hier:'01',nome:'Estatística Descritiva',qty:53,depth:0},
+    {hier:'01.01',nome:'Conceitos Iniciais de Estatística',qty:1,depth:1},
+    {hier:'01.02',nome:'Formas de Apresentação de Dados',qty:6,depth:1},
+    {hier:'01.03',nome:'Medidas de Posição',qty:28,depth:1},
+    {hier:'01.03.01',nome:'Média',qty:13,depth:2},
+    {hier:'01.03.02',nome:'Quantis (Mediana, Quartil, Decil, Percentil)',qty:8,depth:2},
+    {hier:'01.03.03',nome:'Moda',qty:1,depth:2},
+    {hier:'01.03.04',nome:'Questões Mescladas de Medidas de Posição',qty:6,depth:2},
+    {hier:'01.04',nome:'Medidas de Dispersão',qty:18,depth:1},
+    {hier:'01.04.01',nome:'Intervalo Interquartílico',qty:2,depth:2},
+    {hier:'01.04.02',nome:'Desvio Padrão e Variância',qty:8,depth:2},
+    {hier:'01.04.03',nome:'Coeficiente de Variação e Variância Relativa',qty:8,depth:2},
+    {hier:'02',nome:'Probabilidade',qty:16,depth:0},
+    {hier:'02.01',nome:'Problemas Introdutórios de Probabilidade',qty:5,depth:1},
+    {hier:'02.02',nome:'Probabilidade Condicional',qty:4,depth:1},
+    {hier:'02.03',nome:'Teorema de Bayes',qty:7,depth:1},
+    {hier:'03',nome:'Variáveis Aleatórias',qty:13,depth:0},
+    {hier:'03.01',nome:'Variável Aleatória Discreta',qty:4,depth:1},
+    {hier:'03.02',nome:'Covariância; Variância da Soma e da Diferença',qty:5,depth:1},
+    {hier:'03.03',nome:'Correlação Linear entre Variáveis Aleatórias',qty:2,depth:1},
+    {hier:'03.04',nome:'Variável Aleatória Contínua',qty:2,depth:1},
+    {hier:'04',nome:'Principais Distribuições Discretas',qty:4,depth:0},
+    {hier:'04.01',nome:'Distribuição Binomial',qty:4,depth:1},
+    {hier:'05',nome:'Principais Distribuições Contínuas',qty:3,depth:0},
+    {hier:'05.01',nome:'Distribuição Normal',qty:3,depth:1},
+    {hier:'06',nome:'Estimadores Pontuais e Distribuições Amostrais',qty:2,depth:0},
+    {hier:'07',nome:'Característica dos Estimadores',qty:2,depth:0},
+    {hier:'08',nome:'Testes de Hipóteses',qty:5,depth:0},
+    {hier:'08.01',nome:'Teste de Hipóteses: Introdução',qty:1,depth:1},
+    {hier:'08.02',nome:'Teste de Hipóteses para a Média',qty:3,depth:1},
+    {hier:'08.03',nome:'Teste de Hipóteses para a Proporção',qty:1,depth:1}
+  ]}]},
+  EN:{label:'Inglês',categories:[{nome:'Língua Inglesa',qty:100,items:[
+    {hier:'01',nome:'Interpretação de Textos (Understanding)',qty:44,depth:0},
+    {hier:'02',nome:'Gramática (Grammatics)',qty:15,depth:0},
+    {hier:'02.01',nome:'Morfologia e Classe de Palavras (Morphology)',qty:15,depth:1},
+    {hier:'02.01.01',nome:'Adjetivos (Inglês)',qty:1,depth:2},
+    {hier:'02.01.02',nome:'Verbos (Verbs)',qty:1,depth:2},
+    {hier:'02.01.03',nome:'Pronomes (Pronouns)',qty:1,depth:2},
+    {hier:'02.01.04',nome:'Advérbios (Adverbs)',qty:1,depth:2},
+    {hier:'02.01.05',nome:'Conjunções e Conectivos',qty:11,depth:2},
+    {hier:'03',nome:'Semântica e Significado de Vocábulos (Semantics)',qty:36,depth:0},
+    {hier:'03.01',nome:'Significado de Palavras e Expressões',qty:9,depth:1},
+    {hier:'03.02',nome:'Substituição de Palavras e Reescrita de Frases (Inglês)',qty:15,depth:1},
+    {hier:'03.03',nome:'Referenciação, Anáfora e Catáfora (Língua Inglesa)',qty:12,depth:1},
+    {hier:'04',nome:'Sem Classificação',qty:5,depth:0}
+  ]}]},
+  BC:{label:'Conhecimentos Bancários',categories:[
+    {nome:'Contabilidade e Segurança Cibernética',qty:2,items:[
+      {hier:'01',nome:'Resoluções e Cartas Circulares do BCB e do CMN',qty:2,depth:0},
+      {hier:'01.01',nome:'Resolução CMN nº 4.893/2021 - Política de Segurança Cibernética',qty:2,depth:1}
+    ]},
+    {nome:'Direito Administrativo',qty:4,items:[
+      {hier:'01',nome:'Lei nº 12.846/2013 - Lei Anticorrupção',qty:4,depth:0},
+      {hier:'01.01',nome:'Dos Atos Lesivos à Administração Pública',qty:1,depth:1},
+      {hier:'01.02',nome:'Da Responsabilização Administrativa',qty:1,depth:1},
+      {hier:'01.03',nome:'Do Acordo de Leniência',qty:1,depth:1},
+      {hier:'01.04',nome:'Da Responsabilização Judicial',qty:1,depth:1}
+    ]},
+    {nome:'Direito Digital (LGPD)',qty:13,items:[
+      {hier:'01',nome:'Lei nº 13.709/2018 - Lei Geral de Proteção de Dados Pessoais (LGPD)',qty:13,depth:0},
+      {hier:'01.01',nome:'Disposições Preliminares (arts. 1º a 6º)',qty:10,depth:1},
+      {hier:'01.02',nome:'Do Tratamento de Dados Pessoais (arts. 7º a 16)',qty:2,depth:1},
+      {hier:'01.03',nome:'Da Segurança e das Boas Práticas (arts. 46 a 51)',qty:1,depth:1}
+    ]},
+    {nome:'Direito Econômico e Penal',qty:9,items:[
+      {hier:'01',nome:'Lei Complementar nº 105/2001 - Sigilo das Operações de Instituições Financeiras',qty:6,depth:0},
+      {hier:'02',nome:'Lei nº 9.613/1998 - Lavagem de Dinheiro',qty:3,depth:0}
+    ]},
+    {nome:'Ética no Serviço Público',qty:11,items:[
+      {hier:'01',nome:'Código de Ética do Banco do Brasil',qty:10,depth:0},
+      {hier:'02',nome:'Ética e Conduta Profissional',qty:1,depth:0}
+    ]},
+    {nome:'Finanças e Conhecimentos Bancários',qty:241,items:[
+      {hier:'01',nome:'Sistema Financeiro Nacional',qty:97,depth:0},
+      {hier:'01.01',nome:'Classificação e Subsistemas do SFN',qty:2,depth:1},
+      {hier:'01.02',nome:'Órgãos e Entidades do SFN',qty:84,depth:1},
+      {hier:'01.02.01',nome:'Composição Geral do SFN',qty:1,depth:2},
+      {hier:'01.02.02',nome:'CMN (Conselho Monetário Nacional)',qty:7,depth:2},
+      {hier:'01.02.03',nome:'BACEN (Banco Central do Brasil)',qty:13,depth:2},
+      {hier:'01.02.04',nome:'COPOM (Comitê de Política Monetária)',qty:4,depth:2},
+      {hier:'01.02.05',nome:'Caixa Econômica Federal',qty:4,depth:2},
+      {hier:'01.02.06',nome:'Banco do Brasil',qty:7,depth:2},
+      {hier:'01.02.07',nome:'BNDES',qty:7,depth:2},
+      {hier:'01.02.08',nome:'Bancos Comerciais',qty:9,depth:2},
+      {hier:'01.02.09',nome:'Bancos de Investimento',qty:1,depth:2},
+      {hier:'01.02.10',nome:'Banco Múltiplo',qty:1,depth:2},
+      {hier:'01.02.11',nome:'Banco de Desenvolvimento e Agência de Fomento',qty:6,depth:2},
+      {hier:'01.02.12',nome:'Cooperativas de Crédito',qty:2,depth:2},
+      {hier:'01.02.13',nome:'Fomento (Factoring)',qty:2,depth:2},
+      {hier:'01.02.14',nome:'Demais Entidades do SFN',qty:2,depth:2},
+      {hier:'01.02.15',nome:'FGC (Fundo Garantidor de Créditos)',qty:3,depth:2},
+      {hier:'01.02.16',nome:'CNPC e CRPC',qty:1,depth:2},
+      {hier:'01.02.17',nome:'SUSEP',qty:1,depth:2},
+      {hier:'01.02.18',nome:'CVM (Comissão de Valores Mobiliários)',qty:8,depth:2},
+      {hier:'01.02.19',nome:'Bolsa de Valores',qty:4,depth:2},
+      {hier:'01.02.20',nome:'SCTVM e SDTVM',qty:1,depth:2},
+      {hier:'01.03',nome:'Custódia, Compensação e Liquidação',qty:4,depth:1},
+      {hier:'01.04',nome:'Outras Instituições (ANBIMA, FEBRABAN, etc.)',qty:4,depth:1},
+      {hier:'01.05',nome:'Instituições e Acordos Internacionais (Acordo da Basileia, etc.)',qty:3,depth:1},
+      {hier:'02',nome:'Mercados Financeiros',qty:75,depth:0},
+      {hier:'02.01',nome:'Mercado Monetário',qty:12,depth:1},
+      {hier:'02.02',nome:'Mercado de Crédito',qty:4,depth:1},
+      {hier:'02.03',nome:'Mercados de Capitais',qty:16,depth:1},
+      {hier:'02.03.01',nome:'O Mercado de Capitais do Brasil',qty:4,depth:2},
+      {hier:'02.03.02',nome:'Conceitos de Mercados de Bolsa e de Balcão',qty:1,depth:2},
+      {hier:'02.03.03',nome:'Ações (Tipos, Negociação, Direitos, etc.)',qty:3,depth:2},
+      {hier:'02.03.04',nome:'Debêntures',qty:3,depth:2},
+      {hier:'02.03.05',nome:'Mercado de Derivativos',qty:3,depth:2},
+      {hier:'02.03.06',nome:'Hedge, Especulação e Arbitragem',qty:2,depth:2},
+      {hier:'02.04',nome:'Mercado Cambial',qty:43,depth:1},
+      {hier:'03',nome:'Produtos, Serviços Financeiros e Garantias Bancárias',qty:51,depth:0},
+      {hier:'03.01',nome:'Contas de Depósitos',qty:3,depth:1},
+      {hier:'03.02',nome:'Depósitos a Prazo (CDB e RDB)',qty:4,depth:1},
+      {hier:'03.03',nome:'Fundos de Investimento',qty:3,depth:1},
+      {hier:'03.04',nome:'Crédito Rural',qty:9,depth:1},
+      {hier:'03.05',nome:'Operações de Crédito',qty:11,depth:1},
+      {hier:'03.06',nome:'Arrendamento Mercantil (Leasing)',qty:2,depth:1},
+      {hier:'03.07',nome:'Outros Serviços e Produtos Financeiros',qty:13,depth:1},
+      {hier:'03.08',nome:'Garantias Bancárias',qty:6,depth:1},
+      {hier:'04',nome:'Previdência Complementar',qty:1,depth:0},
+      {hier:'05',nome:'Seguros e Resseguros',qty:1,depth:0},
+      {hier:'06',nome:'Títulos Públicos de Renda Fixa',qty:2,depth:0},
+      {hier:'07',nome:'Outros Títulos Privados e Valores Mobiliários',qty:3,depth:0},
+      {hier:'08',nome:'Juros',qty:7,depth:0},
+      {hier:'08.01',nome:'Índices, Indexadores, Taxas de Juros e Spread Bancário',qty:7,depth:1},
+      {hier:'09',nome:'Combate à lavagem ou ocultação de bens, direitos e valores',qty:4,depth:0}
+    ]}
+  ]},
+  AT:{label:'Atualidades do Mercado Financeiro',categories:[{nome:'Atualidades do Mercado Financeiro',qty:248,items:[
+    {hier:'01',nome:'Atualidades do Mercado Financeiro',qty:248,depth:0},
+    {hier:'01.01',nome:'Os Bancos na Era Digital: Atualidade, Tendências e Desafios',qty:32,depth:1},
+    {hier:'01.02',nome:'Internet Banking',qty:7,depth:1},
+    {hier:'01.03',nome:'Mobile Banking',qty:17,depth:1},
+    {hier:'01.04',nome:'Open Finance (Antigo Open Banking)',qty:34,depth:1},
+    {hier:'01.05',nome:'Novos Modelos de Negócios',qty:5,depth:1},
+    {hier:'01.06',nome:'Fintechs, Startups e Big Techs',qty:32,depth:1},
+    {hier:'01.07',nome:'Sistema de Bancos-sombra (Shadow Banking)',qty:12,depth:1},
+    {hier:'01.08',nome:'O Dinheiro na Era Digital: Blockchain, Bitcoin e Demais Criptomoedas',qty:33,depth:1},
+    {hier:'01.09',nome:'Marketplace',qty:6,depth:1},
+    {hier:'01.10',nome:'Correspondentes Bancários',qty:13,depth:1},
+    {hier:'01.11',nome:'Arranjos de Pagamentos',qty:22,depth:1},
+    {hier:'01.12',nome:'Sistema de Pagamentos Instantâneos (PIX)',qty:25,depth:1},
+    {hier:'01.13',nome:'Segmentação e Interações Digitais',qty:7,depth:1},
+    {hier:'01.14',nome:'Transformação Digital no Sistema Financeiro',qty:3,depth:1}
+  ]}]},
+  RED:{label:'Redação',categories:[{nome:'Redação (Prática)',qty:0,items:[
+    {hier:'01',nome:'Tipologia e Gênero Textual + Coerência e Coesão',qty:0,depth:0},
+    {hier:'02',nome:'Paralelismo + Reescrita',qty:0,depth:0},
+    {hier:'03',nome:'Prática de Redação Dissertativa-Argumentativa',qty:0,depth:0}
+  ]}]}
+};
+
+// ── TOPICOS plano (apenas depth=0 / capítulos) ──
+const TOPICOS = {};
+Object.keys(TOPICOS_HIER).forEach(mat => {
+  const hierData = TOPICOS_HIER[mat];
+  const flat = [];
+  hierData.categories.forEach(cat => {
+    if(mat === 'RED'){
+      cat.items.forEach((item, i) => {
+        flat.push({id: mat.toLowerCase()+String(i+1).padStart(2,'0'), nome: item.nome, qty: 0, size: 'p', isPratica: true});
+      });
+    } else {
+      cat.items.forEach(item => {
+        if(item.depth === 0){
+          flat.push({id: mat.toLowerCase()+String(flat.length+1).padStart(2,'0'), nome: item.nome, qty: item.qty, size: calcSize(item.qty)});
+        }
+      });
+    }
+  });
+  TOPICOS[mat] = flat;
+});
+
+const TOTAIS = {PT:394,MT:179,TI:195,PROB:98,EN:100,BC:280,AT:248,RED:0};
+const MAT_COLORS = {TI:'var(--accent)',PT:'var(--accent2)',MT:'var(--accent3)',PROB:'var(--purple)',EN:'var(--accent4)',BC:'var(--accent2)',AT:'var(--accent3)',RED:'var(--accent4)'};
+const MAT_LABELS = {TI:'TI',PT:'Português',MT:'Matemática',PROB:'Estatística',EN:'Inglês',BC:'Conhec. Bancários',AT:'Atualidades',RED:'Redação'};
+const REVISAO_DIAS = [1,3,7,10,15];
+
+const SEMANA_BASE = [
+  {dia:"Segunda",manha:{mat:"TI", pct:.54,badge:"badge-ti",label:"TI"},                     noite:{mat:"PT",  pct:.36,badge:"badge-pt",label:"Português"}},
+  {dia:"Terça",  manha:{mat:"MT", pct:.45,badge:"badge-mt",label:"Matemática"},              noite:{mat:"TI",  pct:.45,badge:"badge-ti",label:"TI"}},
+  {dia:"Quarta", manha:{mat:"PT", pct:.54,badge:"badge-pt",label:"Português"},               noite:{mat:"PROB",pct:.36,badge:"badge-prob",label:"Prob./Estat."}},
+  {dia:"Quinta", manha:{mat:"TI", pct:.43,badge:"badge-ti",label:"TI"},                     noite:{mat:"EN",  pct:.29,badge:"badge-en",label:"Inglês",mat2:"BC",pct2:.14,badge2:"badge-bc",label2:"Conhec. Bancários"}},
+  {dia:"Sexta",  manha:{mat:"MT", pct:.45,badge:"badge-mt",label:"Matemática"},              noite:{mat:"TI",  pct:.45,badge:"badge-ti",label:"TI"}},
+  {dia:"Sábado", manha:{mat:"TI", pct:.54,badge:"badge-ti",label:"TI"},                     noite:{mat:"BC",  pct:.23,badge:"badge-bc",label:"Conhec. Bancários",mat2:"AT",pct2:.12,badge2:"badge-at",label2:"Atualidades"}},
+  {dia:"Domingo",manha:{mat:"RED",pct:.36,badge:"badge-red",label:"Redação"},                noite:{mat:"PT",  pct:.27,badge:"badge-pt",label:"Português",mat2:"MT",pct2:.27,badge2:"badge-mt",label2:"Matemática"}}
+];
+
+const DIAS_SEMANA = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+const DIAS_SHORT  = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+
+// ══════════════════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════════════════
+const SK_PLAN     = 'plano_state_v6';
+const SK_CE       = 'caderno_erros_v1';
+const SK_SETTINGS = 'plano_settings_v2';
+
+function saveData(key, val){
+  try{
+    const str = JSON.stringify(val);
+    localStorage.setItem(key, str);
+    localStorage.setItem(key+'__bk', str);
+    showSaveOk();
+  } catch(e){ console.warn('save error', e); }
+}
+
+function loadData(key, def){
+  try{
+    const r = localStorage.getItem(key);
+    if(r) return JSON.parse(r);
+    const bk = localStorage.getItem(key+'__bk');
+    if(bk) return JSON.parse(bk);
+    return def;
+  } catch(e){
+    try{
+      const bk = localStorage.getItem(key+'__bk');
+      if(bk) return JSON.parse(bk);
+    } catch(e2){}
+    return def;
+  }
+}
+
+function showSaveOk(){
+  const el = document.getElementById('save-ok');
+  if(!el) return;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function buildFreshPlan(){
+  return { pointers:{}, voltas:{}, acumulo:{}, diasFeitos:{} };
+}
+
+// ══════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  const content = document.getElementById('tab-'+name);
+  if(content) content.classList.add('active');
+
+  const btn = document.getElementById('tab-btn-'+name);
+  if(btn) btn.classList.add('active');
+
+  if(name === 'caderno') renderCaderno();
+  if(name === 'indice')  renderFullIndex();
+}
+
+// ══════════════════════════════════════════════════════
+// ÍNDICE COMPLETO
+// ══════════════════════════════════════════════════════
+function renderFullIndex(){
+  const out = document.getElementById('indice-full');
+  if(!out || out.dataset.rendered === '1') return;
+  out.dataset.rendered = '1';
+
+  const matOrder = [
+    {key:'PT',  label:'Língua Portuguesa',                  color:'var(--accent2)'},
+    {key:'MT',  label:'Matemática + Raciocínio Lógico',     color:'var(--accent3)'},
+    {key:'TI',  label:'Tecnologia da Informação',            color:'var(--accent)'},
+    {key:'PROB',label:'Estatística / Probabilidade',         color:'var(--purple)'},
+    {key:'EN',  label:'Língua Inglesa',                      color:'var(--accent4)'},
+    {key:'BC',  label:'Conhecimentos Bancários',             color:'var(--accent2)'},
+    {key:'AT',  label:'Atualidades do Mercado Financeiro',   color:'var(--accent3)'},
+    {key:'RED', label:'Redação',                              color:'var(--accent4)'}
+  ];
+
+  let html = '';
+  matOrder.forEach(({key, label, color}) => {
+    const data = TOPICOS_HIER[key];
+    if(!data) return;
+    const totalQs = data.categories.reduce((s,c) => s+c.qty, 0);
+    const uid = 'fidx_'+key;
+    html += `<div style="margin-bottom:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface2)">
+      <button class="hier-toggle" onclick="toggleHier('${uid}')" id="btn_${uid}" style="padding:13px 16px">
+        <span class="ht-left">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0"></span>
+          <span style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);text-transform:none;letter-spacing:0">${label}</span>
+        </span>
+        <span style="display:flex;align-items:center;gap:10px">
+          ${totalQs>0 ? `<span style="font-size:10px;color:var(--accent3)">${totalQs} questões</span>` : '<span style="font-size:10px;color:var(--muted)">prática</span>'}
+          <span class="ht-arrow">›</span>
+        </span>
+      </button>
+      <div class="hier-body" id="${uid}">`;
+
+    data.categories.forEach((cat, ci) => {
+      const catUid = uid+'_c'+ci;
+      html += `<div class="hier-cat">
+        <div class="hier-cat-hdr" onclick="toggleHierCat('${catUid}')" id="btn_${catUid}">
+          <span class="hc-arr">›</span>
+          <span class="hc-name">${cat.nome}</span>
+          <span class="hc-qty">${cat.qty>0 ? cat.qty+' questões' : 'prática'}</span>
+        </div>
+        <div class="hier-cat-body" id="${catUid}">`;
+
+      cat.items.forEach(item => {
+        const indent = item.depth * 14;
+        html += `<div class="hier-item" data-depth="${item.depth}" style="padding-left:${13+indent}px">
+          <span class="hi-code" style="padding-left:0;min-width:${40+indent}px">${item.hier}</span>
+          <span class="hi-name">${item.nome}</span>
+          ${item.qty>0 ? `<span class="hi-qty">${item.qty}q</span>` : ''}
+        </div>`;
+      });
+
+      html += `</div></div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  out.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════
+// ACCORDION HELPERS
+// ══════════════════════════════════════════════════════
+function toggleHier(uid){
+  const body = document.getElementById(uid);
+  const btn  = document.getElementById('btn_'+uid);
+  if(!body || !btn) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+  // fix arrow inline style if present
+  const arrow = btn.querySelector('.ht-arrow');
+  if(arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+function toggleHierCat(uid){
+  const body = document.getElementById(uid);
+  const btn  = document.getElementById('btn_'+uid);
+  if(!body || !btn) return;
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════
+// SETTINGS / RANGE
+// ══════════════════════════════════════════════════════
+function syncRange(id, valId){
+  const el  = document.getElementById(valId);
+  const src = document.getElementById(id);
+  if(el && src) el.textContent = src.value;
+  saveSettings();
+}
+
+function saveSettings(){ saveData(SK_SETTINGS, getSettings()); }
+
+function getSettings(){
+  return {
+    dataInicio: document.getElementById('data-inicio').value,
+    duracao:    parseInt(document.getElementById('duracao-meses').value) || 3,
+    qph:        parseInt(document.getElementById('qph').value) || 15,
+    nivel:      parseFloat(document.getElementById('nivel').value) || 0.7,
+    dayHours:   getDayHours()
+  };
+}
+
+function getDayHours(){
+  const h = {};
+  DIAS_SEMANA.forEach((d, i) => {
+    const sl = document.getElementById('dh-range-'+i);
+    h[d] = sl ? parseFloat(sl.value) : (DEFAULT_HOURS[d] || 5);
+  });
+  return h;
+}
+
+// ══════════════════════════════════════════════════════
+// DAY HOURS SLIDERS
+// ══════════════════════════════════════════════════════
+const DEFAULT_HOURS = {Segunda:5.5, Terça:5.5, Quarta:5.5, Quinta:6.5, Sexta:5.5, Sábado:5.5, Domingo:5.5};
+
+function buildDayHoursGrid(saved){
+  const grid = document.getElementById('day-hours-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  DIAS_SEMANA.forEach((dia, i) => {
+    const val = (saved && saved[dia] !== undefined) ? saved[dia] : DEFAULT_HOURS[dia];
+    const isFolga = val === 0;
+    const div = document.createElement('div');
+    div.className = 'dh' + (isFolga ? ' folga' : '');
+    div.id = 'dh-card-'+i;
+    div.innerHTML = `
+      <div class="dh-name">${DIAS_SHORT[i]}</div>
+      <input type="range" id="dh-range-${i}" min="0" max="12" step="0.5" value="${val}"
+        oninput="updateDhCard(${i})" style="width:100%;margin-bottom:6px">
+      <div class="dh-val" id="dh-val-${i}">${isFolga ? '—' : val+'h'}</div>
+      <div class="dh-sub" id="dh-sub-${i}">${isFolga ? 'folga' : formatHorasMin(val)}</div>
+      <button class="dh-toggle" id="dh-toggle-${i}" onclick="toggleFolga(${i})">${isFolga ? 'Ativar' : 'Folga'}</button>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function updateDhCard(i){
+  const sl = document.getElementById('dh-range-'+i);
+  if(!sl) return;
+  const val = parseFloat(sl.value);
+  const isFolga = val === 0;
+  document.getElementById('dh-val-'+i).textContent    = isFolga ? '—' : val+'h';
+  document.getElementById('dh-sub-'+i).textContent    = isFolga ? 'folga' : formatHorasMin(val);
+  document.getElementById('dh-toggle-'+i).textContent = isFolga ? 'Ativar' : 'Folga';
+  document.getElementById('dh-card-'+i).className     = 'dh' + (isFolga ? ' folga' : '');
+  saveSettings();
+}
+
+function toggleFolga(i){
+  const sl = document.getElementById('dh-range-'+i);
+  if(!sl) return;
+  const cur = parseFloat(sl.value);
+  sl.value = cur === 0 ? (DEFAULT_HOURS[DIAS_SEMANA[i]] || 5) : 0;
+  updateDhCard(i);
+}
+
+function formatHorasMin(h){
+  if(!h || h === 0) return 'folga';
+  const hrs = Math.floor(h);
+  const min = Math.round((h - hrs) * 60);
+  if(hrs > 0 && min > 0) return `${hrs}h ${min}min`;
+  if(hrs > 0)            return `${hrs}h`;
+  return `${min}min`;
+}
+
+// ══════════════════════════════════════════════════════
+// GERAR PLANO
+// ══════════════════════════════════════════════════════
+function gerarPlano(){
+  const settings = getSettings();
+  saveSettings();
+
+  if(!settings.dataInicio){ alert('Por favor selecione uma data de início.'); return; }
+
+  const qsHora = Math.max(1, Math.round(settings.qph * settings.nivel));
+  const inicio  = new Date(settings.dataInicio + 'T12:00:00');
+  const fim     = new Date(inicio);
+  fim.setMonth(fim.getMonth() + settings.duracao);
+  const totalDias   = Math.round((fim - inicio) / (1000*60*60*24));
+  const totalSemanas = Math.ceil(totalDias / 7);
+
+  const totalHorasSemana = Object.values(settings.dayHours).reduce((a,v) => a+v, 0);
+
+  document.getElementById('pills').style.display = 'flex';
+  document.getElementById('p-ritmo').textContent  = qsHora+' qs/h';
+  document.getElementById('p-qsem').textContent   = '~'+Math.round(qsHora * totalHorasSemana);
+  document.getElementById('p-sem').textContent    = totalSemanas;
+  document.getElementById('p-total').textContent  = Object.values(TOTAIS).reduce((a,v) => a+v, 0);
+  document.getElementById('p-periodo').textContent = fmtDate(inicio)+' → '+fmtDate(fim);
+
+  // Load saved state
+  const savedState = loadData(SK_PLAN, buildFreshPlan());
+  if(!savedState.pointers) Object.assign(savedState, buildFreshPlan());
+  if(!savedState.acumulo)  savedState.acumulo  = {};
+  if(!savedState.diasFeitos) savedState.diasFeitos = {};
+
+  renderProgressOverview(savedState);
+
+  // workState: advances as we render, starts from saved progress
+  const workState = buildFreshPlan();
+  workState.pointers = deepClone(savedState.pointers);
+  workState.voltas   = deepClone(savedState.voltas);
+  workState.acumulo  = deepClone(savedState.acumulo);
+
+  // Global registry for concluirDia()
+  if (!window._dayData) window._dayData = {};
+
+  const ceData = loadData(SK_CE, []);
+  let html = '';
+
+  // Align to Monday of the week containing `inicio`
+  const inicioDay  = inicio.getDay(); // 0=Sun
+  const daysToMon  = inicioDay === 0 ? -6 : 1 - inicioDay;
+  let currentDate  = new Date(inicio);
+  currentDate.setDate(currentDate.getDate() + daysToMon);
+
+  for(let weekNum = 0; weekNum < totalSemanas; weekNum++){
+    const weekStart = new Date(currentDate);
+    const weekEnd   = new Date(currentDate);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    html += `<div class="cycle-section">
+      <div class="cycle-hdr">
+        <span class="cycle-badge">Semana ${weekNum+1}</span>
+        <div class="cycle-line"></div>
+        <span class="cycle-dates">${fmtDate(weekStart)} – ${fmtDate(weekEnd)}</span>
+      </div>
+      <div class="days-grid">`;
+
+    let semQs = 0;
+    for(let di = 0; di < 7; di++){
+      const cardDate = new Date(currentDate);
+      cardDate.setDate(cardDate.getDate() + di);
+      const jsDay   = cardDate.getDay();
+      const baseIdx = jsDay === 0 ? 6 : jsDay - 1;
+      const diaBase = SEMANA_BASE[baseIdx];
+      const sliderEl = document.getElementById('dh-range-'+baseIdx);
+      const totalH   = sliderEl ? parseFloat(sliderEl.value) : (DEFAULT_HOURS[DIAS_SEMANA[baseIdx]] || 5);
+      const isFolga  = totalH === 0;
+      const cardStr  = dateStr(cardDate);
+      const todayStr = dateStr(new Date());
+      const isToday  = cardStr === todayStr;
+      const dateLabel = fmtDateCard(cardDate);
+      const revisoesDoDia = getRevisoesDoDia(ceData, cardDate);
+
+      const revBlock = revisoesDoDia.length > 0
+        ? `<div class="rev-chips">${revisoesDoDia.map(r => {
+            const cls = cardStr < todayStr ? 'overdue-chip' : isToday ? 'today-chip' : 'normal';
+            return `<span class="rev-chip ${cls}" title="${r.topico}">${r.mat}<span style="opacity:.65;font-size:9px"> · rev.${r.stepLabel}</span></span>`;
+          }).join('')}</div>`
+        : `<div class="rev-empty">Sem revisões agendadas</div>`;
+
+      const todayStyle = isToday ? 'border-color:rgba(66,232,160,.45);' : '';
+
+      if(isFolga){
+        html += `<div class="day-card folga-card" style="animation-delay:${.04*di}s;${todayStyle}">
+          <div class="day-hdr">
+            <div class="day-info">
+              <div class="day-name">${dateLabel}${isToday ? ' <span class="today-chip-hdr">hoje</span>' : ''}</div>
+              <div class="day-load">⏱ <b>Folga</b></div>
+            </div>
+            <div class="day-reviews-col">
+              <div class="rev-label">📓 Caderno de Erros${revisoesDoDia.length>0 ? ` <span style="color:var(--accent3)">(${revisoesDoDia.length})</span>` : ''}</div>
+              ${revBlock}
+            </div>
+          </div>
+          <div class="folga-msg">🌙 Dia de descanso — sem sessões de estudo</div>
+        </div>`;
+        continue;
+      }
+
+      const revMin   = revisoesDoDia.length > 0 ? 35 : 0;
+      const horasEstudo = Math.max(0, totalH - (revMin/60));
+      const manha = diaBase.manha;
+      const noite = diaBase.noite;
+      const totalPct = manha.pct + (noite.pct || 0) + (noite.pct2 || 0);
+      const manhaH   = horasEstudo * manha.pct / totalPct;
+      const noiteH   = horasEstudo * (noite.pct || 0) / totalPct;
+      const noite2H  = noite.pct2 ? horasEstudo * noite.pct2 / totalPct : 0;
+
+      const s1 = renderSessao(manha, manhaH, qsHora, workState);
+      const s2 = renderSessaoNoite(noite, noiteH, noite2H, qsHora, workState);
+      semQs += s1.qs + s2.qs;
+
+      // Store day data for concluirDia — no JSON in onclick attributes
+      const todaySnap = { pointers: deepClone(workState.pointers), voltas: deepClone(workState.voltas), acumulo: deepClone(workState.acumulo) };
+      window._dayData[cardStr] = { snap: todaySnap, manha, noite, manhaH, noiteH, noite2H, qsHora };
+
+      // Build footer
+      const jaFeito = savedState.diasFeitos[cardStr];
+      let footerHtml;
+      if (jaFeito) {
+        footerHtml = `<div class="day-footer"><div class="done-banner">✅ Dia concluído</div><button class="btn-desfazer" onclick="desfazerDia('${cardStr}')">↩ Desfazer</button></div>`;
+      } else if (!isToday && cardStr > todayStr) {
+        footerHtml = `<div class="day-footer"><div class="day-qs-info">📋 <b>~${s1.qs+s2.qs}</b> questões planejadas</div><span style="font-size:10px;color:var(--muted2)">Disponível quando chegar a data</span></div>`;
+      } else {
+        footerHtml = `<div class="day-footer"><div class="day-qs-info">📋 <b>~${s1.qs+s2.qs}</b> questões planejadas</div><button class="btn-concluir" onclick="concluirDia('${cardStr}')">✓ Concluir Dia</button></div>`;
+      }
+
+      html += `<div class="day-card${jaFeito?' done-card':''}" id="card-${cardStr}" style="animation-delay:${.04*di}s;${todayStyle}">
+        <div class="day-hdr">
+          <div class="day-info">
+            <div class="day-name">${dateLabel}${isToday ? ' <span class="today-chip-hdr">hoje</span>' : ''}</div>
+            <div class="day-load">⏱ <b>${formatHorasMin(totalH)}</b>${revMin>0 ? ' · 📓 +35min revisão' : ''}</div>
+          </div>
+          <div class="day-reviews-col">
+            <div class="rev-label">📓 Caderno de Erros${revisoesDoDia.length>0 ? ` <span style="color:var(--accent3);font-weight:700">(${revisoesDoDia.length})</span>` : ''}</div>
+            ${revBlock}
+          </div>
+        </div>
+        <div class="day-body" id="body-${cardStr}" style="${jaFeito?'opacity:.6':''}">
+          <div class="session manha">
+            <div class="sess-label">Manhã / Tarde · ${formatHorasMin(manhaH)}</div>
+            ${s1.html}
+          </div>
+          <div class="session noite">
+            <div class="sess-label">Noite · ${formatHorasMin(noiteH+noite2H)}</div>
+            ${s2.html}
+          </div>
+        </div>
+        ${footerHtml}
+      </div>`;
+    }
+
+    html += `</div>
+      <div class="cycle-footer">
+        <div class="stat-item"><div class="stat-val">${qsHora}</div><div class="stat-lbl">Qs/hora</div></div>
+        <div class="stat-item"><div class="stat-val">~${semQs}</div><div class="stat-lbl">Qs/semana</div></div>
+        <div class="stat-item"><div class="stat-val">${formatHorasMin(totalHorasSemana)}</div><div class="stat-lbl">Carga semanal</div></div>
+        <div class="stat-item"><div class="stat-val">${weekNum+1}/${totalSemanas}</div><div class="stat-lbl">Progresso</div></div>
+        <div class="stat-item"><div class="stat-val">${settings.duracao}m</div><div class="stat-lbl">Duração total</div></div>
+      </div>
+    </div>`;
+
+    currentDate.setDate(currentDate.getDate() + 7);
+  }
+
+  html += `<div class="note">
+    <b>Como funciona:</b> Cada sessão avança automaticamente pelos tópicos conforme sua carga horária.
+    Ao terminar todos os tópicos de uma matéria, ela <b style="color:var(--purple)">reinicia em nova volta 🔄</b>.
+    Questões não concluídas são <b style="color:var(--accent4)">acumuladas (+N acum.)</b> e somadas na próxima vez que o tópico aparecer.
+    As revisões do <b style="color:var(--accent4)">Caderno de Erros</b> aparecem automaticamente no cabeçalho de cada dia.
+    Progresso salvo no navegador automaticamente.
+  </div>`;
+
+  document.getElementById('plano-output').innerHTML = html;
+  // Rendering only — state NOT saved here. Use 'Concluir Dia' buttons.
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER SESSÃO — FIXED
+// ══════════════════════════════════════════════════════
+function renderSessao(sess, horas, qsHora, state){
+  if(horas < 0.05) return {html:'<span style="font-size:11px;color:var(--muted2)">—</span>', qs:0};
+  const isRedacao = sess.mat === 'RED';
+  const r = getTopicos(sess.mat, horas, qsHora, state);
+  let html = `<div class="sess-mat">${sess.label} <span class="mbadge ${sess.badge}">${sess.mat}</span>`;
+  if((state.voltas[sess.mat]||1) > 1) html += ` <span class="volta-chip">${state.voltas[sess.mat]}ª volta</span>`;
+  html += `</div>`;
+  if(r.restartOccurred) html += `<div class="restart-banner">🔄 Nova volta em ${sess.mat} iniciada!</div>`;
+  html += renderTopicsList(r.items, isRedacao);
+  if(!isRedacao) html += renderHierIndex(sess.mat, r.items, state);
+  return {html, qs: r.items.reduce((s,t) => s+(t.qsFeitos||0), 0)};
+}
+
+function renderSessaoNoite(noite, noiteH, noite2H, qsHora, state){
+  let html = '', qs = 0;
+  const r1 = renderSessao(noite, noiteH, qsHora, state);
+  html += r1.html; qs += r1.qs;
+  if(noite.mat2 && noite2H > 0.05){
+    html += '<hr class="divider">';
+    const sess2 = {mat: noite.mat2, badge: noite.badge2, label: noite.label2};
+    const r2 = renderSessao(sess2, noite2H, qsHora, state);
+    html += r2.html; qs += r2.qs;
+  }
+  return {html, qs};
+}
+
+function renderTopicsList(lista, isRedacao){
+  if(!lista || lista.length === 0) return `<div style="font-size:11px;color:var(--accent3)">✓ Sessão coberta!</div>`;
+  return '<ul class="topics">'+lista.map(t => {
+    const stag   = t.size==='g' ? 'stag-g' : t.size==='m' ? 'stag-m' : 'stag-p';
+    const slabel = t.size==='g' ? 'GRANDE'  : t.size==='m' ? 'MÉDIO'  : 'PEQUENO';
+    const cls    = t.completo ? 'is-completo' : t.parcial ? 'is-parcial' : '';
+    const extra  = t.parcial  ? ` <em style="font-size:9px;color:var(--accent4)">(continua na próxima sessão)</em>`
+                 : t.completo ? ` <em style="font-size:9px;color:var(--accent3)">✓ completo</em>` : '';
+    const acumBadge = (t.qsAcumuladas && t.qsAcumuladas > 0)
+      ? ` <span class="acum-badge">+${t.qsAcumuladas} acum.</span>` : '';
+    let metaHtml;
+    if(isRedacao){
+      const minutos = Math.round(t.hUsed * 60);
+      metaHtml = `<div class="t-meta"><span class="t-h">~${minutos}min de prática</span></div>`;
+    } else {
+      const pct = t.qty > 0 ? Math.min(100, Math.round((t.qsFeitos / t.qty)*100)) : 0;
+      const totalComAcum = t.qty + (t.qsAcumuladas || 0);
+      metaHtml = `<div class="t-meta">
+        <span class="t-qs">~${t.qsFeitos} questões</span>
+        <span style="color:var(--muted)">de ${totalComAcum} total${t.qsAcumuladas>0 ? ` (${t.qty} banco + ${t.qsAcumuladas} acum.)`:''}</span>
+        <span class="t-h">${formatHorasMin(t.hUsed)}</span>
+      </div>
+      <div class="t-bar"><div class="t-fill" style="width:${pct}%"></div></div>`;
+    }
+    return `<li class="${cls}"><span class="stag ${stag}" style="float:right;margin-top:1px">${slabel}</span>${t.nome}${acumBadge}${extra}${metaHtml}</li>`;
+  }).join('')+'</ul>';
+}
+
+// ══════════════════════════════════════════════════════
+// ÍNDICE HIERÁRQUICO DA SESSÃO
+// ══════════════════════════════════════════════════════
+function renderHierIndex(mat, sessionItems, state){
+  const data = TOPICOS_HIER[mat];
+  if(!data) return '';
+
+  const capMap = {};
+  (sessionItems || []).forEach(t => {
+    capMap[t.nome] = {qsFeitos: t.qsFeitos||0, qsAcumuladas: t.qsAcumuladas||0, hUsed: t.hUsed||0};
+  });
+  if(Object.keys(capMap).length === 0) return '';
+
+  const uid = 'hier_'+mat+'_'+Math.random().toString(36).slice(2,7);
+  let catHtml = '';
+  let totalCats = 0;
+
+  data.categories.forEach((cat, ci) => {
+    const capsNaSessao = cat.items.filter(it => it.depth===0 && capMap[it.nome]);
+    if(capsNaSessao.length === 0) return;
+    totalCats++;
+    const catUid = uid+'_c'+ci;
+    let itensHtml = '';
+
+    capsNaSessao.forEach(cap => {
+      const sessInfo   = capMap[cap.nome];
+      const qsSessao   = sessInfo.qsFeitos;
+      const qsAcum     = sessInfo.qsAcumuladas;
+      const hierPrefix = cap.hier+'.';
+      const subItens   = cat.items.filter(it => it.hier===cap.hier || it.hier.startsWith(hierPrefix));
+
+      const totalQsFilhos = subItens.filter(it => it.depth===1).reduce((s,it) => s+it.qty, 0);
+      const totalQsRef    = totalQsFilhos > 0 ? totalQsFilhos : cap.qty;
+
+      subItens.forEach(item => {
+        const indent  = item.depth * 14;
+        const isMain  = item.depth === 0;
+
+        let sessQsItem = 0, acumQsItem = 0;
+        if(isMain){
+          sessQsItem = qsSessao;
+          acumQsItem = qsAcum;
+        } else if(item.depth===1 && totalQsRef>0 && item.qty>0){
+          const ratio = item.qty / totalQsRef;
+          sessQsItem  = Math.round(qsSessao * ratio);
+          acumQsItem  = Math.round(qsAcum   * ratio);
+        } else if((item.depth===2 || item.depth===3) && totalQsRef>0){
+          const parentHier = item.hier.split('.').slice(0,2).join('.');
+          const parentItem = cat.items.find(it => it.hier===parentHier && it.depth===1);
+          if(parentItem && parentItem.qty>0 && item.qty>0){
+            const parentRatio = parentItem.qty / totalQsRef;
+            const parentQsSess = Math.round(qsSessao * parentRatio);
+            const parentQsAcum = Math.round(qsAcum   * parentRatio);
+            sessQsItem = Math.round(parentQsSess * (item.qty / parentItem.qty));
+            acumQsItem = Math.round(parentQsAcum * (item.qty / parentItem.qty));
+          }
+        }
+
+        const bgStyle   = isMain ? 'background:rgba(79,126,245,.06);border-bottom:1px solid var(--border2);margin-bottom:1px;' : '';
+        const codeStyle = isMain ? 'color:var(--accent);opacity:1;' : '';
+        const nameStyle = isMain ? 'color:var(--text);font-weight:600;' : '';
+
+        const sessQsBadge = sessQsItem>0 ? `<span class="hi-sess-qs" title="Questões desta sessão">✦${sessQsItem}q</span>` : '';
+        const acumQsBadge = acumQsItem>0 ? `<span class="hi-acum-qs" title="Questões acumuladas">+${acumQsItem}↺</span>` : '';
+
+        itensHtml += `<div class="hier-item" data-depth="${item.depth}" style="padding-left:${13+indent}px;${bgStyle}">
+          <span class="hi-code" style="padding-left:0;min-width:${40+indent}px;${codeStyle}">${item.hier}</span>
+          <span class="hi-name" style="${nameStyle}">${item.nome}</span>
+          ${sessQsBadge}${acumQsBadge}
+          <span class="hi-qty" style="margin-left:4px;opacity:.4">${item.qty>0 ? item.qty+'q banco' : ''}</span>
+        </div>`;
+      });
+    });
+
+    catHtml += `<div class="hier-cat">
+      <div class="hier-cat-hdr open" onclick="toggleHierCat('${catUid}')" id="btn_${catUid}">
+        <span class="hc-arr" style="transform:rotate(90deg)">›</span>
+        <span class="hc-name">${cat.nome}</span>
+        <span class="hc-qty" style="color:var(--accent4)">${capsNaSessao.length} tópico${capsNaSessao.length>1?'s':''} hoje</span>
+      </div>
+      <div class="hier-cat-body open" id="${catUid}">${itensHtml}</div>
+    </div>`;
+  });
+
+  if(!catHtml) return '';
+  const autoOpen = totalCats <= 2;
+
+  return `<div class="hier-wrap" style="margin-top:10px">
+    <button class="hier-toggle${autoOpen?' open':''}" onclick="toggleHier('${uid}')" id="btn_${uid}">
+      <span class="ht-left">
+        <span style="font-size:11px">📋</span>
+        <span>Índice de hoje — <b style="color:var(--text)">${TOPICOS_HIER[mat] ? TOPICOS_HIER[mat].label : mat}</b></span>
+      </span>
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:10px;color:var(--accent3)">${Object.keys(capMap).length} tópico${Object.keys(capMap).length>1?'s':''}</span>
+        <span style="font-size:10px;color:var(--accent4)">✦ = questões da sessão</span>
+        <span class="ht-arrow"${autoOpen?' style="transform:rotate(90deg)"':''}>›</span>
+      </span>
+    </button>
+    <div class="hier-body${autoOpen?' open':''}" id="${uid}">${catHtml}</div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// TÓPICOS — LÓGICA CORRIGIDA
+// BUG FIXES:
+// 1. hLeft -= hU (não hT) para não gerar valores negativos
+// 2. Acúmulo só guarda questões do banco não feitas (não inclui acum anterior)
+// 3. Safety counter aumentado
+// ══════════════════════════════════════════════════════
+function getTopicos(mat, horas, qsHora, state){
+  const lista = TOPICOS[mat];
+  if(!lista || lista.length === 0) return {items:[], restartOccurred:false};
+  if(state.pointers[mat] === undefined) state.pointers[mat] = 0;
+  if(state.voltas[mat]   === undefined) state.voltas[mat]   = 1;
+  if(!state.acumulo) state.acumulo = {};
+
+  const isRedacao = mat === 'RED';
+  let hLeft = horas, out = [], idx = state.pointers[mat], restartOccurred = false;
+  // Safety: allow up to (lista.length * 4 + 20) iterations to handle long sessions
+  let safety = lista.length * 4 + 20;
+
+  while(hLeft > 0.08 && safety-- > 0){
+    // Wrap around — nova volta
+    if(idx >= lista.length){
+      idx = 0;
+      state.pointers[mat] = 0;
+      state.voltas[mat] = (state.voltas[mat] || 1) + 1;
+      restartOccurred = true;
+    }
+
+    const t = lista[idx];
+
+    if(isRedacao){
+      // Prática: usa todo o tempo restante
+      out.push({...t, hUsed: +hLeft.toFixed(2), qsFeitos:0, completo:true, qsAcumuladas:0});
+      hLeft = 0;
+      idx++;
+    } else {
+      const acumKey  = mat+'__'+t.nome;
+      // BUG FIX: acumulo representa apenas questões extras de ciclos anteriores
+      const qsAcum   = Math.max(0, state.acumulo[acumKey] || 0);
+      // Total efetivo = questões do banco + acumuladas pendentes
+      const qsTotal  = t.qty + qsAcum;
+      // Tempo necessário para cobrir todo o tópico
+      const hT = Math.max(0.1, qsTotal / Math.max(1, qsHora));
+
+      if(hLeft >= hT * 0.4){
+        // BUG FIX: hU = min(hT, hLeft) — usamos hU, não hT, para descontar
+        const hU       = Math.min(hT, hLeft);
+        const qsFeitos = Math.round(hU * qsHora);
+        const completo = hU >= hT * 0.88; // 88% threshold = completo
+
+        if(completo){
+          // BUG FIX: completo → zera acúmulo
+          state.acumulo[acumKey] = 0;
+        } else {
+          // BUG FIX: só acumula questões DO BANCO não concluídas
+          // Não inclui o acúmulo anterior na conta, para evitar crescimento exponencial
+          const qsBancoFeitos = Math.min(t.qty, qsFeitos);
+          const restanteBanco = Math.max(0, t.qty - qsBancoFeitos);
+          state.acumulo[acumKey] = restanteBanco;
+        }
+
+        out.push({...t, hUsed:+hU.toFixed(2), qsFeitos, completo, qsAcumuladas:qsAcum, qsTotal});
+
+        // BUG FIX: descontar hU (não hT!) para não negativar hLeft
+        hLeft -= hU;
+        idx++;
+      } else {
+        // Tempo insuficiente para ao menos 40% do tópico
+        if(out.length === 0){
+          // Adiciona parcialmente para não deixar sessão vazia
+          const qsFeitos = Math.round(hLeft * qsHora);
+          const qsBancoFeitos = Math.min(t.qty, qsFeitos);
+          const restanteBanco = Math.max(0, t.qty - qsBancoFeitos);
+          state.acumulo[acumKey] = restanteBanco;
+          out.push({...t, hUsed:+hLeft.toFixed(2), qsFeitos, completo:false, parcial:true, qsAcumuladas:qsAcum, qsTotal});
+        }
+        break;
+      }
+
+      // Parar após tópico grande se ficou pouco tempo
+      if(t.size === 'g' && hLeft < horas * 0.15) break;
+    }
+  }
+
+  state.pointers[mat] = idx;
+  return {items: out, restartOccurred};
+}
+
+// ══════════════════════════════════════════════════════
+// PROGRESS OVERVIEW
+// ══════════════════════════════════════════════════════
+function renderProgressOverview(state){
+  const panel = document.getElementById('progress-panel');
+  const grid  = document.getElementById('mat-grid');
+  if(!panel || !grid) return;
+  panel.style.display = 'block';
+
+  grid.innerHTML = Object.keys(TOPICOS).map(mat => {
+    const lista = TOPICOS[mat];
+    if(!lista || lista.length === 0) return '';
+    const isRedacao = mat === 'RED';
+    const ptr   = state.pointers[mat] || 0;
+    const volta = state.voltas[mat]   || 1;
+    const cor   = MAT_COLORS[mat] || 'var(--accent)';
+    const label = MAT_LABELS[mat] || mat;
+
+    const totalAcum = !state.acumulo ? 0 : Object.keys(state.acumulo)
+      .filter(k => k.startsWith(mat+'__'))
+      .reduce((s,k) => s + (state.acumulo[k]||0), 0);
+    const acumLabel = totalAcum>0
+      ? ` <span style="font-size:9px;color:var(--accent4);margin-left:4px">+${totalAcum}↺</span>` : '';
+
+    if(isRedacao){
+      const pct = lista.length > 0 ? Math.round((ptr / lista.length)*100) : 0;
+      return `<div class="mat-card">
+        <div class="mat-top"><span class="mat-name" style="color:${cor}">${label}</span>${volta>1?`<span class="volta-chip">${volta}ª volta</span>`:''}</div>
+        <div class="mini-bar"><div class="mini-fill" style="width:${pct}%;background:${cor}"></div></div>
+        <div class="mat-meta"><span>${ptr}/${lista.length} práticas</span><span style="color:${cor}">${pct}%</span></div>
+      </div>`;
+    }
+    const total  = lista.reduce((s,t) => s+t.qty, 0);
+    const qNesta = lista.slice(0, ptr).reduce((s,t) => s+t.qty, 0);
+    const pct    = total > 0 ? Math.min(100, Math.round((qNesta/total)*100)) : 0;
+    return `<div class="mat-card">
+      <div class="mat-top">
+        <span class="mat-name" style="color:${cor}">${label}${acumLabel}</span>
+        ${volta>1 ? `<span class="volta-chip">${volta}ª volta</span>` : ''}
+      </div>
+      <div class="mini-bar"><div class="mini-fill" style="width:${pct}%;background:${cor}"></div></div>
+      <div class="mat-meta"><span>${ptr}/${lista.length} tópicos</span><span style="color:${cor}">${pct}%</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// REVISÕES NOS DIAS
+// ══════════════════════════════════════════════════════
+function getRevisoesDoDia(ceData, date){
+  const ds = dateStr(date);
+  const result = [];
+  ceData.forEach(entry => {
+    entry.steps.forEach((step, si) => {
+      if(step.date === ds && !step.done){
+        result.push({
+          entryId:   entry.id,
+          stepIdx:   si,
+          mat:       entry.mat,
+          topico:    entry.topico,
+          stepLabel: REVISAO_DIAS[si]+'d',
+          ds
+        });
+      }
+    });
+  });
+  return result;
+}
+
+// ══════════════════════════════════════════════════════
+// CADERNO DE ERROS
+// ══════════════════════════════════════════════════════
+function adicionarErro(){
+  const mat    = document.getElementById('ce-mat').value;
+  const topico = document.getElementById('ce-topico').value.trim();
+  const data   = document.getElementById('ce-data').value;
+  if(!data){ alert('Selecione a data do erro.'); return; }
+  const baseDate = new Date(data+'T12:00:00');
+  const steps = REVISAO_DIAS.map(d => {
+    const dt = new Date(baseDate);
+    dt.setDate(dt.getDate() + d);
+    return {date: dateStr(dt), done: false};
+  });
+  const entry = {id: Date.now(), mat, topico: topico||'—', dataErro: data, steps};
+  const ceData = loadData(SK_CE, []);
+  ceData.push(entry);
+  saveData(SK_CE, ceData);
+  document.getElementById('ce-topico').value = '';
+  renderCaderno();
+  updateCeBadge();
+}
+
+function renderCaderno(){
+  const ceData = loadData(SK_CE, []);
+  const filterMatEl    = document.getElementById('filter-mat');
+  const filterStatusEl = document.getElementById('filter-status');
+  if(!filterMatEl || !filterStatusEl) return;
+
+  const filterMat    = filterMatEl.value;
+  const filterStatus = filterStatusEl.value;
+  const today        = dateStr(new Date());
+
+  let pendentes=0, atrasadas=0, concluidas=0;
+  ceData.forEach(e => {
+    e.steps.forEach(s => {
+      if(s.done)             concluidas++;
+      else if(s.date < today) atrasadas++;
+      else                    pendentes++;
+    });
+  });
+
+  const elTot  = document.getElementById('ce-total-reg');
+  const elPend = document.getElementById('ce-pendentes');
+  const elAtr  = document.getElementById('ce-atrasadas');
+  const elConc = document.getElementById('ce-concluidas');
+  if(elTot)  elTot.textContent  = ceData.length;
+  if(elPend) elPend.textContent = pendentes;
+  if(elAtr)  elAtr.textContent  = atrasadas;
+  if(elConc) elConc.textContent = concluidas;
+
+  updateCeBadge();
+  renderAgenda(ceData);
+
+  let filtered = ceData;
+  if(filterMat)                    filtered = filtered.filter(e => e.mat === filterMat);
+  if(filterStatus === 'pending')   filtered = filtered.filter(e => e.steps.some(s => !s.done && s.date >= today));
+  if(filterStatus === 'overdue')   filtered = filtered.filter(e => e.steps.some(s => !s.done && s.date < today));
+  if(filterStatus === 'done')      filtered = filtered.filter(e => e.steps.every(s => s.done));
+
+  const wrap = document.getElementById('err-table-wrap');
+  if(!wrap) return;
+
+  if(filtered.length === 0){
+    wrap.innerHTML = `<div class="empty-ce"><div class="icon">📭</div><p>Nenhum registro encontrado.</p></div>`;
+    return;
+  }
+
+  const rows = filtered.map(e => {
+    const matColor = MAT_COLORS[e.mat] || 'var(--accent)';
+    const stepsHtml = e.steps.map((s,si) => {
+      let cls = 'pending-dot';
+      if(s.done)             cls = 'done-dot';
+      else if(s.date < today) cls = 'overdue-dot';
+      else if(s.date === today) cls = 'due-dot';
+      const label = REVISAO_DIAS[si]+'d';
+      return `<div class="step-dot ${cls}" title="${s.done?'✓ Feito':'Revisão '+s.date}" onclick="toggleStep(${e.id},${si})">${s.done?'✓':label}</div>`;
+    }).join('');
+    const allDone = e.steps.every(s => s.done);
+    return `<tr>
+      <td style="max-width:220px;word-break:break-word">${e.topico}</td>
+      <td><span class="mat-tag" style="color:${matColor};background:${matColor}18;border-color:${matColor}44">${e.mat}</span></td>
+      <td>${fmtDateShort(new Date(e.dataErro+'T12:00:00'))}</td>
+      <td><div class="step-dots">${stepsHtml}</div></td>
+      <td>${allDone ? '<span style="color:var(--green);font-size:11px">✓ Concluído</span>' : '<span style="color:var(--muted);font-size:10px">Em andamento</span>'}</td>
+      <td><button class="err-del" onclick="deletarErro(${e.id})" title="Remover">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `<table class="err-table">
+    <thead><tr><th>Tópico</th><th>Matéria</th><th>Data erro</th><th>Revisões (+1·+3·+7·+10·+15d)</th><th>Status</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function renderAgenda(ceData){
+  const tl = document.getElementById('agenda-timeline');
+  if(!tl) return;
+
+  const today     = dateStr(new Date());
+  const todayDate = new Date();
+  todayDate.setHours(12,0,0,0);
+  const limite    = new Date(todayDate);
+  limite.setDate(limite.getDate() + 30);
+  const limiteStr = dateStr(limite);
+
+  const byDate = {};
+  ceData.forEach(e => {
+    e.steps.forEach((s, si) => {
+      if(s.date >= today && s.date <= limiteStr){
+        if(!byDate[s.date]) byDate[s.date] = [];
+        byDate[s.date].push({entry:e, stepIdx:si, step:s, label:REVISAO_DIAS[si]+'d'});
+      }
+    });
+  });
+
+  const atrasados = [];
+  ceData.forEach(e => {
+    e.steps.forEach((s, si) => {
+      if(!s.done && s.date < today)
+        atrasados.push({entry:e, stepIdx:si, step:s, label:REVISAO_DIAS[si]+'d', overdue:true});
+    });
+  });
+
+  if(Object.keys(byDate).length === 0 && atrasados.length === 0){
+    tl.innerHTML = `<div class="rev-empty" style="padding:16px 0">Nenhuma revisão nos próximos 30 dias.</div>`;
+    return;
+  }
+
+  let html = '';
+  if(atrasados.length > 0){
+    html += `<div class="agenda-day-row">
+      <div class="agenda-date is-past">⚠ Atrasadas (${atrasados.length})</div>
+      <div class="agenda-chips">${atrasados.map(r => chipHtml(r, true)).join('')}</div>
+    </div>`;
+  }
+  Object.keys(byDate).sort().forEach(ds => {
+    const items   = byDate[ds];
+    const dt      = new Date(ds+'T12:00:00');
+    const isToday = ds === today;
+    html += `<div class="agenda-day-row">
+      <div class="agenda-date ${isToday?'is-today':''}">${isToday ? 'Hoje — '+fmtDateShort(dt) : fmtDateShort(dt)}</div>
+      <div class="agenda-chips">${items.map(r => chipHtml(r, false)).join('')}</div>
+    </div>`;
+  });
+  tl.innerHTML = html;
+}
+
+function chipHtml(r, overdue){
+  const todayStr = dateStr(new Date());
+  const isDone   = r.step.done;
+  let cls = isDone ? 'done' : overdue ? 'overdue' : r.step.date===todayStr ? 'today-chip' : 'pending';
+  const doneBtn = !isDone
+    ? `<span class="chip-done-btn" onclick="event.stopPropagation();toggleStep(${r.entry.id},${r.stepIdx})">✓</span>`
+    : '';
+  return `<div class="agenda-chip ${cls}">
+    <span class="chip-mat">${r.entry.mat}</span>
+    <span style="opacity:.7">·${r.label}</span>
+    ${r.entry.topico !== '—' ? `<span style="opacity:.5;font-size:9px">${r.entry.topico.slice(0,18)}</span>` : ''}
+    ${doneBtn}
+  </div>`;
+}
+
+function toggleStep(entryId, stepIdx){
+  const ceData = loadData(SK_CE, []);
+  const e = ceData.find(x => x.id === entryId);
+  if(!e) return;
+  e.steps[stepIdx].done = !e.steps[stepIdx].done;
+  saveData(SK_CE, ceData);
+  renderCaderno();
+  updateCeBadge();
+}
+
+function deletarErro(entryId){
+  if(!confirm('Remover este registro?')) return;
+  let ceData = loadData(SK_CE, []);
+  ceData = ceData.filter(x => x.id !== entryId);
+  saveData(SK_CE, ceData);
+  renderCaderno();
+  updateCeBadge();
+}
+
+function updateCeBadge(){
+  const ceData = loadData(SK_CE, []);
+  const today  = dateStr(new Date());
+  const due    = ceData.reduce((n,e) => n + e.steps.filter(s => !s.done && s.date <= today).length, 0);
+  const badge  = document.getElementById('ce-badge');
+  if(!badge) return;
+  if(due > 0){ badge.style.display = 'inline-flex'; badge.textContent = due; }
+  else badge.style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════
+// DATE UTILS
+// ══════════════════════════════════════════════════════
+function fmtDateCard(d){
+  const dias   = ['dom','seg','ter','qua','qui','sex','sáb'];
+  const meses  = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return `${dias[d.getDay()]} · ${d.getDate()} ${meses[d.getMonth()]}`;
+}
+function dateStr(d){ return d.toISOString().split('T')[0]; }
+function fmtDate(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function fmtDateShort(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}); }
+
+// ══════════════════════════════════════════════════════
+// RESET / MODAIS
+// ══════════════════════════════════════════════════════
+function confirmarReset(){ document.getElementById('modal-reset').style.display = 'flex'; }
+function fecharModal(){     document.getElementById('modal-reset').style.display = 'none'; }
+
+function executarReset(){
+  fecharModal();
+  saveData(SK_PLAN, buildFreshPlan());
+  const pp    = document.getElementById('progress-panel');
+  const pills = document.getElementById('pills');
+  if(pp)    pp.style.display    = 'none';
+  if(pills) pills.style.display = 'none';
+  document.getElementById('plano-output').innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted)">
+    <div style="font-size:36px;margin-bottom:12px">🔄</div>
+    <p>Progresso zerado. Clique em <b style="color:var(--text)">Gerar Plano</b>.</p>
+  </div>`;
+}
+
+function abrirAjuda(){
+  const m = document.getElementById('modal-ajuda');
+  if(m) m.style.display = 'flex';
+}
+function fecharAjuda(){
+  const m = document.getElementById('modal-ajuda');
+  if(m) m.style.display = 'none';
+}
+function fecharAjudaFora(e){
+  if(e.target === document.getElementById('modal-ajuda')) fecharAjuda();
+}
+
+function showSection(id){
+  document.querySelectorAll('.ajuda-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ajuda-nav-item').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if(sec) sec.classList.add('active');
+  document.querySelectorAll('.ajuda-nav-item').forEach(b => {
+    const oc = b.getAttribute('onclick') || '';
+    if(oc.includes("'"+id+"'") || oc.includes('"'+id+'"')) b.classList.add('active');
+  });
+}
+
+function deepClone(o){
+  try{ return JSON.parse(JSON.stringify(o)); }
+  catch(e){ return {}; }
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+window.onload = function(){
+  // Set default dates
+  const today = new Date();
+  document.getElementById('data-inicio').value = dateStr(today);
+  document.getElementById('ce-data').value     = dateStr(today);
+
+  // Restore settings
+  const saved = loadData(SK_SETTINGS, null);
+  if(saved){
+    if(saved.dataInicio) document.getElementById('data-inicio').value     = saved.dataInicio;
+    if(saved.duracao)    document.getElementById('duracao-meses').value   = saved.duracao;
+    if(saved.qph){
+      document.getElementById('qph').value         = saved.qph;
+      document.getElementById('qph-val').textContent = saved.qph;
+    }
+    if(saved.nivel) document.getElementById('nivel').value = saved.nivel;
+    buildDayHoursGrid(saved.dayHours);
+  } else {
+    buildDayHoursGrid(null);
+  }
+
+  // Auto-reload plan if we have saved state
+  const planState = loadData(SK_PLAN, null);
+  if(planState && Object.keys(planState.pointers||{}).length > 0){
+    gerarPlano();
+  }
+
+  updateCeBadge();
+};
+
+// ══════════════════════════════════════════
+// SYSTEM: MARCAR DIA COMO CONCLUÍDO
+// ══════════════════════════════════════════
+// Todos os dados do dia ficam em window._dayData[cardStr]
+// O onclick só passa a string da data — sem JSON inline no HTML.
+
+function concluirDia(cardStr) {
+  var d = window._dayData && window._dayData[cardStr];
+  if (!d) { alert('Dados do dia não encontrados. Regenere o plano.'); return; }
+
+  var saved = loadData(SK_PLAN, buildFreshPlan());
+  if (!saved.diasFeitos) saved.diasFeitos = {};
+
+  // Parte do snapshot e avança os ponteiros
+  var st = {
+    pointers: deepClone(d.snap.pointers),
+    voltas:   deepClone(d.snap.voltas),
+    acumulo:  deepClone(d.snap.acumulo)
+  };
+  renderSessao(d.manha, d.manhaH, d.qsHora, st);
+  renderSessaoNoite(d.noite, d.noiteH, d.noite2H, d.qsHora, st);
+
+  saved.pointers = st.pointers;
+  saved.voltas   = st.voltas;
+  saved.acumulo  = st.acumulo;
+  saved.diasFeitos[cardStr] = true;
+  saveData(SK_PLAN, saved);
+
+  // Atualiza card visualmente
+  var card = document.getElementById('card-' + cardStr);
+  if (card) {
+    card.classList.add('done-card');
+    card.style.borderColor = 'rgba(66,232,160,.3)';
+    var footer = card.querySelector('.day-footer');
+    if (footer) {
+      footer.innerHTML = '<div class="done-banner">✅ Dia concluído</div>' +
+        '<button class="btn-desfazer" onclick="desfazerDia(\'' + cardStr + '\')">↩ Desfazer</button>';
+    }
+    var body = document.getElementById('body-' + cardStr);
+    if (body) body.style.opacity = '.6';
+  }
+  renderProgressOverview(saved);
+  showSaveOk();
+}
+
+function desfazerDia(cardStr) {
+  if (!confirm('Desfazer conclusão deste dia?')) return;
+  var saved = loadData(SK_PLAN, buildFreshPlan());
+  if (!saved.diasFeitos) return;
+  delete saved.diasFeitos[cardStr];
+  // Recalcula tudo do zero com os dias restantes
+  var fresh = buildFreshPlan();
+  fresh.diasFeitos = saved.diasFeitos;
+  var all = Object.keys(saved.diasFeitos).sort();
+  var settings = getSettings();
+  var qsHora = Math.max(1, Math.round(settings.qph * settings.nivel));
+  var st = { pointers:{}, voltas:{}, acumulo:{} };
+  all.forEach(function(ds) {
+    var d = window._dayData && window._dayData[ds];
+    if (!d) return;
+    renderSessao(d.manha, d.manhaH, qsHora, st);
+    renderSessaoNoite(d.noite, d.noiteH, d.noite2H, qsHora, st);
+  });
+  fresh.pointers = st.pointers;
+  fresh.voltas   = st.voltas;
+  fresh.acumulo  = st.acumulo;
+  saveData(SK_PLAN, fresh);
+  gerarPlano();
+}
+
+</script>
+</body>
+</html>
