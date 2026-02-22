@@ -44,6 +44,33 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .db-status.offline{color:var(--yellow);border-color:rgba(240,192,64,.25);background:rgba(240,192,64,.05)}
 .db-status.connecting{color:var(--accent);border-color:rgba(91,138,247,.25);background:rgba(91,138,247,.05)}
 .db-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ══ LOADING OVERLAY (NOVO) ══════════════════════════ */
+.loading-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,7,15,.96);backdrop-filter:blur(10px) saturate(1.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease,visibility .5s ease}
+.loading-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loading-logo{font-size:40px;animation:floatLogo 2s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(91,138,247,.4))}
+@keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.loading-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(91,138,247,.15);border-top-color:var(--accent);animation:spinLoad .7s linear infinite}
+@keyframes spinLoad{to{transform:rotate(360deg)}}
+.loading-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.loading-steps{display:flex;flex-direction:column;gap:7px;background:rgba(255,255,255,.025);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px 20px;min-width:240px}
+.loading-step{font-size:11px;color:var(--muted2);font-family:var(--mono);transition:color .25s,transform .2s;padding:2px 0}
+.loading-step.active{color:var(--accent);transform:translateX(4px)}
+.loading-step.done{color:var(--green)}
+.loading-step.error{color:var(--red)}
+.loading-sub{font-size:10px;color:var(--muted);font-family:var(--mono);display:flex;align-items:center;gap:7px}
+
+/* ══ SYNC WARNING BANNER (NOVO) ══════════════════════ */
+.sync-warning-banner{display:none;align-items:center;gap:12px;padding:12px 18px;background:rgba(240,192,64,.05);border:1px solid rgba(240,192,64,.22);border-radius:var(--r-md);margin-bottom:18px;animation:fadeUp .35s ease both}
+.sync-warning-banner.visible{display:flex}
+.sync-warning-text{font-size:12px;color:var(--yellow);flex:1;line-height:1.7}
+.sync-warning-text b{color:var(--text);font-weight:700}
+.sync-warning-btn{font-family:var(--mono);font-size:10px;padding:6px 14px;border-radius:6px;border:1px solid rgba(240,192,64,.28);background:rgba(240,192,64,.06);color:var(--yellow);cursor:pointer;white-space:nowrap;transition:all .2s;font-weight:600}
+.sync-warning-btn:hover{background:rgba(240,192,64,.14);border-color:rgba(240,192,64,.5)}
+.sync-warning-btn:disabled{opacity:.5;cursor:not-allowed}
+.sync-warning-close{background:transparent;border:none;color:var(--muted2);cursor:pointer;font-size:16px;padding:2px 5px;transition:color .2s;line-height:1}
+.sync-warning-close:hover{color:var(--orange)}
+
 .sticky-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,7,15,.88);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--border2);transform:translateY(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sticky-nav.visible{transform:translateY(0)}
 .sticky-nav-inner{max-width:1240px;margin:0 auto;padding:10px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px}
@@ -390,6 +417,21 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 </head>
 <body>
 
+<!-- ══ LOADING OVERLAY (NOVO) ══════════════════════════════ -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-logo">📚</div>
+  <div class="loading-spinner"></div>
+  <div class="loading-title">Carregando plano...</div>
+  <div class="loading-steps">
+    <div class="loading-step" id="lstep-conn">⬡ Conectando ao Supabase</div>
+    <div class="loading-step" id="lstep-settings">⬡ Configurações</div>
+    <div class="loading-step" id="lstep-plan">⬡ Estado do plano</div>
+    <div class="loading-step" id="lstep-caderno">⬡ Caderno de erros</div>
+    <div class="loading-step" id="lstep-revtimes">⬡ Tempos de revisão</div>
+  </div>
+  <div class="loading-sub"><span class="sync-dot" style="background:var(--accent)"></span>Sincronizando dados da nuvem</div>
+</div>
+
 <!-- STICKY NAV -->
 <div class="sticky-nav" id="sticky-nav">
   <div class="sticky-nav-inner">
@@ -413,6 +455,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 </div>
 
 <div class="container">
+
+  <!-- ══ SYNC WARNING BANNER (NOVO) ══════════════════════════ -->
+  <div class="sync-warning-banner" id="sync-warning-banner">
+    <span style="font-size:18px;flex-shrink:0">⚠️</span>
+    <div class="sync-warning-text">
+      <b>Sincronização parcial:</b> <span id="sync-warning-msg">algumas tabelas não foram carregadas da nuvem.</span>
+      Os dados exibidos podem estar desatualizados em relação à nuvem.
+    </div>
+    <button class="sync-warning-btn" onclick="retrySyncAll()">↺ Tentar novamente</button>
+    <button class="sync-warning-close" onclick="this.parentElement.classList.remove('visible')" title="Fechar">✕</button>
+  </div>
+
   <header style="margin-bottom:28px;animation:fadeUp .6s ease both">
     <div class="header-tag">Estudo Reverso por Questão — TEC Concursos</div>
     <h1>Plano de Estudos</h1>
@@ -719,10 +773,8 @@ async function initSupabase() {
   try {
     db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     console.log('🔌 Testando conexão Supabase...');
-    // Testa com uma query simples — se a tabela não existir, o erro é diferente de "sem conexão"
     const { data, error } = await db.from('plano_settings').select('user_id').limit(1);
     if (error) {
-      // Erro 42P01 = tabela não existe (schema ainda não criado)
       if (error.code === '42P01') {
         console.error('❌ TABELAS NÃO EXISTEM no Supabase! Execute o SQL de setup primeiro.');
         setDbStatus('offline', '⚠ Tabelas não criadas — veja console');
@@ -746,6 +798,72 @@ function setDbStatus(type, msg) {
   if (!el) return;
   el.className = 'db-status ' + type;
   el.innerHTML = '<span class="db-dot"></span>' + msg;
+}
+
+// ══════════════════════════════════════════════════════
+// LOADING OVERLAY HELPERS (NOVO)
+// ══════════════════════════════════════════════════════
+function showLoadingOverlay(){
+  const el=document.getElementById('loading-overlay');
+  if(el) el.classList.remove('hidden');
+}
+function hideLoadingOverlay(){
+  const el=document.getElementById('loading-overlay');
+  if(el) el.classList.add('hidden');
+}
+function setLoadingStep(stepId,state){
+  const el=document.getElementById('lstep-'+stepId);
+  if(!el) return;
+  el.className='loading-step '+state;
+  const icons={active:'◎ ',done:'✓ ',error:'✗ '};
+  const labels={conn:'Conectando ao Supabase',settings:'Configurações',plan:'Estado do plano',caderno:'Caderno de erros',revtimes:'Tempos de revisão'};
+  el.textContent=(icons[state]||'⬡ ')+(labels[stepId]||stepId);
+}
+
+// ══════════════════════════════════════════════════════
+// SYNC WARNING BANNER (NOVO)
+// ══════════════════════════════════════════════════════
+function showSyncWarning(failedTables){
+  const banner=document.getElementById('sync-warning-banner');
+  const msg=document.getElementById('sync-warning-msg');
+  if(!banner) return;
+  if(failedTables&&failedTables.length>0&&msg)
+    msg.textContent='tabelas com falha: '+failedTables.join(', ')+'.';
+  banner.classList.add('visible');
+}
+function hideSyncWarning(){
+  const banner=document.getElementById('sync-warning-banner');
+  if(banner) banner.classList.remove('visible');
+}
+
+// ══════════════════════════════════════════════════════
+// RETRY SYNC (NOVO)
+// ══════════════════════════════════════════════════════
+async function retrySyncAll(){
+  const btn=document.querySelector('.sync-warning-btn');
+  if(btn){btn.textContent='⟳ Sincronizando...';btn.disabled=true;}
+  showToast('syncing');
+  if(!dbOnline) await initSupabase();
+  if(dbOnline){
+    const {synced,failed}=await sbLoadAll();
+    if(failed.length===0){
+      hideSyncWarning();showToast('ok');
+      const saved=loadData('SETTINGS',null);
+      if(saved){
+        if(saved.dataInicio) document.getElementById('data-inicio').value=saved.dataInicio;
+        if(saved.qph){document.getElementById('qph').value=saved.qph;document.getElementById('qph-val').textContent=saved.qph;}
+        if(saved.duracao) document.getElementById('duracao-meses').value=saved.duracao;
+        if(saved.nivel) document.getElementById('nivel').value=saved.nivel;
+        buildDayHoursGrid(saved.dayHours);
+        if(saved.preset) setPreset(saved.preset);
+      }
+      buildRevTimeGrid();
+      const planState=loadData('PLAN',null);
+      if(planState&&planState.pointers&&Object.keys(planState.pointers).length>0) gerarPlano();
+      updateCeBadge();
+    } else {showSyncWarning(failed);showToast('err');}
+  } else {showToast('err');}
+  if(btn){btn.textContent='↺ Tentar novamente';btn.disabled=false;}
 }
 
 // ══════════════════════════════════════════════════════
@@ -829,13 +947,9 @@ async function sbUpsert(table, row) {
   }
 }
 
-// Salva no localStorage E no Supabase (dual write)
 async function saveData(type, val) {
-  // 1. Salva local SEMPRE
   lsSave(SK[type], val);
   showSaveOk();
-
-  // 2. Tenta Supabase
   if (!db || !dbOnline) {
     console.log(`saveData(${type}): offline, salvo só localmente`);
     return;
@@ -868,7 +982,6 @@ async function saveData(type, val) {
         updated_at: new Date().toISOString()
       });
     } else if (type === 'CE') {
-      // Caderno: delete all + insert
       const { error: delErr } = await db.from('caderno_erros').delete().eq('user_id', USER_ID);
       if (delErr) { console.error('❌ CE delete error:', delErr); throw delErr; }
       if (val.length > 0) {
@@ -888,18 +1001,11 @@ async function saveData(type, val) {
       }
       ok = true;
     }
-
-    if (ok) {
-      showToast('ok');
-      console.log(`✅ Supabase salvo: ${type}`);
-    } else {
-      showToast('err');
-      console.warn(`⚠ saveData(${type}): sbUpsert retornou false`);
-    }
+    if (ok) { showToast('ok'); console.log(`✅ Supabase salvo: ${type}`); }
+    else { showToast('err'); console.warn(`⚠ saveData(${type}): sbUpsert retornou false`); }
   } catch(e) {
     console.error(`saveData(${type}) erro Supabase:`, e.message || e);
     showToast('err');
-    // Não mata dbOnline permanentemente — agenda reconexão
     setDbStatus('offline', '⚠ Erro de sync — reconectando...');
     clearTimeout(_reconnectTimer);
     _reconnectTimer = setTimeout(async () => {
@@ -913,81 +1019,56 @@ function loadData(type, def) {
   return lsLoad(SK[type], def);
 }
 
-async function sbLoadAll() {
-  if (!db || !dbOnline) return false;
-  try {
-    console.log('📥 Carregando dados do Supabase...');
-    let synced = 0;
+// ══════════════════════════════════════════════════════
+// sbLoadAll — MODIFICADO: retorna {synced, failed} com progress steps
+// ══════════════════════════════════════════════════════
+async function sbLoadAll(){
+  if(!db||!dbOnline) return {synced:0,failed:[]};
+  const failed=[];let synced=0;
 
-    // Cada tabela em separado para não perder tudo se uma falhar
-    try {
-      const sRow = await sbGet('plano_settings');
-      if (sRow) {
-        lsSave(SK.SETTINGS, {
-          dataInicio: sRow.data_inicio,
-          duracao:    sRow.duracao,
-          qph:        sRow.qph,
-          nivel:      sRow.nivel,
-          dayHours:   sRow.day_hours || {},
-          preset:     sRow.preset,
-          inicioModo: sRow.inicio_modo
-        });
-        synced++;
-        console.log('✅ plano_settings carregado');
-      }
-    } catch(e) { console.warn('sbLoadAll plano_settings:', e.message); }
+  setLoadingStep('settings','active');
+  try{
+    const sRow=await sbGet('plano_settings');
+    if(sRow){
+      lsSave(SK.SETTINGS,{
+        dataInicio:sRow.data_inicio,duracao:sRow.duracao,qph:sRow.qph,nivel:sRow.nivel,
+        dayHours:sRow.day_hours||{},preset:sRow.preset,inicioModo:sRow.inicio_modo
+      });
+      synced++;console.log('✅ plano_settings carregado');
+    }
+    setLoadingStep('settings','done');
+  }catch(e){console.warn('sbLoadAll plano_settings:',e.message);failed.push('configurações');setLoadingStep('settings','error');}
 
-    try {
-      const pRow = await sbGet('plano_state');
-      if (pRow) {
-        lsSave(SK.PLAN, {
-          pointers:   pRow.pointers || {},
-          voltas:     pRow.voltas || {},
-          acumulo:    pRow.acumulo || {},
-          diasFeitos: pRow.dias_feitos || {}
-        });
-        synced++;
-        console.log('✅ plano_state carregado');
-      }
-    } catch(e) { console.warn('sbLoadAll plano_state:', e.message); }
+  setLoadingStep('plan','active');
+  try{
+    const pRow=await sbGet('plano_state');
+    if(pRow){
+      lsSave(SK.PLAN,{pointers:pRow.pointers||{},voltas:pRow.voltas||{},acumulo:pRow.acumulo||{},diasFeitos:pRow.dias_feitos||{}});
+      synced++;console.log('✅ plano_state carregado');
+    }
+    setLoadingStep('plan','done');
+  }catch(e){console.warn('sbLoadAll plano_state:',e.message);failed.push('plano');setLoadingStep('plan','error');}
 
-    try {
-      const { data: ceRows, error: ceErr } = await db
-        .from('caderno_erros')
-        .select('*')
-        .eq('user_id', USER_ID)
-        .order('id');
-      if (ceErr) throw ceErr;
-      if (ceRows && ceRows.length > 0) {
-        lsSave(SK.CE, ceRows.map(r => ({
-          id:           r.id,
-          mat:          r.mat,
-          topico:       r.topico,
-          link:         r.link,
-          dataErro:     r.data_erro,
-          steps:        r.steps || [],
-          intervalDias: r.interval_dias || []
-        })));
-        synced++;
-        console.log(`✅ caderno_erros carregado: ${ceRows.length} registros`);
-      }
-    } catch(e) { console.warn('sbLoadAll caderno_erros:', e.message); }
+  setLoadingStep('caderno','active');
+  try{
+    const {data:ceRows,error:ceErr}=await db.from('caderno_erros').select('*').eq('user_id',USER_ID).order('id');
+    if(ceErr) throw ceErr;
+    if(ceRows&&ceRows.length>0){
+      lsSave(SK.CE,ceRows.map(r=>({id:r.id,mat:r.mat,topico:r.topico,link:r.link,dataErro:r.data_erro,steps:r.steps||[],intervalDias:r.interval_dias||[]})));
+      synced++;console.log('✅ caderno_erros: '+ceRows.length+' registros');
+    }
+    setLoadingStep('caderno','done');
+  }catch(e){console.warn('sbLoadAll caderno_erros:',e.message);failed.push('caderno');setLoadingStep('caderno','error');}
 
-    try {
-      const rRow = await sbGet('rev_times');
-      if (rRow && rRow.times) {
-        lsSave(SK.REV_TIME, rRow.times);
-        synced++;
-        console.log('✅ rev_times carregado');
-      }
-    } catch(e) { console.warn('sbLoadAll rev_times:', e.message); }
+  setLoadingStep('revtimes','active');
+  try{
+    const rRow=await sbGet('rev_times');
+    if(rRow&&rRow.times){lsSave(SK.REV_TIME,rRow.times);synced++;console.log('✅ rev_times carregado');}
+    setLoadingStep('revtimes','done');
+  }catch(e){console.warn('sbLoadAll rev_times:',e.message);failed.push('rev_times');setLoadingStep('revtimes','error');}
 
-    console.log(`✅ sbLoadAll: ${synced}/4 tabelas sincronizadas`);
-    return synced > 0;
-  } catch(e) {
-    console.error('sbLoadAll erro geral:', e.message);
-    return false;
-  }
+  console.log('✅ sbLoadAll: '+synced+'/4 | Falhas: '+(failed.join(', ')||'nenhuma'));
+  return{synced,failed};
 }
 
 function showSaveOk() {
@@ -1000,7 +1081,6 @@ function showSaveOk() {
   });
 }
 
-// ── DIAGNÓSTICO — chame no console: diagnosticoSupabase()
 window.diagnosticoSupabase = async function() {
   console.group('🔍 Diagnóstico Supabase');
   console.log('db inicializado:', !!db);
@@ -1132,9 +1212,6 @@ const DIAS_SHORT=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const DEFAULT_REV_TIMES={Segunda:35,Terça:35,Quarta:35,Quinta:35,Sexta:35,Sábado:35,Domingo:20};
 const DEFAULT_HOURS={Segunda:5.5,Terça:5.5,Quarta:5.5,Quinta:6.5,Sexta:5.5,Sábado:5.5,Domingo:5.5};
 
-// ══════════════════════════════════════════════════════
-// TEMPO DE REVISÃO
-// ══════════════════════════════════════════════════════
 function getRevTimes(){ return lsLoad(SK.REV_TIME, Object.assign({}, DEFAULT_REV_TIMES)); }
 
 async function saveRevTimes(){
@@ -1185,17 +1262,11 @@ function getRevMinForDay(date){
   return times[dia]!==undefined?times[dia]:(DEFAULT_REV_TIMES[dia]||30);
 }
 
-// ══════════════════════════════════════════════════════
-// STICKY NAV
-// ══════════════════════════════════════════════════════
 window.addEventListener('scroll',()=>{
   const nav=document.getElementById('sticky-nav');
   if(nav) nav.classList.toggle('visible',window.scrollY>120);
 },{passive:true});
 
-// ══════════════════════════════════════════════════════
-// TABS
-// ══════════════════════════════════════════════════════
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -1212,9 +1283,6 @@ function showMetodoSection(id){
   document.querySelectorAll('.metodo-nav-btn').forEach(b=>b.classList.toggle('active',(b.getAttribute('onclick')||'').includes("'"+id+"'")));
 }
 
-// ══════════════════════════════════════════════════════
-// PRESETS
-// ══════════════════════════════════════════════════════
 async function setPreset(name){
   currentPreset=name; REVISAO_DIAS=REVISAO_PRESETS[name].dias.slice();
   document.querySelectorAll('.rev-preset-btn').forEach(b=>b.classList.remove('active'));
@@ -1223,9 +1291,6 @@ async function setPreset(name){
   await saveSettings();
 }
 
-// ══════════════════════════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════════════════════════
 function syncRange(id,valId){
   const el=document.getElementById(valId); const src=document.getElementById(id);
   if(el&&src) el.textContent=src.value;
@@ -1252,9 +1317,6 @@ function getDayHours(){
   return h;
 }
 
-// ══════════════════════════════════════════════════════
-// DAY HOURS SLIDERS
-// ══════════════════════════════════════════════════════
 function buildDayHoursGrid(saved){
   const grid=document.getElementById('day-hours-grid'); if(!grid) return;
   grid.innerHTML='';
@@ -1293,9 +1355,6 @@ function formatHorasMin(h){
   return min+'min';
 }
 
-// ══════════════════════════════════════════════════════
-// TOGGLE SEMANA / DIA
-// ══════════════════════════════════════════════════════
 function toggleSemana(weekId){
   const body=document.getElementById('week-body-'+weekId); const hdr=document.getElementById('week-hdr-'+weekId);
   if(!body||!hdr) return; body.classList.toggle('open'); hdr.classList.toggle('open');
@@ -1327,9 +1386,6 @@ function formatMinAsTime(min){
   return h+'h'+(m>0?m+'min':'');
 }
 
-// ══════════════════════════════════════════════════════
-// GERAR PLANO
-// ══════════════════════════════════════════════════════
 function gerarPlano(){
   const settings=getSettings(); saveSettings();
   if(!settings.dataInicio){ alert('Por favor selecione uma data de início.'); return; }
@@ -1499,9 +1555,6 @@ function gerarPlano(){
   renderProgressOverview(savedState);
 }
 
-// ══════════════════════════════════════════════════════
-// RENDER SESSÃO
-// ══════════════════════════════════════════════════════
 function renderSessao(sess,horas,qsHora,state){
   if(horas<0.05) return {html:'<span style="font-size:11px;color:var(--muted2)">—</span>',qs:0};
   const isRedacao=sess.mat==='RED';
@@ -1580,9 +1633,6 @@ function renderHierIndex(mat,sessionItems,state){
   return `<div class="hier-wrap"><button class="hier-toggle" onclick="toggleHier('${uid}')" id="btn_${uid}"><span class="ht-left"><span>📋</span><span>Índice de hoje</span></span><span style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--yellow)">✦ = qs da sessão</span><span class="ht-arrow">›</span></span></button><div class="hier-body" id="${uid}">${catHtml}</div></div>`;
 }
 
-// ══════════════════════════════════════════════════════
-// TÓPICOS LÓGICA
-// ══════════════════════════════════════════════════════
 function getTopicos(mat,horas,qsHora,state){
   const lista=TOPICOS[mat];
   if(!lista||lista.length===0) return {items:[],restartOccurred:false};
@@ -1623,9 +1673,6 @@ function getTopicos(mat,horas,qsHora,state){
   return {items:out,restartOccurred};
 }
 
-// ══════════════════════════════════════════════════════
-// PROGRESS OVERVIEW
-// ══════════════════════════════════════════════════════
 function renderProgressOverview(savedState){
   const panel=document.getElementById('progress-panel'); const grid=document.getElementById('mat-grid');
   if(!panel||!grid) return;
@@ -1681,9 +1728,6 @@ function renderProgressOverview(savedState){
   }).join('');
 }
 
-// ══════════════════════════════════════════════════════
-// ÍNDICE COMPLETO
-// ══════════════════════════════════════════════════════
 function renderFullIndex(){
   const out=document.getElementById('indice-full');
   if(!out||out.dataset.rendered==='1') return;
@@ -1717,18 +1761,12 @@ function renderFullIndex(){
 function toggleHier(uid){ const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid); if(!body||!btn) return; const isOpen=body.classList.contains('open'); body.classList.toggle('open'); btn.classList.toggle('open'); const arrow=btn.querySelector('.ht-arrow'); if(arrow) arrow.style.transform=isOpen?'':'rotate(90deg)'; }
 function toggleHierCat(uid){ const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid); if(!body||!btn) return; body.classList.toggle('open'); btn.classList.toggle('open'); }
 
-// ══════════════════════════════════════════════════════
-// REVISÕES
-// ══════════════════════════════════════════════════════
 function getRevisoesDoDia(ceData,date){
   const ds=dateStr(date); const result=[];
   ceData.forEach(entry=>{ entry.steps.forEach((step,si)=>{ if(step.date===ds&&!step.done){ const dias=entry.intervalDias||REVISAO_DIAS; result.push({entryId:entry.id,stepIdx:si,mat:entry.mat,topico:entry.topico,stepLabel:(dias[si]||'?')+'d',ds}); } }); });
   return result;
 }
 
-// ══════════════════════════════════════════════════════
-// CADERNO DE ERROS
-// ══════════════════════════════════════════════════════
 async function adicionarErro(){
   const mat=document.getElementById('ce-mat').value;
   const topico=document.getElementById('ce-topico').value.trim();
@@ -1853,17 +1891,11 @@ function updateSubMat(){
   sel.innerHTML=opts.map(o=>{ const prefix=o.depth===1?'  ↳ ':''; const qty=o.qty>0?' ('+o.qty+'q)':''; return `<option value="${o.hier?o.nome:''}">${prefix}${o.nome}${qty}</option>`; }).join('');
 }
 
-// ══════════════════════════════════════════════════════
-// DATE UTILS
-// ══════════════════════════════════════════════════════
 function fmtDateCard(d){ const dias=['dom','seg','ter','qua','qui','sex','sáb']; const meses=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez']; return dias[d.getDay()]+' · '+d.getDate()+' '+meses[d.getMonth()]; }
 function dateStr(d){ return d.toISOString().split('T')[0]; }
 function fmtDate(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
 function fmtDateShort(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}); }
 
-// ══════════════════════════════════════════════════════
-// RESET / MODAIS
-// ══════════════════════════════════════════════════════
 function confirmarReset(){ document.getElementById('modal-reset').style.display='flex'; }
 function confirmarLimparTudo(){ document.getElementById('modal-limpar-tudo').style.display='flex'; }
 function fecharModal(id){ document.getElementById(id||'modal-reset').style.display='none'; }
@@ -1916,9 +1948,6 @@ function showSection(id){
 }
 function deepClone(o){ try{ return JSON.parse(JSON.stringify(o)); }catch(e){ return {}; } }
 
-// ══════════════════════════════════════════════════════
-// CONCLUIR / DESFAZER DIA
-// ══════════════════════════════════════════════════════
 async function concluirDia(cardStr){
   const saved=loadData('PLAN',buildFreshPlan());
   if(!saved.diasFeitos) saved.diasFeitos={};
@@ -1953,23 +1982,37 @@ async function desfazerDia(cardStr){
 }
 
 // ══════════════════════════════════════════════════════
-// INIT
+// INIT — MODIFICADO: com loading overlay + retry warning
 // ══════════════════════════════════════════════════════
 window.onload = async function(){
   const today=new Date();
   document.getElementById('data-inicio').value=dateStr(today);
   document.getElementById('ce-data').value=dateStr(today);
 
-  // 1. Conectar ao Supabase
-  await initSupabase();
+  // 1. Exibe overlay de carregamento imediatamente
+  showLoadingOverlay();
 
-  // 2. Se online, baixar dados da nuvem e sincronizar no localStorage
+  // 2. Conecta ao Supabase
+  setLoadingStep('conn','active');
+  await initSupabase();
+  setLoadingStep('conn',dbOnline?'done':'error');
+
+  // 3. Se online → sincroniza da nuvem com progresso por etapa
+  let failedTables=[];
   if(dbOnline){
-    const synced=await sbLoadAll();
-    if(synced) console.log('✅ Dados sincronizados da nuvem');
+    const result=await sbLoadAll();
+    failedTables=result.failed||[];
+    if(result.synced>0) console.log('✅ Dados sincronizados da nuvem');
   }
 
-  // 3. Aplicar configurações na UI
+  // 4. Delay suave antes de ocultar overlay (350ms)
+  await new Promise(r=>setTimeout(r,350));
+  hideLoadingOverlay();
+
+  // 5. Exibe banner de aviso se alguma tabela falhou
+  if(failedTables.length>0) showSyncWarning(failedTables);
+
+  // 6. Aplica configurações na UI
   const saved=loadData('SETTINGS',null);
   if(saved){
     if(saved.dataInicio) document.getElementById('data-inicio').value=saved.dataInicio;
@@ -1985,7 +2028,7 @@ window.onload = async function(){
 
   buildRevTimeGrid(); updateSubMat();
 
-  // 4. Gerar plano automaticamente se há progresso salvo
+  // 7. Gera plano automaticamente se há progresso salvo
   const planState=loadData('PLAN',null);
   if(planState&&planState.pointers&&Object.keys(planState.pointers).length>0) gerarPlano();
   updateCeBadge();
