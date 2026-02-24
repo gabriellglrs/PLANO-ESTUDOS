@@ -45,7 +45,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .db-status.connecting{color:var(--accent);border-color:rgba(91,138,247,.25);background:rgba(91,138,247,.05)}
 .db-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
 
-/* ══ LOADING OVERLAY (NOVO) ══════════════════════════ */
+/* ══ LOADING OVERLAY ══════════════════════════ */
 .loading-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,7,15,.96);backdrop-filter:blur(10px) saturate(1.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease,visibility .5s ease}
 .loading-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .loading-logo{font-size:40px;animation:floatLogo 2s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(91,138,247,.4))}
@@ -60,7 +60,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .loading-step.error{color:var(--red)}
 .loading-sub{font-size:10px;color:var(--muted);font-family:var(--mono);display:flex;align-items:center;gap:7px}
 
-/* ══ SYNC WARNING BANNER (NOVO) ══════════════════════ */
+/* ══ SYNC WARNING BANNER ══════════════════════ */
 .sync-warning-banner{display:none;align-items:center;gap:12px;padding:12px 18px;background:rgba(240,192,64,.05);border:1px solid rgba(240,192,64,.22);border-radius:var(--r-md);margin-bottom:18px;animation:fadeUp .35s ease both}
 .sync-warning-banner.visible{display:flex}
 .sync-warning-text{font-size:12px;color:var(--yellow);flex:1;line-height:1.7}
@@ -254,9 +254,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .hier-cat-hdr.open .hc-arr{transform:rotate(90deg)}
 .hier-cat-body{display:none;padding:4px 0 8px}
 .hier-cat-body.open{display:block}
-.hier-item{display:flex;align-items:flex-start;gap:0;padding:3px 13px 3px 0;line-height:1.5}
+.hier-item{display:flex;align-items:flex-start;gap:0;padding:3px 13px 3px 0;line-height:1.5;transition:background .15s}
+.hier-item:hover{background:rgba(255,255,255,.02)}
 .hier-item .hi-code{font-size:9px;color:var(--muted2);min-width:52px;padding-left:13px;flex-shrink:0;padding-top:1px;font-family:'JetBrains Mono',monospace}
-.hier-item .hi-name{font-size:11px;color:#8a94b0;flex:1}
+.hier-item .hi-name{font-size:11px;color:#8a94b0;flex:1;transition:color .2s,text-decoration .2s}
 .hier-item .hi-qty{font-size:9px;color:#dde2f0;white-space:nowrap;padding-left:6px;padding-top:1px;opacity:.85}
 .hier-item .hi-sess-qs{font-size:9px;font-weight:700;white-space:nowrap;padding-left:6px;padding-top:1px;color:var(--green)}
 .hier-item .hi-acum-qs{font-size:9px;white-space:nowrap;padding-left:4px;padding-top:1px;color:var(--yellow)}
@@ -266,6 +267,74 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .hier-item[data-depth="1"] .hi-code{color:var(--muted)}
 .hier-item[data-depth="2"] .hi-name{color:#6a74a0;font-size:10.5px}
 .hier-item[data-depth="3"] .hi-name{color:#5a647a;font-size:10px;font-style:italic}
+
+/* ══ CHECKBOX STYLES ══════════════════════════════ */
+.hier-checkbox{
+  appearance:none;-webkit-appearance:none;
+  width:14px;height:14px;border-radius:3px;
+  border:1px solid var(--border3);
+  background:transparent;
+  cursor:pointer;
+  flex-shrink:0;
+  margin-top:2px;
+  margin-right:8px;
+  transition:all .18s;
+  position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.hier-checkbox:hover{border-color:var(--accent);background:rgba(91,138,247,.07)}
+.hier-checkbox:checked{background:var(--green);border-color:var(--green);}
+.hier-checkbox:checked::after{
+  content:'✓';
+  position:absolute;
+  color:#05070f;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.hier-item.checked .hi-name{
+  text-decoration:line-through;
+  color:var(--muted2) !important;
+  opacity:.55;
+}
+.hier-item.checked .hi-code{opacity:.4}
+.hier-item.checked .hi-qty{opacity:.3}
+.hier-item.checked .hi-sess-qs{opacity:.3}
+.hier-item.checked{background:rgba(61,219,160,.02) !important}
+
+/* Indice full checkbox styles (larger) */
+.indice-hier-item{display:flex;align-items:flex-start;gap:0;padding:4px 13px 4px 0;line-height:1.6;transition:background .15s}
+.indice-hier-item:hover{background:rgba(255,255,255,.025)}
+.indice-hier-item .hi-code{font-size:9px;color:var(--muted2);padding-left:13px;flex-shrink:0;padding-top:2px;font-family:'JetBrains Mono',monospace;min-width:52px}
+.indice-hier-item .hi-name{font-size:11.5px;color:#8a94b0;flex:1;transition:all .2s}
+.indice-hier-item .hi-qty{font-size:10px;color:#dde2f0;white-space:nowrap;padding-left:8px;padding-top:2px;opacity:.85;font-family:var(--mono)}
+.indice-hier-item[data-depth="0"]{background:rgba(255,255,255,.025)}
+.indice-hier-item[data-depth="0"] .hi-name{color:var(--text);font-weight:600}
+.indice-hier-item[data-depth="0"] .hi-code{color:var(--accent);opacity:.8}
+.indice-hier-item[data-depth="1"] .hi-code{color:var(--muted)}
+.indice-hier-item[data-depth="2"] .hi-name{color:#6a74a0;font-size:10.5px}
+.indice-hier-item[data-depth="3"] .hi-name{color:#5a647a;font-size:10px;font-style:italic}
+.indice-hier-item.checked .hi-name{
+  text-decoration:line-through;
+  color:var(--muted2) !important;
+  opacity:.45;
+}
+.indice-hier-item.checked .hi-code{opacity:.35}
+.indice-hier-item.checked .hi-qty{opacity:.25}
+.indice-hier-item.checked{background:rgba(61,219,160,.018) !important}
+.indice-hier-item.checked[data-depth="0"]{background:rgba(61,219,160,.03) !important}
+
+/* Progress bar for index */
+.indice-progress-bar{height:4px;background:var(--border3);border-radius:2px;overflow:hidden;margin:10px 0 4px}
+.indice-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--accent));transition:width .5s ease}
+.indice-cat-progress{font-size:9px;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;margin-bottom:6px}
+
+/* Global reset btn */
+.indice-reset-row{display:flex;justify-content:flex-end;gap:10px;margin-bottom:16px;align-items:center}
+.indice-stats-chip{font-size:11px;color:var(--green);background:rgba(61,219,160,.07);border:1px solid rgba(61,219,160,.2);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-weight:600}
+
 .divider{margin:12px 0;border:none;border-top:1px solid var(--border)}
 .folga-msg{padding:14px 20px;font-size:12px;color:var(--muted);font-style:italic}
 .day-footer{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-top:1px solid var(--border);background:rgba(255,255,255,.012);gap:10px;flex-wrap:wrap;grid-column:1/-1}
@@ -417,7 +486,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 </head>
 <body>
 
-<!-- ══ LOADING OVERLAY (NOVO) ══════════════════════════════ -->
+<!-- ══ LOADING OVERLAY ══════════════════════════════ -->
 <div class="loading-overlay" id="loading-overlay">
   <div class="loading-logo">📚</div>
   <div class="loading-spinner"></div>
@@ -428,6 +497,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     <div class="loading-step" id="lstep-plan">⬡ Estado do plano</div>
     <div class="loading-step" id="lstep-caderno">⬡ Caderno de erros</div>
     <div class="loading-step" id="lstep-revtimes">⬡ Tempos de revisão</div>
+    <div class="loading-step" id="lstep-indice">⬡ Progresso do índice</div>
   </div>
   <div class="loading-sub"><span class="sync-dot" style="background:var(--accent)"></span>Sincronizando dados da nuvem</div>
 </div>
@@ -456,7 +526,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 
 <div class="container">
 
-  <!-- ══ SYNC WARNING BANNER (NOVO) ══════════════════════════ -->
+  <!-- ══ SYNC WARNING BANNER ══════════════════════════ -->
   <div class="sync-warning-banner" id="sync-warning-banner">
     <span style="font-size:18px;flex-shrink:0">⚠️</span>
     <div class="sync-warning-text">
@@ -644,7 +714,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
   <div class="tab-content" id="tab-indice">
     <div class="panel">
       <div class="panel-title"><span class="icon">📋</span> Índice Completo — TEC Concursos</div>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:18px;line-height:1.8">Todos os tópicos do edital com hierarquia completa e quantidade de questões.</p>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.8">Todos os tópicos do edital com hierarquia completa e quantidade de questões. Marque os tópicos que já fez!</p>
+      <div class="indice-reset-row">
+        <span class="indice-stats-chip" id="indice-global-stats">0 / 0 marcados</span>
+        <button class="btn btn-sm" style="background:transparent;border:1px solid rgba(61,219,160,.25);color:var(--green);font-family:var(--mono);font-size:10px;cursor:pointer;border-radius:6px;padding:5px 13px" onclick="expandirTodosIndice()">↓ Expandir tudo</button>
+        <button class="btn btn-sm" style="background:transparent;border:1px solid rgba(240,80,96,.2);color:var(--red);font-family:var(--mono);font-size:10px;cursor:pointer;border-radius:6px;padding:5px 13px" onclick="confirmarResetIndice()">↺ Desmarcar tudo</button>
+      </div>
       <div id="indice-full"></div>
     </div>
   </div>
@@ -706,10 +781,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 <div class="modal-overlay" id="modal-limpar-tudo" style="display:none">
   <div class="modal-box">
     <div class="modal-title" style="color:var(--red)">🗑 Limpar TUDO?</div>
-    <div class="modal-text">Isso vai apagar <b style="color:var(--red)">TODO o cache e dados na nuvem</b>: progresso, caderno de erros, configurações.<br><b>AÇÃO IRREVERSÍVEL.</b></div>
+    <div class="modal-text">Isso vai apagar <b style="color:var(--red)">TODO o cache e dados na nuvem</b>: progresso, caderno de erros, configurações, progresso do índice.<br><b>AÇÃO IRREVERSÍVEL.</b></div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="fecharModal('modal-limpar-tudo')">Cancelar</button>
       <button class="modal-confirm modal-confirm-red" onclick="executarLimparTudo()">🗑 Apagar tudo</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-reset-indice" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">Desmarcar todos os tópicos?</div>
+    <div class="modal-text">Todo o progresso marcado no índice será removido. O caderno de erros e o plano <b>não</b> serão afetados.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="fecharModal('modal-reset-indice')">Cancelar</button>
+      <button class="modal-confirm modal-confirm-red" onclick="executarResetIndice()">Desmarcar tudo</button>
     </div>
   </div>
 </div>
@@ -726,6 +811,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         <button class="ajuda-nav-item" onclick="showSection('s-supabase')">☁ Dados na nuvem</button>
         <button class="ajuda-nav-item" onclick="showSection('s-caderno')">📓 Caderno de erros</button>
         <button class="ajuda-nav-item" onclick="showSection('s-revisao')">🧠 Revisão espaçada</button>
+        <button class="ajuda-nav-item" onclick="showSection('s-indice')">📋 Índice com checkboxes</button>
       </nav>
       <div class="ajuda-content">
         <div class="ajuda-section active" id="s-visao">
@@ -740,7 +826,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         </div>
         <div class="ajuda-section" id="s-supabase">
           <div class="ajuda-sec-title">☁ Dados na nuvem</div>
-          <div class="ajuda-item"><div class="ai-label">Como funciona</div><div class="ai-text">Toda alteração é salva simultaneamente no Supabase (nuvem) e no localStorage (cache local).</div><div class="ai-tip">💡 Execute o SQL de setup no Supabase antes de usar. Sem as tabelas criadas, apenas o localStorage funciona.</div></div>
+          <div class="ajuda-item"><div class="ai-label">Como funciona</div><div class="ai-text">Toda alteração é salva simultaneamente no Supabase (nuvem) e no localStorage (cache local).</div>
+          <div class="ai-tip">💡 Execute o SQL de setup no Supabase antes de usar. Inclua a tabela <b>indice_progress</b> para salvar os checkboxes do índice na nuvem.</div></div>
         </div>
         <div class="ajuda-section" id="s-caderno">
           <div class="ajuda-sec-title">📓 Caderno de Erros</div>
@@ -754,10 +841,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
             <div class="ai-tip">💡 Padrão 1·3·7·14·30 — o mais adotado por concurseiros experientes.</div>
           </div>
         </div>
+        <div class="ajuda-section" id="s-indice">
+          <div class="ajuda-sec-title">📋 Índice com Checkboxes</div>
+          <div class="ajuda-item">
+            <div class="ai-label">Como usar</div>
+            <div class="ai-text">Na aba <b>Índice TEC</b>, cada tópico e subtópico tem um checkbox. Marque quando terminar as questões daquele assunto. O item ficará <b>riscado</b> indicando que foi concluído.</div>
+            <div class="ai-tip">💡 O progresso é salvo automaticamente no Supabase e no localStorage. Você pode ver sua % de conclusão por matéria e categoria.</div>
+          </div>
+          <div class="ajuda-item">
+            <div class="ai-label">SQL necessário no Supabase</div>
+            <div class="ai-text">Crie a tabela <b style="color:var(--green)">indice_progress</b> com:<br><code style="font-family:var(--mono);font-size:10px;color:var(--accent)">CREATE TABLE indice_progress (user_id text PRIMARY KEY, checked_items jsonb, updated_at timestamptz);</code></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 <script>
 // ══════════════════════════════════════════════════════
 // SUPABASE CONFIG
@@ -772,22 +872,17 @@ let _reconnectTimer = null;
 async function initSupabase() {
   try {
     db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('🔌 Testando conexão Supabase...');
     const { data, error } = await db.from('plano_settings').select('user_id').limit(1);
     if (error) {
       if (error.code === '42P01') {
-        console.error('❌ TABELAS NÃO EXISTEM no Supabase! Execute o SQL de setup primeiro.');
         setDbStatus('offline', '⚠ Tabelas não criadas — veja console');
-        dbOnline = false;
-        return;
+        dbOnline = false; return;
       }
       throw error;
     }
     dbOnline = true;
     setDbStatus('online', '☁ Nuvem conectada');
-    console.log('✅ Supabase conectado com sucesso');
   } catch(e) {
-    console.warn('⚠ Supabase offline:', e.message, e);
     dbOnline = false;
     setDbStatus('offline', '📦 Modo offline');
   }
@@ -801,44 +896,29 @@ function setDbStatus(type, msg) {
 }
 
 // ══════════════════════════════════════════════════════
-// LOADING OVERLAY HELPERS (NOVO)
+// LOADING OVERLAY
 // ══════════════════════════════════════════════════════
-function showLoadingOverlay(){
-  const el=document.getElementById('loading-overlay');
-  if(el) el.classList.remove('hidden');
-}
-function hideLoadingOverlay(){
-  const el=document.getElementById('loading-overlay');
-  if(el) el.classList.add('hidden');
-}
+function showLoadingOverlay(){ const el=document.getElementById('loading-overlay'); if(el) el.classList.remove('hidden'); }
+function hideLoadingOverlay(){ const el=document.getElementById('loading-overlay'); if(el) el.classList.add('hidden'); }
 function setLoadingStep(stepId,state){
-  const el=document.getElementById('lstep-'+stepId);
-  if(!el) return;
+  const el=document.getElementById('lstep-'+stepId); if(!el) return;
   el.className='loading-step '+state;
   const icons={active:'◎ ',done:'✓ ',error:'✗ '};
-  const labels={conn:'Conectando ao Supabase',settings:'Configurações',plan:'Estado do plano',caderno:'Caderno de erros',revtimes:'Tempos de revisão'};
+  const labels={conn:'Conectando ao Supabase',settings:'Configurações',plan:'Estado do plano',caderno:'Caderno de erros',revtimes:'Tempos de revisão',indice:'Progresso do índice'};
   el.textContent=(icons[state]||'⬡ ')+(labels[stepId]||stepId);
 }
 
 // ══════════════════════════════════════════════════════
-// SYNC WARNING BANNER (NOVO)
+// SYNC WARNING BANNER
 // ══════════════════════════════════════════════════════
 function showSyncWarning(failedTables){
-  const banner=document.getElementById('sync-warning-banner');
-  const msg=document.getElementById('sync-warning-msg');
+  const banner=document.getElementById('sync-warning-banner'); const msg=document.getElementById('sync-warning-msg');
   if(!banner) return;
-  if(failedTables&&failedTables.length>0&&msg)
-    msg.textContent='tabelas com falha: '+failedTables.join(', ')+'.';
+  if(failedTables&&failedTables.length>0&&msg) msg.textContent='tabelas com falha: '+failedTables.join(', ')+'.';
   banner.classList.add('visible');
 }
-function hideSyncWarning(){
-  const banner=document.getElementById('sync-warning-banner');
-  if(banner) banner.classList.remove('visible');
-}
+function hideSyncWarning(){ const banner=document.getElementById('sync-warning-banner'); if(banner) banner.classList.remove('visible'); }
 
-// ══════════════════════════════════════════════════════
-// RETRY SYNC (NOVO)
-// ══════════════════════════════════════════════════════
 async function retrySyncAll(){
   const btn=document.querySelector('.sync-warning-btn');
   if(btn){btn.textContent='⟳ Sincronizando...';btn.disabled=true;}
@@ -847,7 +927,7 @@ async function retrySyncAll(){
   if(dbOnline){
     const {synced,failed}=await sbLoadAll();
     if(failed.length===0){
-      hideSyncWarning();showToast('ok');
+      hideSyncWarning(); showToast('ok');
       const saved=loadData('SETTINGS',null);
       if(saved){
         if(saved.dataInicio) document.getElementById('data-inicio').value=saved.dataInicio;
@@ -861,242 +941,230 @@ async function retrySyncAll(){
       const planState=loadData('PLAN',null);
       if(planState&&planState.pointers&&Object.keys(planState.pointers).length>0) gerarPlano();
       updateCeBadge();
-    } else {showSyncWarning(failed);showToast('err');}
-  } else {showToast('err');}
+      if(document.getElementById('tab-indice').classList.contains('active')) renderFullIndex();
+    } else {showSyncWarning(failed); showToast('err');}
+  } else { showToast('err'); }
   if(btn){btn.textContent='↺ Tentar novamente';btn.disabled=false;}
 }
 
 // ══════════════════════════════════════════════════════
-// TOAST DE SINCRONIZAÇÃO
+// TOAST
 // ══════════════════════════════════════════════════════
 let _toastTimer = null;
 function showToast(type) {
-  ['syncing','ok','err'].forEach(t => {
-    const el = document.getElementById('toast-' + t);
-    if (el) el.classList.remove('show');
-  });
-  const el = document.getElementById('toast-' + type);
-  if (el) el.classList.add('show');
+  ['syncing','ok','err'].forEach(t => { const el=document.getElementById('toast-'+t); if(el) el.classList.remove('show'); });
+  const el=document.getElementById('toast-'+type); if(el) el.classList.add('show');
   clearTimeout(_toastTimer);
-  if (type !== 'syncing') {
-    _toastTimer = setTimeout(() => { if (el) el.classList.remove('show'); }, 2500);
-  }
+  if(type!=='syncing') _toastTimer=setTimeout(()=>{ if(el) el.classList.remove('show'); },2500);
 }
 
 // ══════════════════════════════════════════════════════
-// STORAGE — DUAL (Supabase + localStorage)
+// STORAGE KEYS
 // ══════════════════════════════════════════════════════
 const SK = {
   PLAN:     'plano_state_v6',
   CE:       'caderno_erros_v2',
   SETTINGS: 'plano_settings_v3',
-  REV_TIME: 'plano_rev_times_v1'
+  REV_TIME: 'plano_rev_times_v1',
+  INDICE:   'plano_indice_progress_v1'   // ← NOVO
 };
 
 function lsSave(key, val) {
-  try {
-    const str = JSON.stringify(val);
-    localStorage.setItem(key, str);
-    localStorage.setItem(key + '__bk', str);
-  } catch(e) { console.warn('localStorage save error:', e); }
+  try { const str=JSON.stringify(val); localStorage.setItem(key,str); localStorage.setItem(key+'__bk',str); } catch(e) {}
 }
-
 function lsLoad(key, def) {
-  try {
-    const r = localStorage.getItem(key);
-    if (r) return JSON.parse(r);
-    const bk = localStorage.getItem(key + '__bk');
-    if (bk) return JSON.parse(bk);
-  } catch(e) {}
+  try { const r=localStorage.getItem(key); if(r) return JSON.parse(r); const bk=localStorage.getItem(key+'__bk'); if(bk) return JSON.parse(bk); } catch(e) {}
   return def;
 }
 
 async function sbGet(table) {
-  if (!db || !dbOnline) return null;
+  if(!db||!dbOnline) return null;
   try {
-    const { data, error } = await db.from(table).select('*').eq('user_id', USER_ID).limit(1);
-    if (error) {
-      console.error(`❌ sbGet(${table}):`, error.code, error.message);
-      throw error;
-    }
-    console.log(`📥 sbGet(${table}):`, data ? data.length + ' rows' : 'null');
-    return (data && data.length > 0) ? data[0] : null;
-  } catch(e) {
-    console.warn(`sbGet(${table}) error:`, e.message);
-    return null;
-  }
+    const {data,error}=await db.from(table).select('*').eq('user_id',USER_ID).limit(1);
+    if(error) throw error;
+    return (data&&data.length>0)?data[0]:null;
+  } catch(e) { return null; }
 }
 
 async function sbUpsert(table, row) {
-  if (!db) { console.warn('sbUpsert: db not initialized'); return false; }
-  if (!dbOnline) { console.warn(`sbUpsert(${table}): offline, pulando`); return false; }
+  if(!db||!dbOnline) return false;
   try {
-    console.log(`📤 sbUpsert(${table})`, JSON.stringify(row).slice(0, 150) + '...');
-    const { data, error } = await db
-      .from(table)
-      .upsert({ ...row, user_id: USER_ID }, { onConflict: 'user_id' });
-    if (error) {
-      console.error(`❌ sbUpsert(${table}):`, error.code, error.message, error.details, error.hint);
-      throw error;
-    }
-    console.log(`✅ sbUpsert(${table}) salvo com sucesso`);
+    const {error}=await db.from(table).upsert({...row,user_id:USER_ID},{onConflict:'user_id'});
+    if(error) throw error;
     return true;
-  } catch(e) {
-    console.error(`sbUpsert(${table}) exception:`, e);
-    return false;
-  }
+  } catch(e) { console.error(`sbUpsert(${table}):`,e); return false; }
 }
 
 async function saveData(type, val) {
   lsSave(SK[type], val);
   showSaveOk();
-  if (!db || !dbOnline) {
-    console.log(`saveData(${type}): offline, salvo só localmente`);
-    return;
-  }
+  if(!db||!dbOnline) return;
   showToast('syncing');
-  let ok = false;
+  let ok=false;
   try {
-    if (type === 'SETTINGS') {
-      ok = await sbUpsert('plano_settings', {
-        data_inicio: val.dataInicio || null,
-        duracao:     val.duracao || 3,
-        qph:         val.qph || 15,
-        nivel:       val.nivel || 1.0,
-        day_hours:   val.dayHours || {},
-        preset:      val.preset || 'concursos',
-        inicio_modo: val.inicioModo || 'data-exata',
-        updated_at:  new Date().toISOString()
-      });
-    } else if (type === 'PLAN') {
-      ok = await sbUpsert('plano_state', {
-        pointers:    val.pointers || {},
-        voltas:      val.voltas || {},
-        acumulo:     val.acumulo || {},
-        dias_feitos: val.diasFeitos || {},
-        updated_at:  new Date().toISOString()
-      });
-    } else if (type === 'REV_TIME') {
-      ok = await sbUpsert('rev_times', {
-        times:      val,
-        updated_at: new Date().toISOString()
-      });
-    } else if (type === 'CE') {
-      const { error: delErr } = await db.from('caderno_erros').delete().eq('user_id', USER_ID);
-      if (delErr) { console.error('❌ CE delete error:', delErr); throw delErr; }
-      if (val.length > 0) {
-        const rows = val.map(e => ({
-          id:            e.id,
-          user_id:       USER_ID,
-          mat:           e.mat,
-          topico:        e.topico || '',
-          link:          e.link || '',
-          data_erro:     e.dataErro,
-          steps:         e.steps || [],
-          interval_dias: e.intervalDias || []
-        }));
-        console.log(`📤 CE insert: ${rows.length} rows`);
-        const { error: insErr } = await db.from('caderno_erros').insert(rows);
-        if (insErr) { console.error('❌ CE insert error:', insErr); throw insErr; }
+    if(type==='SETTINGS') {
+      ok=await sbUpsert('plano_settings',{data_inicio:val.dataInicio||null,duracao:val.duracao||3,qph:val.qph||15,nivel:val.nivel||1.0,day_hours:val.dayHours||{},preset:val.preset||'concursos',inicio_modo:val.inicioModo||'data-exata',updated_at:new Date().toISOString()});
+    } else if(type==='PLAN') {
+      ok=await sbUpsert('plano_state',{pointers:val.pointers||{},voltas:val.voltas||{},acumulo:val.acumulo||{},dias_feitos:val.diasFeitos||{},updated_at:new Date().toISOString()});
+    } else if(type==='REV_TIME') {
+      ok=await sbUpsert('rev_times',{times:val,updated_at:new Date().toISOString()});
+    } else if(type==='INDICE') {
+      // ← NOVO: salva progresso do índice
+      ok=await sbUpsert('indice_progress',{checked_items:val,updated_at:new Date().toISOString()});
+    } else if(type==='CE') {
+      const {error:delErr}=await db.from('caderno_erros').delete().eq('user_id',USER_ID);
+      if(delErr) throw delErr;
+      if(val.length>0){
+        const rows=val.map(e=>({id:e.id,user_id:USER_ID,mat:e.mat,topico:e.topico||'',link:e.link||'',data_erro:e.dataErro,steps:e.steps||[],interval_dias:e.intervalDias||[]}));
+        const {error:insErr}=await db.from('caderno_erros').insert(rows);
+        if(insErr) throw insErr;
       }
-      ok = true;
+      ok=true;
     }
-    if (ok) { showToast('ok'); console.log(`✅ Supabase salvo: ${type}`); }
-    else { showToast('err'); console.warn(`⚠ saveData(${type}): sbUpsert retornou false`); }
+    if(ok) showToast('ok'); else showToast('err');
   } catch(e) {
-    console.error(`saveData(${type}) erro Supabase:`, e.message || e);
+    console.error(`saveData(${type}):`,e);
     showToast('err');
-    setDbStatus('offline', '⚠ Erro de sync — reconectando...');
+    setDbStatus('offline','⚠ Erro de sync — reconectando...');
     clearTimeout(_reconnectTimer);
-    _reconnectTimer = setTimeout(async () => {
-      console.log('🔄 Tentando reconectar ao Supabase...');
-      await initSupabase();
-    }, 5000);
+    _reconnectTimer=setTimeout(async()=>{ await initSupabase(); },5000);
   }
 }
 
-function loadData(type, def) {
-  return lsLoad(SK[type], def);
-}
+function loadData(type, def) { return lsLoad(SK[type], def); }
 
 // ══════════════════════════════════════════════════════
-// sbLoadAll — MODIFICADO: retorna {synced, failed} com progress steps
+// sbLoadAll — com progresso do índice
 // ══════════════════════════════════════════════════════
 async function sbLoadAll(){
   if(!db||!dbOnline) return {synced:0,failed:[]};
-  const failed=[];let synced=0;
+  const failed=[]; let synced=0;
 
   setLoadingStep('settings','active');
   try{
     const sRow=await sbGet('plano_settings');
-    if(sRow){
-      lsSave(SK.SETTINGS,{
-        dataInicio:sRow.data_inicio,duracao:sRow.duracao,qph:sRow.qph,nivel:sRow.nivel,
-        dayHours:sRow.day_hours||{},preset:sRow.preset,inicioModo:sRow.inicio_modo
-      });
-      synced++;console.log('✅ plano_settings carregado');
-    }
+    if(sRow){ lsSave(SK.SETTINGS,{dataInicio:sRow.data_inicio,duracao:sRow.duracao,qph:sRow.qph,nivel:sRow.nivel,dayHours:sRow.day_hours||{},preset:sRow.preset,inicioModo:sRow.inicio_modo}); synced++; }
     setLoadingStep('settings','done');
-  }catch(e){console.warn('sbLoadAll plano_settings:',e.message);failed.push('configurações');setLoadingStep('settings','error');}
+  }catch(e){failed.push('configurações');setLoadingStep('settings','error');}
 
   setLoadingStep('plan','active');
   try{
     const pRow=await sbGet('plano_state');
-    if(pRow){
-      lsSave(SK.PLAN,{pointers:pRow.pointers||{},voltas:pRow.voltas||{},acumulo:pRow.acumulo||{},diasFeitos:pRow.dias_feitos||{}});
-      synced++;console.log('✅ plano_state carregado');
-    }
+    if(pRow){ lsSave(SK.PLAN,{pointers:pRow.pointers||{},voltas:pRow.voltas||{},acumulo:pRow.acumulo||{},diasFeitos:pRow.dias_feitos||{}}); synced++; }
     setLoadingStep('plan','done');
-  }catch(e){console.warn('sbLoadAll plano_state:',e.message);failed.push('plano');setLoadingStep('plan','error');}
+  }catch(e){failed.push('plano');setLoadingStep('plan','error');}
 
   setLoadingStep('caderno','active');
   try{
     const {data:ceRows,error:ceErr}=await db.from('caderno_erros').select('*').eq('user_id',USER_ID).order('id');
     if(ceErr) throw ceErr;
-    if(ceRows&&ceRows.length>0){
-      lsSave(SK.CE,ceRows.map(r=>({id:r.id,mat:r.mat,topico:r.topico,link:r.link,dataErro:r.data_erro,steps:r.steps||[],intervalDias:r.interval_dias||[]})));
-      synced++;console.log('✅ caderno_erros: '+ceRows.length+' registros');
-    }
+    if(ceRows&&ceRows.length>0){ lsSave(SK.CE,ceRows.map(r=>({id:r.id,mat:r.mat,topico:r.topico,link:r.link,dataErro:r.data_erro,steps:r.steps||[],intervalDias:r.interval_dias||[]}))); synced++; }
     setLoadingStep('caderno','done');
-  }catch(e){console.warn('sbLoadAll caderno_erros:',e.message);failed.push('caderno');setLoadingStep('caderno','error');}
+  }catch(e){failed.push('caderno');setLoadingStep('caderno','error');}
 
   setLoadingStep('revtimes','active');
   try{
     const rRow=await sbGet('rev_times');
-    if(rRow&&rRow.times){lsSave(SK.REV_TIME,rRow.times);synced++;console.log('✅ rev_times carregado');}
+    if(rRow&&rRow.times){ lsSave(SK.REV_TIME,rRow.times); synced++; }
     setLoadingStep('revtimes','done');
-  }catch(e){console.warn('sbLoadAll rev_times:',e.message);failed.push('rev_times');setLoadingStep('revtimes','error');}
+  }catch(e){failed.push('rev_times');setLoadingStep('revtimes','error');}
 
-  console.log('✅ sbLoadAll: '+synced+'/4 | Falhas: '+(failed.join(', ')||'nenhuma'));
-  return{synced,failed};
+  // ← NOVO: carrega progresso do índice
+  setLoadingStep('indice','active');
+  try{
+    const iRow=await sbGet('indice_progress');
+    if(iRow&&iRow.checked_items){ lsSave(SK.INDICE,iRow.checked_items); synced++; }
+    setLoadingStep('indice','done');
+  }catch(e){failed.push('indice_progress');setLoadingStep('indice','error');}
+
+  return {synced,failed};
 }
 
 function showSaveOk() {
-  ['save-ok','save-ok-sticky'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.add('show');
-    clearTimeout(el._t);
-    el._t = setTimeout(() => el.classList.remove('show'), 2200);
+  ['save-ok','save-ok-sticky'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.classList.add('show'); clearTimeout(el._t);
+    el._t=setTimeout(()=>el.classList.remove('show'),2200);
   });
 }
 
 window.diagnosticoSupabase = async function() {
   console.group('🔍 Diagnóstico Supabase');
-  console.log('db inicializado:', !!db);
-  console.log('dbOnline:', dbOnline);
-  console.log('URL:', SUPABASE_URL);
-  if (!db) { console.error('db é null — initSupabase() não foi chamado?'); console.groupEnd(); return; }
-  const tables = ['plano_settings','plano_state','caderno_erros','rev_times'];
-  for (const t of tables) {
-    try {
-      const { data, error } = await db.from(t).select('*').eq('user_id', USER_ID).limit(5);
-      if (error) console.error(`  ❌ ${t}:`, error.code, error.message);
-      else console.log(`  ✅ ${t}: ${(data||[]).length} rows`, data);
-    } catch(e) { console.error(`  ❌ ${t} exception:`, e.message); }
+  const tables=['plano_settings','plano_state','caderno_erros','rev_times','indice_progress'];
+  for(const t of tables){
+    try{
+      const {data,error}=await db.from(t).select('*').eq('user_id',USER_ID).limit(5);
+      if(error) console.error(`  ❌ ${t}:`,error.code,error.message);
+      else console.log(`  ✅ ${t}: ${(data||[]).length} rows`,data);
+    }catch(e){console.error(`  ❌ ${t}:`,e.message);}
   }
   console.groupEnd();
 };
+
+// ══════════════════════════════════════════════════════
+// ÍNDICE PROGRESS — NOVO
+// ══════════════════════════════════════════════════════
+
+// Gera um ID único para cada item do índice a partir de mat + hier
+function makeIndiceKey(mat, hier) { return mat + '__' + hier; }
+
+function getIndiceProgress() { return lsLoad(SK.INDICE, {}); }
+
+async function toggleIndiceItem(mat, hier, checked) {
+  const progress = getIndiceProgress();
+  const key = makeIndiceKey(mat, hier);
+  if(checked) progress[key] = true;
+  else delete progress[key];
+  await saveData('INDICE', progress);
+  // Atualiza TODOS os elementos com essa chave na pagina
+  // (mesmo topico pode aparecer em varios dias do plano E na aba indice)
+  document.querySelectorAll('[data-indice-key="' + key + '"]').forEach(function(itemEl) {
+    itemEl.classList.toggle('checked', checked);
+    const cb = itemEl.querySelector('.hier-checkbox');
+    if(cb) cb.checked = checked;
+  });
+  updateIndiceStats();
+}
+
+function updateIndiceStats() {
+  const progress = getIndiceProgress();
+  const totalChecked = Object.keys(progress).length;
+  // Conta total de items com hier
+  let totalItems = 0;
+  Object.keys(TOPICOS_HIER).forEach(mat => {
+    const data = TOPICOS_HIER[mat];
+    data.categories.forEach(cat => { totalItems += cat.items.length; });
+  });
+  const el = document.getElementById('indice-global-stats');
+  if(el) el.textContent = totalChecked + ' / ' + totalItems + ' marcados (' + Math.round(totalChecked/Math.max(1,totalItems)*100) + '%)';
+}
+
+function expandirTodosIndice() {
+  document.querySelectorAll('.hier-body').forEach(b => {
+    b.classList.add('open');
+    const btn = document.getElementById('btn_' + b.id);
+    if(btn) { btn.classList.add('open'); const arr=btn.querySelector('.ht-arrow'); if(arr) arr.style.transform='rotate(90deg)'; }
+  });
+  document.querySelectorAll('.hier-cat-body').forEach(b => {
+    b.classList.add('open');
+    const btn = document.getElementById('btn_' + b.id);
+    if(btn) btn.classList.add('open');
+  });
+}
+
+function confirmarResetIndice() { document.getElementById('modal-reset-indice').style.display='flex'; }
+
+async function executarResetIndice() {
+  fecharModal('modal-reset-indice');
+  await saveData('INDICE', {});
+  // Limpa visual
+  document.querySelectorAll('.indice-hier-item.checked').forEach(el => {
+    el.classList.remove('checked');
+    const cb = el.querySelector('.hier-checkbox');
+    if(cb) cb.checked = false;
+  });
+  updateIndiceStats();
+}
 
 // ══════════════════════════════════════════════════════
 // DADOS
@@ -1216,10 +1284,7 @@ function getRevTimes(){ return lsLoad(SK.REV_TIME, Object.assign({}, DEFAULT_REV
 
 async function saveRevTimes(){
   const times={};
-  DIAS_SEMANA.forEach((dia,i)=>{
-    const el=document.getElementById('rev-time-'+i);
-    times[dia]=el?Math.max(0,parseInt(el.value)||0):(DEFAULT_REV_TIMES[dia]||30);
-  });
+  DIAS_SEMANA.forEach((dia,i)=>{ const el=document.getElementById('rev-time-'+i); times[dia]=el?Math.max(0,parseInt(el.value)||0):(DEFAULT_REV_TIMES[dia]||30); });
   await saveData('REV_TIME', times);
   updateRevTimeTotals();
   return times;
@@ -1227,13 +1292,8 @@ async function saveRevTimes(){
 
 function updateRevTimeTotals(){
   let total=0,count=0;
-  DIAS_SEMANA.forEach((dia,i)=>{
-    const el=document.getElementById('rev-time-'+i);
-    const v=el?Math.max(0,parseInt(el.value)||0):0;
-    total+=v; if(v>0) count++;
-  });
-  const semEl=document.getElementById('ce-rev-total-semanal');
-  const medEl=document.getElementById('ce-rev-media');
+  DIAS_SEMANA.forEach((dia,i)=>{ const el=document.getElementById('rev-time-'+i); const v=el?Math.max(0,parseInt(el.value)||0):0; total+=v; if(v>0) count++; });
+  const semEl=document.getElementById('ce-rev-total-semanal'); const medEl=document.getElementById('ce-rev-media');
   if(semEl) semEl.textContent=formatMinAsTime(total);
   if(medEl) medEl.textContent=count>0?Math.round(total/count)+'min':'0min';
 }
@@ -1241,37 +1301,23 @@ function updateRevTimeTotals(){
 function buildRevTimeGrid(){
   const grid=document.getElementById('ce-rev-time-grid'); if(!grid) return;
   const saved=getRevTimes();
-  grid.innerHTML=DIAS_SEMANA.map((dia,i)=>{
-    const val=saved[dia]!==undefined?saved[dia]:(DEFAULT_REV_TIMES[dia]||30);
-    return `<div class="ce-rev-time-cell"><label>${DIAS_SHORT[i]}</label><input type="number" id="rev-time-${i}" min="0" max="180" value="${val}" oninput="saveRevTimes()" placeholder="0"></div>`;
-  }).join('');
+  grid.innerHTML=DIAS_SEMANA.map((dia,i)=>{ const val=saved[dia]!==undefined?saved[dia]:(DEFAULT_REV_TIMES[dia]||30); return `<div class="ce-rev-time-cell"><label>${DIAS_SHORT[i]}</label><input type="number" id="rev-time-${i}" min="0" max="180" value="${val}" oninput="saveRevTimes()" placeholder="0"></div>`; }).join('');
   updateRevTimeTotals();
 }
 
 async function resetRevTimes(){
-  DIAS_SEMANA.forEach((dia,i)=>{
-    const el=document.getElementById('rev-time-'+i);
-    if(el) el.value=DEFAULT_REV_TIMES[dia]||30;
-  });
+  DIAS_SEMANA.forEach((dia,i)=>{ const el=document.getElementById('rev-time-'+i); if(el) el.value=DEFAULT_REV_TIMES[dia]||30; });
   await saveRevTimes();
 }
 
-function getRevMinForDay(date){
-  const jsDay=date.getDay(); const baseIdx=jsDay===0?6:jsDay-1;
-  const dia=DIAS_SEMANA[baseIdx]; const times=getRevTimes();
-  return times[dia]!==undefined?times[dia]:(DEFAULT_REV_TIMES[dia]||30);
-}
+function getRevMinForDay(date){ const jsDay=date.getDay(); const baseIdx=jsDay===0?6:jsDay-1; const dia=DIAS_SEMANA[baseIdx]; const times=getRevTimes(); return times[dia]!==undefined?times[dia]:(DEFAULT_REV_TIMES[dia]||30); }
 
-window.addEventListener('scroll',()=>{
-  const nav=document.getElementById('sticky-nav');
-  if(nav) nav.classList.toggle('visible',window.scrollY>120);
-},{passive:true});
+window.addEventListener('scroll',()=>{ const nav=document.getElementById('sticky-nav'); if(nav) nav.classList.toggle('visible',window.scrollY>120); },{passive:true});
 
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  const content=document.getElementById('tab-'+name);
-  if(content) content.classList.add('active');
+  const content=document.getElementById('tab-'+name); if(content) content.classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>{ if((t.getAttribute('onclick')||'').includes("'"+name+"'")) t.classList.add('active'); });
   if(name==='caderno') renderCaderno();
   if(name==='indice') renderFullIndex();
@@ -1291,11 +1337,7 @@ async function setPreset(name){
   await saveSettings();
 }
 
-function syncRange(id,valId){
-  const el=document.getElementById(valId); const src=document.getElementById(id);
-  if(el&&src) el.textContent=src.value;
-  saveSettings();
-}
+function syncRange(id,valId){ const el=document.getElementById(valId); const src=document.getElementById(id); if(el&&src) el.textContent=src.value; saveSettings(); }
 
 async function saveSettings(){ await saveData('SETTINGS', getSettings()); }
 
@@ -1342,29 +1384,11 @@ function updateDhCard(i){
   document.getElementById('dh-card-'+i).className='dh'+(isFolga?' folga':'');
   saveSettings();
 }
-function toggleFolga(i){
-  const sl=document.getElementById('dh-range-'+i); if(!sl) return;
-  sl.value=parseFloat(sl.value)===0?(DEFAULT_HOURS[DIAS_SEMANA[i]]||5):0;
-  updateDhCard(i);
-}
-function formatHorasMin(h){
-  if(!h||h===0) return 'folga';
-  const hrs=Math.floor(h); const min=Math.round((h-hrs)*60);
-  if(hrs>0&&min>0) return hrs+'h '+min+'min';
-  if(hrs>0) return hrs+'h';
-  return min+'min';
-}
+function toggleFolga(i){ const sl=document.getElementById('dh-range-'+i); if(!sl) return; sl.value=parseFloat(sl.value)===0?(DEFAULT_HOURS[DIAS_SEMANA[i]]||5):0; updateDhCard(i); }
+function formatHorasMin(h){ if(!h||h===0) return 'folga'; const hrs=Math.floor(h); const min=Math.round((h-hrs)*60); if(hrs>0&&min>0) return hrs+'h '+min+'min'; if(hrs>0) return hrs+'h'; return min+'min'; }
 
-function toggleSemana(weekId){
-  const body=document.getElementById('week-body-'+weekId); const hdr=document.getElementById('week-hdr-'+weekId);
-  if(!body||!hdr) return; body.classList.toggle('open'); hdr.classList.toggle('open');
-}
-function toggleDia(cardStr){
-  const body=document.getElementById('dayb-'+cardStr); const hdr=document.getElementById('dayh-'+cardStr);
-  if(!body||!hdr) return;
-  const isOpen=hdr.classList.contains('open');
-  body.style.display=isOpen?'none':'block'; hdr.classList.toggle('open');
-}
+function toggleSemana(weekId){ const body=document.getElementById('week-body-'+weekId); const hdr=document.getElementById('week-hdr-'+weekId); if(!body||!hdr) return; body.classList.toggle('open'); hdr.classList.toggle('open'); }
+function toggleDia(cardStr){ const body=document.getElementById('dayb-'+cardStr); const hdr=document.getElementById('dayh-'+cardStr); if(!body||!hdr) return; const isOpen=hdr.classList.contains('open'); body.style.display=isOpen?'none':'block'; hdr.classList.toggle('open'); }
 
 function buildFreshPlan(){ return {pointers:{},voltas:{},acumulo:{},diasFeitos:{}}; }
 
@@ -1375,16 +1399,8 @@ function applySessionsToState(manha,noite,manhaH,noiteH,noite2H,qsHora,state){
 }
 function applySessionToState(sess,horas,qsHora,state){ if(horas>=0.05) getTopicos(sess.mat,horas,qsHora,state); }
 
-function calcRevStats(totalSemanas){
-  const times=getRevTimes(); let total=0;
-  DIAS_SEMANA.forEach(dia=>{ total+=(times[dia]||0); });
-  return {semana:total, total:total*totalSemanas};
-}
-function formatMinAsTime(min){
-  if(min===0) return '0min'; if(min<60) return min+'min';
-  const h=Math.floor(min/60); const m=min%60;
-  return h+'h'+(m>0?m+'min':'');
-}
+function calcRevStats(totalSemanas){ const times=getRevTimes(); let total=0; DIAS_SEMANA.forEach(dia=>{ total+=(times[dia]||0); }); return {semana:total, total:total*totalSemanas}; }
+function formatMinAsTime(min){ if(min===0) return '0min'; if(min<60) return min+'min'; const h=Math.floor(min/60); const m=min%60; return h+'h'+(m>0?m+'min':''); }
 
 function gerarPlano(){
   const settings=getSettings(); saveSettings();
@@ -1420,10 +1436,7 @@ function gerarPlano(){
 
   const inicioModo=settings.inicioModo||'data-exata';
   let currentDate=new Date(inicio);
-  if(inicioModo==='segunda-feira'){
-    const inicioDay=inicio.getDay();
-    currentDate.setDate(currentDate.getDate()+(inicioDay===0?-6:1-inicioDay));
-  }
+  if(inicioModo==='segunda-feira'){ const inicioDay=inicio.getDay(); currentDate.setDate(currentDate.getDate()+(inicioDay===0?-6:1-inicioDay)); }
 
   for(let weekNum=0;weekNum<totalSemanas;weekNum++){
     const weekStart=new Date(currentDate); const weekEnd=new Date(currentDate); weekEnd.setDate(weekEnd.getDate()+6);
@@ -1455,10 +1468,7 @@ function gerarPlano(){
       weekRevMin+=revMinDia;
 
       const revBlock=revisoesDoDia.length>0
-        ?`<div class="rev-chips">${revisoesDoDia.map(r=>{
-            const cls=cardStr<todayStr?'overdue-chip':isToday?'today-chip':'normal';
-            return `<span class="rev-chip ${cls}">${r.mat}<span style="opacity:.6;font-size:9px"> · rev.${r.stepLabel}</span></span>`;
-          }).join('')}</div>`
+        ?`<div class="rev-chips">${revisoesDoDia.map(r=>{ const cls=cardStr<todayStr?'overdue-chip':isToday?'today-chip':'normal'; return `<span class="rev-chip ${cls}">${r.mat}<span style="opacity:.6;font-size:9px"> · rev.${r.stepLabel}</span></span>`; }).join('')}</div>`
         :'<div class="rev-empty">Sem revisões</div>';
 
       if(isFolga){
@@ -1504,10 +1514,7 @@ function gerarPlano(){
       let revBodyBlock='';
       if(revMinDia>0&&revisoesDoDia.length>0){
         revBodyBlock=`<div class="rev-session-block"><div class="rev-session-title">📓 Revisão do Caderno · ${revMinDia}min</div>
-          <div class="rev-session-list">${revisoesDoDia.map(r=>{
-            const mc=MAT_COLORS[r.mat]||'var(--accent)';
-            return `<div class="rev-session-item"><span class="rev-session-mat" style="color:${mc};background:${mc}18;border-color:${mc}44">${r.mat}</span>${r.topico&&r.topico!=='—'?`<span>${r.topico.slice(0,30)}</span>`:''}<span style="color:var(--muted);font-size:9px">rev. ${r.stepLabel}</span></div>`;
-          }).join('')}
+          <div class="rev-session-list">${revisoesDoDia.map(r=>{ const mc=MAT_COLORS[r.mat]||'var(--accent)'; return `<div class="rev-session-item"><span class="rev-session-mat" style="color:${mc};background:${mc}18;border-color:${mc}44">${r.mat}</span>${r.topico&&r.topico!=='—'?`<span>${r.topico.slice(0,30)}</span>`:''}<span style="color:var(--muted);font-size:9px">rev. ${r.stepLabel}</span></div>`; }).join('')}
           <div class="rev-session-total"><span>${revisoesDoDia.length} revisão${revisoesDoDia.length>1?'ões':''}</span><span style="color:var(--yellow)">~${Math.round(revMinDia/revisoesDoDia.length)}min cada</span></div>
         </div></div>`;
       } else if(revMinDia>0){
@@ -1570,11 +1577,7 @@ function renderSessao(sess,horas,qsHora,state){
 function renderSessaoNoite(noite,noiteH,noite2H,qsHora,state){
   let html='',qs=0;
   const r1=renderSessao(noite,noiteH,qsHora,state); html+=r1.html; qs+=r1.qs;
-  if(noite.mat2&&noite2H>0.05){
-    html+='<hr class="divider">';
-    const r2=renderSessao({mat:noite.mat2,badge:noite.badge2,label:noite.label2},noite2H,qsHora,state);
-    html+=r2.html; qs+=r2.qs;
-  }
+  if(noite.mat2&&noite2H>0.05){ html+='<hr class="divider">'; const r2=renderSessao({mat:noite.mat2,badge:noite.badge2,label:noite.label2},noite2H,qsHora,state); html+=r2.html; qs+=r2.qs; }
   return {html,qs};
 }
 function renderTopicsList(lista,isRedacao){
@@ -1586,13 +1589,8 @@ function renderTopicsList(lista,isRedacao){
     const statusTag=t.parcial?'<em style="font-size:10px;color:var(--yellow);font-style:normal;font-weight:400">(continua...)</em>':t.completo?'<em style="font-size:10px;color:var(--green);font-style:normal;font-weight:400">✓ completo</em>':'';
     const acumBadge=t.qsAcumuladas&&t.qsAcumuladas>0?`<span class="acum-badge">+${t.qsAcumuladas} acum.</span>`:'';
     let metaHtml;
-    if(isRedacao){
-      metaHtml=`<div class="t-meta"><span class="t-h">~${Math.round(t.hUsed*60)}min de prática</span></div>`;
-    } else {
-      const pct=t.qty>0?Math.min(100,Math.round((t.qsFeitos/t.qty)*100)):0;
-      const totalComAcum=t.qty+(t.qsAcumuladas||0);
-      metaHtml=`<div class="t-meta"><span class="t-qs">~${t.qsFeitos} questões</span><span class="t-total">de ${totalComAcum} total${t.qsAcumuladas>0?' ('+t.qty+' banco+'+t.qsAcumuladas+'↺)':''}</span><span class="t-h">${formatHorasMin(t.hUsed)}</span></div><div class="t-bar"><div class="t-fill" style="width:${pct}%"></div></div>`;
-    }
+    if(isRedacao){ metaHtml=`<div class="t-meta"><span class="t-h">~${Math.round(t.hUsed*60)}min de prática</span></div>`; }
+    else { const pct=t.qty>0?Math.min(100,Math.round((t.qsFeitos/t.qty)*100)):0; const totalComAcum=t.qty+(t.qsAcumuladas||0); metaHtml=`<div class="t-meta"><span class="t-qs">~${t.qsFeitos} questões</span><span class="t-total">de ${totalComAcum} total${t.qsAcumuladas>0?' ('+t.qty+' banco+'+t.qsAcumuladas+'↺)':''}</span><span class="t-h">${formatHorasMin(t.hUsed)}</span></div><div class="t-bar"><div class="t-fill" style="width:${pct}%"></div></div>`; }
     return `<li class="${cls}"><div class="t-nome"><span class="stag ${stag}">${slabel}</span>${t.nome}${acumBadge}${statusTag}</div>${metaHtml}</li>`;
   }).join('')+'</ul>';
 }
@@ -1619,7 +1617,14 @@ function renderHierIndex(mat,sessionItems,state){
         const indent=item.depth*14; const isMain=item.depth===0;
         const entry=hierSessMap[item.hier]||{sessQs:0,acumQs:0};
         const bgStyle=isMain?'background:rgba(79,126,245,.04);border-bottom:1px solid var(--border2);':'';
-        itensHtml+=`<div class="hier-item" data-depth="${item.depth}" style="padding-left:${13+indent}px;${bgStyle}">
+        const iKey=makeIndiceKey(mat,item.hier);
+        const isChecked=!!(getIndiceProgress()[iKey]);
+        const checkedCls=isChecked?'checked':'';
+        itensHtml+=`<div class="hier-item ${checkedCls}" data-depth="${item.depth}" data-indice-key="${iKey}" style="padding-left:${13+indent}px;${bgStyle}">
+          <input type="checkbox" class="hier-checkbox" ${isChecked?'checked':''}
+            onchange="toggleIndiceItem('${mat}','${item.hier}',this.checked)"
+            onclick="event.stopPropagation()"
+            title="Marcar como concluído">
           <span class="hi-code" style="padding-left:0;min-width:${40+indent}px;${isMain?'color:var(--accent);':''}">${item.hier}</span>
           <span class="hi-name" style="${isMain?'color:var(--text);font-weight:600;':''}">${item.nome}</span>
           ${entry.sessQs>0?`<span class="hi-sess-qs">✦${entry.sessQs}q</span>`:''}${entry.acumQs>0?`<span class="hi-acum-qs">+${entry.acumQs}↺</span>`:''}
@@ -1660,11 +1665,7 @@ function getTopicos(mat,horas,qsHora,state){
         out.push({id:t.id,nome:t.nome,qty:t.qty,size:t.size,hUsed:+hU.toFixed(2),qsFeitos,completo,parcial:!completo,qsAcumuladas:qsAcum,qsTotal});
         hLeft-=hU;
       } else {
-        if(out.length===0){
-          const qsFeitos2=Math.round(hLeft*qsHora);
-          state.acumulo[acumKey]=Math.max(0,t.qty-Math.min(t.qty,qsFeitos2));
-          out.push({id:t.id,nome:t.nome,qty:t.qty,size:t.size,hUsed:+hLeft.toFixed(2),qsFeitos:qsFeitos2,completo:false,parcial:true,qsAcumuladas:qsAcum,qsTotal});
-        }
+        if(out.length===0){ const qsFeitos2=Math.round(hLeft*qsHora); state.acumulo[acumKey]=Math.max(0,t.qty-Math.min(t.qty,qsFeitos2)); out.push({id:t.id,nome:t.nome,qty:t.qty,size:t.size,hUsed:+hLeft.toFixed(2),qsFeitos:qsFeitos2,completo:false,parcial:true,qsAcumuladas:qsAcum,qsTotal}); }
         break;
       }
     }
@@ -1680,13 +1681,9 @@ function renderProgressOverview(savedState){
   const settings=getSettings(); const qsHora=Math.max(1,parseInt(settings.qph));
   const ceData=loadData('CE',[]); const today=dateStr(new Date());
   const revByMat={};
-  ceData.forEach(e=>{
-    if(!revByMat[e.mat]) revByMat[e.mat]={feitas:0,pendentes:0,atrasadas:0};
-    e.steps.forEach(s=>{ if(s.done) revByMat[e.mat].feitas++; else if(s.date<today) revByMat[e.mat].atrasadas++; else revByMat[e.mat].pendentes++; });
-  });
+  ceData.forEach(e=>{ if(!revByMat[e.mat]) revByMat[e.mat]={feitas:0,pendentes:0,atrasadas:0}; e.steps.forEach(s=>{ if(s.done) revByMat[e.mat].feitas++; else if(s.date<today) revByMat[e.mat].atrasadas++; else revByMat[e.mat].pendentes++; }); });
   const stepsFeitos=ceData.reduce((n,e)=>n+e.steps.filter(s=>s.done).length,0);
-  const totalMinEl=document.getElementById('ce-total-min');
-  if(totalMinEl) totalMinEl.textContent=formatMinAsTime(stepsFeitos*15);
+  const totalMinEl=document.getElementById('ce-total-min'); if(totalMinEl) totalMinEl.textContent=formatMinAsTime(stepsFeitos*15);
 
   grid.innerHTML=Object.keys(TOPICOS).map(mat=>{
     const lista=TOPICOS[mat]; if(!lista||lista.length===0) return '';
@@ -1710,8 +1707,7 @@ function renderProgressOverview(savedState){
     const total=lista.reduce((s,t)=>s+t.qty,0);
     let qFeitas=lista.slice(0,ptr).reduce((s,t)=>s+t.qty,0);
     const topAtual=lista[ptr]; const acumKeyAtual=topAtual?mat+'__'+topAtual.nome:null;
-    if(topAtual&&savedState.acumulo&&acumKeyAtual&&savedState.acumulo[acumKeyAtual]!==undefined)
-      qFeitas+=Math.max(0,topAtual.qty-savedState.acumulo[acumKeyAtual]);
+    if(topAtual&&savedState.acumulo&&acumKeyAtual&&savedState.acumulo[acumKeyAtual]!==undefined) qFeitas+=Math.max(0,topAtual.qty-savedState.acumulo[acumKeyAtual]);
     const totalAcum=!savedState.acumulo?0:Object.keys(savedState.acumulo).filter(k=>k.startsWith(mat+'__')&&k!==acumKeyAtual).reduce((s,k)=>s+(savedState.acumulo[k]||0),0);
     const qRestam=total-qFeitas+totalAcum; const pct2=total>0?Math.min(100,Math.round((qFeitas/total)*100)):0;
     const hEstimado=qRestam>0?(qRestam/qsHora):0;
@@ -1728,38 +1724,107 @@ function renderProgressOverview(savedState){
   }).join('');
 }
 
+// ══════════════════════════════════════════════════════
+// RENDER FULL INDEX — COM CHECKBOXES (NOVO)
+// ══════════════════════════════════════════════════════
 function renderFullIndex(){
   const out=document.getElementById('indice-full');
-  if(!out||out.dataset.rendered==='1') return;
-  out.dataset.rendered='1';
-  const matOrder=[{key:'PT',label:'Língua Portuguesa',color:'var(--orange)'},{key:'MT',label:'Matemática + Raciocínio Lógico',color:'var(--green)'},{key:'TI',label:'Tecnologia da Informação',color:'var(--accent)'},{key:'PROB',label:'Estatística / Probabilidade',color:'var(--purple)'},{key:'EN',label:'Língua Inglesa',color:'var(--yellow)'},{key:'BC',label:'Conhecimentos Bancários',color:'var(--orange)'},{key:'AT',label:'Atualidades do Mercado Financeiro',color:'var(--green)'},{key:'RED',label:'Redação',color:'var(--yellow)'}];
+  if(!out) return;
+  // Sempre re-renderiza para atualizar os estados dos checkboxes
+  const progress = getIndiceProgress();
+  const matOrder=[
+    {key:'PT',label:'Língua Portuguesa',color:'var(--orange)'},
+    {key:'MT',label:'Matemática + Raciocínio Lógico',color:'var(--green)'},
+    {key:'TI',label:'Tecnologia da Informação',color:'var(--accent)'},
+    {key:'PROB',label:'Estatística / Probabilidade',color:'var(--purple)'},
+    {key:'EN',label:'Língua Inglesa',color:'var(--yellow)'},
+    {key:'BC',label:'Conhecimentos Bancários',color:'var(--orange)'},
+    {key:'AT',label:'Atualidades do Mercado Financeiro',color:'var(--green)'},
+    {key:'RED',label:'Redação',color:'var(--yellow)'}
+  ];
   let html='';
   matOrder.forEach(({key,label,color})=>{
     const data=TOPICOS_HIER[key]; if(!data) return;
     const totalQs=data.categories.reduce((s,c)=>s+c.qty,0);
     const uid='fidx_'+key;
+
+    // Conta itens e marcados para esta matéria
+    let matTotal=0, matChecked=0;
+    data.categories.forEach(cat=>{ cat.items.forEach(item=>{ matTotal++; if(progress[makeIndiceKey(key,item.hier)]) matChecked++; }); });
+    const matPct=matTotal>0?Math.round(matChecked/matTotal*100):0;
+
     html+=`<div style="margin-bottom:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface2)">
       <button class="hier-toggle" onclick="toggleHier('${uid}')" id="btn_${uid}" style="padding:13px 16px">
-        <span class="ht-left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color}"></span>
-        <span style="font-size:13px;font-weight:700;color:var(--text);text-transform:none;letter-spacing:0">${label}</span></span>
-        <span style="display:flex;align-items:center;gap:10px">${totalQs>0?`<span style="font-size:10px;color:var(--green)">${totalQs} questões</span>`:'<span style="font-size:10px;color:var(--muted)">prática</span>'}<span class="ht-arrow">›</span></span>
-      </button><div class="hier-body" id="${uid}">`;
+        <span class="ht-left">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color}"></span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);text-transform:none;letter-spacing:0">${label}</span>
+        </span>
+        <span style="display:flex;align-items:center;gap:10px">
+          ${matChecked>0?`<span style="font-size:10px;color:var(--green);font-family:var(--mono)">${matChecked}/${matTotal} (${matPct}%)</span>`:''}
+          ${totalQs>0?`<span style="font-size:10px;color:var(--muted)">${totalQs}q banco</span>`:'<span style="font-size:10px;color:var(--muted)">prática</span>'}
+          <span class="ht-arrow">›</span>
+        </span>
+      </button>
+      ${matPct>0?`<div style="padding:0 16px 8px"><div class="indice-progress-bar"><div class="indice-progress-fill" style="width:${matPct}%"></div></div><div class="indice-cat-progress"><span>${matChecked} de ${matTotal} tópicos marcados</span><span style="color:var(--green)">${matPct}%</span></div></div>`:''}
+      <div class="hier-body" id="${uid}">`;
+
     data.categories.forEach((cat,ci)=>{
       const catUid=uid+'_c'+ci;
-      html+=`<div class="hier-cat"><div class="hier-cat-hdr" onclick="toggleHierCat('${catUid}')" id="btn_${catUid}"><span class="hc-arr">›</span><span class="hc-name">${cat.nome}</span><span class="hc-qty">${cat.qty>0?cat.qty+' questões':'prática'}</span></div><div class="hier-cat-body" id="${catUid}">`;
+      let catTotal=0, catChecked=0;
+      cat.items.forEach(item=>{ catTotal++; if(progress[makeIndiceKey(key,item.hier)]) catChecked++; });
+      const catPct=catTotal>0?Math.round(catChecked/catTotal*100):0;
+
+      html+=`<div class="hier-cat">
+        <div class="hier-cat-hdr" onclick="toggleHierCat('${catUid}')" id="btn_${catUid}">
+          <span class="hc-arr">›</span>
+          <span class="hc-name">${cat.nome}</span>
+          <span style="display:flex;align-items:center;gap:8px">
+            ${catChecked>0?`<span style="font-size:9px;color:var(--green);font-family:var(--mono)">${catChecked}/${catTotal}</span>`:''}
+            <span class="hc-qty">${cat.qty>0?cat.qty+' questões':'prática'}</span>
+          </span>
+        </div>
+        ${catPct>0?`<div style="padding:4px 13px"><div class="indice-progress-bar" style="height:2px;margin:0"><div class="indice-progress-fill" style="width:${catPct}%"></div></div></div>`:''}
+        <div class="hier-cat-body" id="${catUid}">`;
+
       cat.items.forEach(item=>{
-        const indent=item.depth*14;
-        html+=`<div class="hier-item" data-depth="${item.depth}" style="padding-left:${13+indent}px"><span class="hi-code" style="padding-left:0;min-width:${40+indent}px">${item.hier}</span><span class="hi-name">${item.nome}</span>${item.qty>0?`<span class="hi-qty">${item.qty}q</span>`:''}</div>`;
+        const indent=item.depth*16;
+        const iKey=makeIndiceKey(key,item.hier);
+        const isChecked=!!progress[iKey];
+        const isMain=item.depth===0;
+        const depthBg=isMain?'background:rgba(255,255,255,.025);':'';
+        const checkedCls=isChecked?'checked':'';
+
+        html+=`<div class="indice-hier-item ${checkedCls}" data-depth="${item.depth}" data-indice-key="${iKey}" style="padding-left:${13+indent}px;${depthBg}">
+          <input type="checkbox" class="hier-checkbox" ${isChecked?'checked':''} 
+            style="margin-left:${indent===0?'0':'0'}"
+            onchange="toggleIndiceItem('${key}','${item.hier}',this.checked)"
+            onclick="event.stopPropagation()"
+            title="Marcar como concluído">
+          <span class="hi-code" style="min-width:${Math.max(38,40-indent)}px;${isMain?'color:var(--accent);opacity:.8;':''}">${item.hier}</span>
+          <span class="hi-name" style="${isMain?'color:var(--text);font-weight:600;font-size:12px;':''}">${item.nome}</span>
+          ${item.qty>0?`<span class="hi-qty">${item.qty}q</span>`:''}
+        </div>`;
       });
-      html+='</div></div>';
+
+      html+=`</div></div>`;
     });
-    html+='</div></div>';
+
+    html+=`</div></div>`;
   });
   out.innerHTML=html;
+  updateIndiceStats();
 }
 
-function toggleHier(uid){ const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid); if(!body||!btn) return; const isOpen=body.classList.contains('open'); body.classList.toggle('open'); btn.classList.toggle('open'); const arrow=btn.querySelector('.ht-arrow'); if(arrow) arrow.style.transform=isOpen?'':'rotate(90deg)'; }
-function toggleHierCat(uid){ const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid); if(!body||!btn) return; body.classList.toggle('open'); btn.classList.toggle('open'); }
+function toggleHier(uid){
+  const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid);
+  if(!body||!btn) return; const isOpen=body.classList.contains('open');
+  body.classList.toggle('open'); btn.classList.toggle('open');
+  const arrow=btn.querySelector('.ht-arrow'); if(arrow) arrow.style.transform=isOpen?'':'rotate(90deg)';
+}
+function toggleHierCat(uid){
+  const body=document.getElementById(uid); const btn=document.getElementById('btn_'+uid);
+  if(!body||!btn) return; body.classList.toggle('open'); btn.classList.toggle('open');
+}
 
 function getRevisoesDoDia(ceData,date){
   const ds=dateStr(date); const result=[];
@@ -1811,11 +1876,7 @@ function renderCaderno(){
   const rows=filtered.map(e=>{
     const matColor=MAT_COLORS[e.mat]||'var(--accent)';
     const dias=e.intervalDias||REVISAO_DIAS;
-    const stepsHtml=e.steps.map((s,si)=>{
-      let cls='pending-dot';
-      if(s.done) cls='done-dot'; else if(s.date<today) cls='overdue-dot'; else if(s.date===today) cls='due-dot';
-      return `<div class="step-dot ${cls}" title="${s.done?'✓ Feito':'Revisão '+s.date}" onclick="toggleStep(${e.id},${si})">${s.done?'✓':(dias[si]||'?')+'d'}</div>`;
-    }).join('');
+    const stepsHtml=e.steps.map((s,si)=>{ let cls='pending-dot'; if(s.done) cls='done-dot'; else if(s.date<today) cls='overdue-dot'; else if(s.date===today) cls='due-dot'; return `<div class="step-dot ${cls}" title="${s.done?'✓ Feito':'Revisão '+s.date}" onclick="toggleStep(${e.id},${si})">${s.done?'✓':(dias[si]||'?')+'d'}</div>`; }).join('');
     const allDone=e.steps.every(s=>s.done);
     const stepsDone=e.steps.filter(s=>s.done).length;
     return `<tr><td style="max-width:200px;word-break:break-word">${e.topico}${e.link?makeTecLink(e.link):''}</td>
@@ -1834,19 +1895,13 @@ function renderAgenda(ceData){
   const today=dateStr(new Date()); const todayDate=new Date(); todayDate.setHours(12,0,0,0);
   const limite=new Date(todayDate); limite.setDate(limite.getDate()+30);
   const limiteStr=dateStr(limite); const byDate={};
-  ceData.forEach(e=>e.steps.forEach((s,si)=>{
-    if(s.date>=today&&s.date<=limiteStr){ if(!byDate[s.date]) byDate[s.date]=[]; const dias=e.intervalDias||REVISAO_DIAS; byDate[s.date].push({entry:e,stepIdx:si,step:s,label:(dias[si]||'?')+'d'}); }
-  }));
+  ceData.forEach(e=>e.steps.forEach((s,si)=>{ if(s.date>=today&&s.date<=limiteStr){ if(!byDate[s.date]) byDate[s.date]=[]; const dias=e.intervalDias||REVISAO_DIAS; byDate[s.date].push({entry:e,stepIdx:si,step:s,label:(dias[si]||'?')+'d'}); } }));
   const atrasados=[];
   ceData.forEach(e=>{ const dias=e.intervalDias||REVISAO_DIAS; e.steps.forEach((s,si)=>{ if(!s.done&&s.date<today) atrasados.push({entry:e,stepIdx:si,step:s,label:(dias[si]||'?')+'d',overdue:true}); }); });
   if(Object.keys(byDate).length===0&&atrasados.length===0){ tl.innerHTML='<div class="rev-empty" style="padding:16px 0">Nenhuma revisão nos próximos 30 dias.</div>'; return; }
   let html='';
   if(atrasados.length>0) html+=`<div class="agenda-day-row"><div class="agenda-date is-past">⚠ Atrasadas (${atrasados.length})</div><div class="agenda-chips">${atrasados.map(r=>chipHtml(r,true)).join('')}</div></div>`;
-  Object.keys(byDate).sort().forEach(ds=>{
-    const items=byDate[ds]; const dt=new Date(ds+'T12:00:00'); const isToday2=ds===today;
-    const revMinDia=getRevMinForDay(dt);
-    html+=`<div class="agenda-day-row"><div class="agenda-date ${isToday2?'is-today':''}">${isToday2?'Hoje — '+fmtDateShort(dt):fmtDateShort(dt)}${revMinDia>0?`<br><span style="font-size:9px;color:var(--yellow)">⏱ ${revMinDia}min</span>`:''}</div><div class="agenda-chips">${items.map(r=>chipHtml(r,false)).join('')}</div></div>`;
-  });
+  Object.keys(byDate).sort().forEach(ds=>{ const items=byDate[ds]; const dt=new Date(ds+'T12:00:00'); const isToday2=ds===today; const revMinDia=getRevMinForDay(dt); html+=`<div class="agenda-day-row"><div class="agenda-date ${isToday2?'is-today':''}">${isToday2?'Hoje — '+fmtDateShort(dt):fmtDateShort(dt)}${revMinDia>0?`<br><span style="font-size:9px;color:var(--yellow)">⏱ ${revMinDia}min</span>`:''}</div><div class="agenda-chips">${items.map(r=>chipHtml(r,false)).join('')}</div></div>`; });
   tl.innerHTML=html;
 }
 
@@ -1858,8 +1913,7 @@ function chipHtml(r,overdue){
 }
 
 async function toggleStep(entryId,stepIdx){
-  const ceData=loadData('CE',[]);
-  const e=ceData.find(x=>x.id===entryId); if(!e) return;
+  const ceData=loadData('CE',[]); const e=ceData.find(x=>x.id===entryId); if(!e) return;
   e.steps[stepIdx].done=!e.steps[stepIdx].done;
   await saveData('CE',ceData);
   renderCaderno(); updateCeBadge();
@@ -1867,8 +1921,7 @@ async function toggleStep(entryId,stepIdx){
 
 async function deletarErro(entryId){
   if(!confirm('Remover este registro?')) return;
-  let ceData=loadData('CE',[]);
-  ceData=ceData.filter(x=>x.id!==entryId);
+  let ceData=loadData('CE',[]); ceData=ceData.filter(x=>x.id!==entryId);
   await saveData('CE',ceData);
   renderCaderno(); updateCeBadge();
 }
@@ -1919,7 +1972,8 @@ async function executarLimparTudo(){
         db.from('plano_settings').delete().eq('user_id',USER_ID),
         db.from('plano_state').delete().eq('user_id',USER_ID),
         db.from('caderno_erros').delete().eq('user_id',USER_ID),
-        db.from('rev_times').delete().eq('user_id',USER_ID)
+        db.from('rev_times').delete().eq('user_id',USER_ID),
+        db.from('indice_progress').delete().eq('user_id',USER_ID)  // ← NOVO
       ]);
       showToast('ok');
     }catch(e){ showToast('err'); }
@@ -1935,6 +1989,10 @@ async function executarLimparTudo(){
   document.getElementById('duracao-meses').value='3';
   buildDayHoursGrid(null); buildRevTimeGrid(); setPreset('concursos');
   updateCeBadge(); renderCaderno();
+  // Limpa índice se estiver renderizado
+  const indiceOut=document.getElementById('indice-full');
+  if(indiceOut) indiceOut.innerHTML='';
+  updateIndiceStats();
 }
 
 function abrirAjuda(){ const m=document.getElementById('modal-ajuda'); if(m) m.style.display='flex'; }
@@ -1982,37 +2040,29 @@ async function desfazerDia(cardStr){
 }
 
 // ══════════════════════════════════════════════════════
-// INIT — MODIFICADO: com loading overlay + retry warning
+// INIT
 // ══════════════════════════════════════════════════════
 window.onload = async function(){
   const today=new Date();
   document.getElementById('data-inicio').value=dateStr(today);
   document.getElementById('ce-data').value=dateStr(today);
 
-  // 1. Exibe overlay de carregamento imediatamente
   showLoadingOverlay();
-
-  // 2. Conecta ao Supabase
   setLoadingStep('conn','active');
   await initSupabase();
   setLoadingStep('conn',dbOnline?'done':'error');
 
-  // 3. Se online → sincroniza da nuvem com progresso por etapa
   let failedTables=[];
   if(dbOnline){
     const result=await sbLoadAll();
     failedTables=result.failed||[];
-    if(result.synced>0) console.log('✅ Dados sincronizados da nuvem');
   }
 
-  // 4. Delay suave antes de ocultar overlay (350ms)
   await new Promise(r=>setTimeout(r,350));
   hideLoadingOverlay();
 
-  // 5. Exibe banner de aviso se alguma tabela falhou
   if(failedTables.length>0) showSyncWarning(failedTables);
 
-  // 6. Aplica configurações na UI
   const saved=loadData('SETTINGS',null);
   if(saved){
     if(saved.dataInicio) document.getElementById('data-inicio').value=saved.dataInicio;
@@ -2028,10 +2078,10 @@ window.onload = async function(){
 
   buildRevTimeGrid(); updateSubMat();
 
-  // 7. Gera plano automaticamente se há progresso salvo
   const planState=loadData('PLAN',null);
   if(planState&&planState.pointers&&Object.keys(planState.pointers).length>0) gerarPlano();
   updateCeBadge();
+  updateIndiceStats();
 };
 </script>
 </body>
